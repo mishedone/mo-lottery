@@ -8,6 +8,7 @@
         <title>Lottery</title>
 
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/app.css" rel="stylesheet">
     </head>
 
     <body>
@@ -20,25 +21,39 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Lottery</a>
+                    <a class="navbar-brand" href="#/dashboard">Lottery</a>
                 </div>
 
-                <div id="navbar" class="collapse navbar-collapse">
+                <div id="navbar" class="collapse navbar-collapse pull-right">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
+                        <li>
+                            <a href="#/reload-database">
+                                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <div class="container">
-            <div class="row">
-                <h1>Hello master</h1>
-            </div>
-        </div>
+        <div id="content" class="container"></div>
+
+        <script type="text/template" id="dashboard">
+            <h1>Dashboard</h1>
+        </script>
+
+        <script type="text/template" id="reload-database">
+            <h1>Reloading database...</h1>
+        </script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+        <script src="vendor/underscore/underscore-min.js"></script>
         <script src="vendor/backbone/backbone-min.js"></script>
+
+        <script src="src/views/dashboard.js"></script>
+        <script src="src/views/reload-database.js"></script>
+        <script src="src/router.js"></script>
+        <script src="src/app.js"></script>
     </body>
 </html>
