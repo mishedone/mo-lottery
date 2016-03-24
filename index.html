@@ -8,6 +8,7 @@
         <title>Lottery</title>
 
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="vendor/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
         <link href="css/app.css" rel="stylesheet">
     </head>
 
@@ -27,6 +28,11 @@
                 <div id="navbar" class="collapse navbar-collapse pull-right">
                     <ul class="nav navbar-nav">
                         <li>
+                            <a href="#/dashboard">
+                                <span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="#/reload-database">
                                 <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                             </a>
@@ -40,10 +46,12 @@
 
         <script type="text/template" id="dashboard">
             <h1>Dashboard</h1>
+            <hr/>
         </script>
 
         <script type="text/template" id="reload-database">
             <h1>Reloading database...</h1>
+            <hr/>
         </script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
