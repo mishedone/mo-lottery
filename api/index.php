@@ -1,4 +1,15 @@
 <?php
 
 $url = 'http://www.toto.bg/files/tiraji/649_58.txt';
-file_put_contents('data/649-1958.txt', file_get_contents($url));
+
+$urlContent = file_get_contents($url);
+$editions = array();
+foreach (explode("\n", $urlContent) as $rawEdition) {
+    $towing = explode(',', $rawEdition);
+    unset($towing[0]);
+
+    $editions[] = array_values($towing);
+}
+
+header('Content-Type: application/json');
+echo json_encode($editions);
