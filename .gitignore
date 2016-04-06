@@ -1,4 +1,4 @@
 .idea
 .vagrant
 
-api/data/*.txt
+api/data/*.json
