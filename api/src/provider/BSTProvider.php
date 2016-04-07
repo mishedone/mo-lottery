@@ -27,7 +27,7 @@ class BSTProvider
         $this->editionManager = $editionManager;
 
         // build available years
-        for ($year = 1958; $year <= 1965; $year++) {
+        for ($year = 1958; $year <= 2015; $year++) {
             $this->years[] = $year;
         }
     }
@@ -39,7 +39,7 @@ class BSTProvider
     private function loadProviderEditions($year)
     {
         $url = sprintf(
-            'http://www.toto.bg/files/tiraji/649_%d.txt',
+            'http://www.toto.bg/files/tiraji/649_%s.txt',
             ($year < 2005) ? substr($year, 2) : $year
         );
 
@@ -54,17 +54,25 @@ class BSTProvider
     {
         $parsedEditions = array();
         foreach (explode("\n", $providerEditions) as $rawEdition) {
-            $numbers = explode(',', $rawEdition);
-            unset($numbers[0]);
-
-            if (count($numbers) > 6) {
-                echo 'Wrong format!';
-                var_dump($providerEditions);
-                die();
+            // skip empty rows
+            if (preg_match('/^\s*$/', $rawEdition)) {
+                continue;
             }
 
-            // skip empty rows
-            if (count($numbers)) {
+            // fix spaces after commas, remove leading nonsense, trim
+            $rawEdition = trim($rawEdition);
+            $rawEdition = preg_replace('/,\s{1,}/', ',', $rawEdition);
+            $rawEdition = preg_replace('/^.*?[,\-\s]/', '', $rawEdition);
+            $rawEdition = trim($rawEdition);
+
+            // split row into sections of numbers
+            $sections = preg_split('/\s{1,}/', $rawEdition);
+            foreach ($sections as $section) {
+                $numbers = explode(',', $section);
+                if (count($numbers) != 6) {
+                    // TODO: throw proper exception in here
+                }
+
                 $parsedEditions[] = array_values($numbers);
             }
         }
