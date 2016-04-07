@@ -1,9 +1,12 @@
 <?php
 
-$db = array();
-if (file_exists('data/editions.json')) {
-    $db = json_decode(file_get_contents('data/editions.json'), true);
-}
+require_once 'src/manager/EditionManager.php';
+
+use MoLottery\Manager\EditionManager;
+
+$editionManager = new EditionManager(__DIR__ . DIRECTORY_SEPARATOR . 'data');
+
+$db = $editionManager->getEditions();
 
 $update = false;
 for ($year = 1958; $year <= 1965; $year++) {
@@ -19,19 +22,24 @@ for ($year = 1958; $year <= 1965; $year++) {
             $towing = explode(',', $rawEdition);
             unset($towing[0]);
 
+            if (count($towing) > 6) {
+                echo 'Wrong format!';
+                var_dump($urlContent);
+                die();
+            }
+
             if (count($towing)) {
                 $editions[] = array_values($towing);
             }
         }
 
-        $db[$year] = $editions;
-
+        $editionManager->updateEditions($year, $editions);
         $update = true;
     }
 }
 
 if ($update) {
-    file_put_contents('data/editions.json', json_encode($db));
+    $editionManager->saveEditions();
 } else {
     header('Content-Type: application/json');
     echo json_encode($db);
