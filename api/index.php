@@ -1,5 +1,7 @@
 <?php
 
+require_once 'src/tool/Clean.php';
+require_once 'src/tool/Curl.php';
 require_once 'src/manager/EditionManager.php';
 require_once 'src/provider/BSTProvider.php';
 
@@ -12,6 +14,7 @@ $provider = new BSTProvider($editionManager);
 
 // process data
 $provider->sync();
+$editions = $editionManager->getEditions();
 
 header('Content-Type: application/json');
-echo json_encode($editionManager->getEditions());
+echo json_encode(array_slice($editions, -3, 3, true));
