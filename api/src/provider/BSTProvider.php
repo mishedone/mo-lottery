@@ -157,6 +157,7 @@ class BSTProvider
                 // TODO: skip edition loading if latest has been already loaded
                 $this->editionManager->updateEditions($year, $this->parseEditions());
             } else {
+                // TODO: create is year loaded method in edition manager
                 $yearAlreadyLoaded = isset($existingEditions[$year]);
                 if (!$yearAlreadyLoaded) {
                     $this->editionManager->updateEditions($year, $this->parseArchiveEditions($year));
