@@ -10,6 +10,13 @@ if ! [ -L /var/www/html ]; then
     rm -rf /var/www/html
     ln -fs /vagrant /var/www/html
 fi
+sed -i "s|DocumentRoot /var/www/html|DocumentRoot /var/www/html\\
+\\
+        <Directory /var/www/html>\\
+                Options -Indexes +FollowSymLinks\\
+                AllowOverride All\\
+        </Directory>|" /etc/apache2/sites-available/000-default.conf
+a2enmod rewrite
 
 # setup php
 apt-get install -y python-software-properties
