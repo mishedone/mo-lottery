@@ -8,6 +8,8 @@ require_once 'src/provider/BSTProvider.php';
 use MoLottery\Manager\EditionManager;
 use MoLottery\Provider\BSTProvider;
 
+die('TODO: Implement endpoints!');
+
 // build services
 $editionManager = new EditionManager(__DIR__ . DIRECTORY_SEPARATOR . 'data');
 $provider = new BSTProvider($editionManager);
