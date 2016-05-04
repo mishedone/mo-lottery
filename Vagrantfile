@@ -1,3 +1,12 @@
+# The cool guys from Vagrant did not handle mounting automatically so
+# we have to detect OS by ourselves and act appropriately...
+# Look in here for extra detection logic: http://goo.gl/tsCgNK
+module OS
+    def OS.windows?
+        (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
+    end
+end
+
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
@@ -39,6 +48,11 @@ Vagrant.configure(2) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # fix shared folders on windows
+  if OS.windows?
+      config.vm.synced_folder ".", "/vagrant", type: "smb"
+  end
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
