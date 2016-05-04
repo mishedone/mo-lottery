@@ -29,6 +29,34 @@ class BSTProvider
     private $years = array();
 
     /**
+     * @return array
+     */
+    public function getYears()
+    {
+        return $this->years;
+    }
+
+    /**
+     * @param int $year
+     * @return bool
+     */
+    public function hasYear($year)
+    {
+        return in_array((int) $year, $this->years);
+    }
+
+    /**
+     * @param int $year
+     * @return array
+     */
+    public function getYearEditions($year)
+    {
+        // TODO: implement the logic here
+
+        return array();
+    }
+
+    /**
      * @param EditionManager $editionManager
      */
     public function __construct(EditionManager $editionManager)
