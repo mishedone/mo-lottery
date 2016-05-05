@@ -51,13 +51,6 @@ class EditionManager extends AbstractManager
     public function updateEditions($year, array $editions)
     {
         $this->editions[(int) $year] = $editions;
-    }
-
-    /**
-     * Persists in memory editions if there is any new data.
-     */
-    public function saveEditions()
-    {
         $this->saveData($this->editions);
     }
 }

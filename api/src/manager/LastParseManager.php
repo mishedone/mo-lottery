@@ -13,6 +13,11 @@ class LastParseManager extends AbstractManager
     const FILE = 'last-parses.json';
 
     /**
+     * @const FORMAT In what format to store dates.
+     */
+    const FORMAT = 'Y-m-d';
+
+    /**
      * @var array
      */
     private $lastParses = array();
@@ -28,11 +33,15 @@ class LastParseManager extends AbstractManager
 
     /**
      * @param string $key
-     * @return \DateTime|null
+     * @return bool
      */
-    public function getLastParse($key)
+    public function hasLastParseToday($key)
     {
-        return isset($this->lastParses[$key]) ? new \DateTime($this->lastParses[$key]) : null;
+        if (!isset($this->lastParses[$key])) {
+            return false;
+        }
+
+        return date(static::FORMAT) == $this->lastParses[$key];
     }
 
     /**
@@ -41,7 +50,7 @@ class LastParseManager extends AbstractManager
      */
     public function setLastParse($key, \DateTime $date)
     {
-        $this->lastParses[$key] = $date->format('Y-m-d');
+        $this->lastParses[$key] = $date->format(static::FORMAT);
         $this->saveData($this->lastParses);
     }
 }

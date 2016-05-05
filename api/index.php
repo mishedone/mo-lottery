@@ -5,12 +5,16 @@ require_once 'autoload.php';
 use MoLottery\Exception\Exception;
 use MoLottery\Http\Response;
 use MoLottery\Manager\EditionManager;
+use MoLottery\Manager\LastParseManager;
 use MoLottery\Provider\BSTProvider;
+
+$dataPath = __DIR__ . DIRECTORY_SEPARATOR . 'data';
 
 // build services
 $response = new Response();
-$editionManager = new EditionManager(__DIR__ . DIRECTORY_SEPARATOR . 'data');
-$provider = new BSTProvider($editionManager);
+$editionManager = new EditionManager($dataPath);
+$lastParseManager = new LastParseManager($dataPath);
+$provider = new BSTProvider($editionManager, $lastParseManager);
 
 // routing
 switch ($_GET['action']) {

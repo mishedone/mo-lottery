@@ -3,6 +3,7 @@
 namespace MoLottery\Provider;
 
 use MoLottery\Manager\EditionManager;
+use MoLottery\Manager\LastParseManager;
 use MoLottery\Provider\Parser\BSTArchiveYearParser;
 use MoLottery\Provider\Parser\BSTCurrentYearParser;
 
@@ -12,9 +13,19 @@ use MoLottery\Provider\Parser\BSTCurrentYearParser;
 class BSTProvider
 {
     /**
+     * @const CURRENT_YEAR_LAST_PARSE_KEY Key for storing last parse date.
+     */
+    const CURRENT_YEAR_LAST_PARSE_KEY = 'bst-provider-current-year';
+
+    /**
      * @var EditionManager
      */
     private $editionManager;
+
+    /**
+     * @var LastParseManager
+     */
+    private $lastParseManager;
 
     /**
      * @var BSTArchiveYearParser
@@ -33,10 +44,14 @@ class BSTProvider
 
     /**
      * @param EditionManager $editionManager
+     * @param LastParseManager $lastParseManager
      */
-    public function __construct(EditionManager $editionManager)
+    public function __construct(EditionManager $editionManager, LastParseManager $lastParseManager)
     {
         $this->editionManager = $editionManager;
+        $this->lastParseManager = $lastParseManager;
+
+        // initialize parsers
         $this->archiveYearParser = new BSTArchiveYearParser();
         $this->currentYearParser = new BSTCurrentYearParser();
 
@@ -76,8 +91,10 @@ class BSTProvider
 
         // current year vs archive year
         if (date('Y') == $year) {
-            // TODO: skip edition loading if latest has been already loaded
-            $this->editionManager->updateEditions($year, $this->currentYearParser->parse());
+            if (!$this->lastParseManager->hasLastParseToday(static::CURRENT_YEAR_LAST_PARSE_KEY)) {
+                $this->editionManager->updateEditions($year, $this->currentYearParser->parse());
+                $this->lastParseManager->setLastParse(static::CURRENT_YEAR_LAST_PARSE_KEY, new \DateTime());
+            }
         } else {
             $archiveIsLoaded = $this->editionManager->hasEditions($year);
 
@@ -86,9 +103,6 @@ class BSTProvider
                 $this->editionManager->updateEditions($year, $this->archiveYearParser->parse($year));
             }
         }
-
-        // save not persisted changes
-        $this->editionManager->saveEditions();
 
         return $this->editionManager->getEditions($year);
     }
