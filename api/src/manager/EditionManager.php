@@ -52,11 +52,21 @@ class EditionManager
     }
 
     /**
+     * @param int $year
+     * @return bool
+     */
+    public function hasEditions($year)
+    {
+        return isset($this->editions[(int) $year]);
+    }
+
+    /**
+     * @param int $year
      * @return array
      */
-    public function getEditions()
+    public function getEditions($year)
     {
-        return $this->editions;
+        return $this->hasEditions($year) ? $this->editions[(int) $year] : array();
     }
 
     /**
