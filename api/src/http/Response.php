@@ -8,23 +8,35 @@ namespace MoLottery\Http;
 class Response
 {
     /**
-     * Shows 404 page.
+     * @param string $suffix
+     * @return string
      */
-    public function render404()
+    private function getStatusString($suffix)
     {
-        header('HTTP/1.0 404 Not Found');
+        return $_SERVER['SERVER_PROTOCOL'] . ' ' . $suffix;
+    }
+
+    /**
+     * @param array $data
+     * @param int $status Default: 200. Currently handles the following codes: 500.
+     */
+    public function renderJson(array $data, $status = 200)
+    {
+        header('Content-Type: application/json');
+        if (500 == $status) {
+            header($this->getStatusString('500 Internal Server Error'), true, $status);
+        }
+
+        echo json_encode($data);
         exit;
     }
 
     /**
-     * Shows a JSON page.
-     *
-     * @param array $data
+     * Shows 404 page... That dumb...
      */
-    public function renderJson(array $data)
+    public function render404()
     {
-        header('Content-Type: application/json');
-        echo json_encode($data);
+        header($this->getStatusString('404 Not Found'), true, 404);
         exit;
     }
 }

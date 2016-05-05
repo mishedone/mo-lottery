@@ -2,6 +2,7 @@
 
 namespace MoLottery\Provider\Parser;
 
+use MoLottery\Exception\Exception;
 use MoLottery\Tool\Clean;
 
 /**
@@ -17,6 +18,7 @@ class BSTArchiveYearParser
     /**
      * @param int $year
      * @return array
+     * @throws Exception
      */
     public function parse($year)
     {
@@ -44,7 +46,7 @@ class BSTArchiveYearParser
             foreach ($sections as $section) {
                 $numbers = explode(',', $section);
                 if (count($numbers) != 6) {
-                    // TODO: throw proper exception in here
+                    throw Exception::parsedWrongNumberCount(count($numbers), 6, $section);
                 }
 
                 $editions[] = $this->cleanNumbers($numbers);

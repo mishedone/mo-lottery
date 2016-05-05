@@ -2,6 +2,7 @@
 
 namespace MoLottery\Provider\Parser;
 
+use MoLottery\Exception\Exception;
 use MoLottery\Tool\Clean;
 use MoLottery\Tool\Curl;
 
@@ -62,6 +63,7 @@ class BSTCurrentYearParser
      *
      * @param string $name
      * @return array
+     * @throws Exception
      */
     private function parseEdition($name)
     {
@@ -74,7 +76,7 @@ class BSTCurrentYearParser
 
         $numbers = $numbers['numbers'];
         if (count($numbers) != 6) {
-            // TODO: throw proper exception in here
+            throw Exception::parsedWrongNumberCount(count($numbers), 6, $html);
         }
 
         return $this->cleanNumbers($numbers);
