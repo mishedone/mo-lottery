@@ -18,17 +18,21 @@ class Response
 
     /**
      * @param array $data
-     * @param int $status Default: 200. Currently handles the following codes: 500.
      */
-    public function renderJson(array $data, $status = 200)
+    public function renderJson(array $data)
     {
         header('Content-Type: application/json');
-        if (500 == $status) {
-            header($this->getStatusString('500 Internal Server Error'), true, $status);
-        }
-
         echo json_encode($data);
         exit;
+    }
+
+    /**
+     * @param string $errorMessage
+     */
+    public function renderJsonServerError($errorMessage)
+    {
+        header($this->getStatusString('500 Internal Server Error'), true, 500);
+        $this->renderJson(array('error' => $errorMessage));
     }
 
     /**

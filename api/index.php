@@ -2,6 +2,7 @@
 
 require_once 'autoload.php';
 
+use MoLottery\Exception\Exception;
 use MoLottery\Http\Response;
 use MoLottery\Manager\EditionManager;
 use MoLottery\Provider\BSTProvider;
@@ -25,8 +26,12 @@ switch ($_GET['action']) {
         }
 
         // ok - we have data for the requested year - return it
-        $yearEditions = $provider->getYearEditions($year);
-        $response->renderJson($yearEditions);
+        try {
+            $yearEditions = $provider->getYearEditions($year);
+            $response->renderJson($yearEditions);
+        } catch (Exception $error) {
+            $response->renderJsonServerError($error->getMessage());
+        }
 
         break;
     default:
