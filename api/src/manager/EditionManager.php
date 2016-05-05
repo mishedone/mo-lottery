@@ -5,17 +5,12 @@ namespace MoLottery\Manager;
 /**
  * Manages data access to the available editions.
  */
-class EditionManager
+class EditionManager extends AbstractManager
 {
     /**
      * @const FILE The file in which data is stored and read from.
      */
     const FILE = 'editions.json';
-
-    /**
-     * @var string
-     */
-    private $dataPath = '';
 
     /**
      * @var array
@@ -27,28 +22,8 @@ class EditionManager
      */
     public function __construct($dataPath)
     {
-        $this->dataPath = $dataPath;
-        $this->editions = $this->readEditions();
-    }
-
-    /**
-     * @return string
-     */
-    private function getFilePath()
-    {
-        return $this->dataPath . DIRECTORY_SEPARATOR . static::FILE;
-    }
-
-    /**
-     * @return array
-     */
-    private function readEditions()
-    {
-        if (!file_exists($this->getFilePath())) {
-            return array();
-        }
-
-        return json_decode(file_get_contents($this->getFilePath()), true);
+        parent::__construct($dataPath);
+        $this->editions = $this->readData();
     }
 
     /**
@@ -83,8 +58,6 @@ class EditionManager
      */
     public function saveEditions()
     {
-        if ($this->readEditions() !== $this->editions) {
-            file_put_contents($this->getFilePath(), json_encode($this->editions));
-        }
+        $this->saveData($this->editions);
     }
 }
