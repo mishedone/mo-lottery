@@ -29,11 +29,16 @@ class BSTProvider
     private $years = array();
 
     /**
-     * @return array
+     * @param EditionManager $editionManager
      */
-    public function getYears()
+    public function __construct(EditionManager $editionManager)
     {
-        return $this->years;
+        $this->editionManager = $editionManager;
+
+        // build available years
+        for ($year = 1958; $year <= date('Y'); $year++) {
+            $this->years[] = $year;
+        }
     }
 
     /**
@@ -46,27 +51,41 @@ class BSTProvider
     }
 
     /**
+     * @return array
+     */
+    public function getYears()
+    {
+        return $this->years;
+    }
+
+    /**
      * @param int $year
      * @return array
      */
     public function getYearEditions($year)
     {
-        // TODO: implement the logic here
-
-        return array();
-    }
-
-    /**
-     * @param EditionManager $editionManager
-     */
-    public function __construct(EditionManager $editionManager)
-    {
-        $this->editionManager = $editionManager;
-
-        // build available years
-        for ($year = 1958; $year <= date('Y'); $year++) {
-            $this->years[] = $year;
+        // unsupported year
+        if (!$this->hasYear($year)) {
+            return array();
         }
+
+        // current year vs archive year
+        if (date('Y') == $year) {
+            // TODO: skip edition loading if latest has been already loaded
+            $this->editionManager->updateEditions($year, $this->parseEditions());
+        } else {
+            $archiveIsLoaded = $this->editionManager->hasEditions($year);
+
+            // load archive editions if missing
+            if (!$archiveIsLoaded) {
+                $this->editionManager->updateEditions($year, $this->parseArchiveEditions($year));
+            }
+        }
+
+        // save not persisted changes
+        $this->editionManager->saveEditions();
+
+        return $this->editionManager->getEditions($year);
     }
 
     /**
@@ -171,28 +190,5 @@ class BSTProvider
         }
 
         return $editions;
-    }
-
-    /**
-     * Adds editions for all years that are missing in the editions database.
-     */
-    public function sync()
-    {
-        $existingEditions = $this->editionManager->getEditions();
-
-        foreach ($this->years as $year) {
-            if (date('Y') == $year) {
-                // TODO: skip edition loading if latest has been already loaded
-                $this->editionManager->updateEditions($year, $this->parseEditions());
-            } else {
-                // TODO: create is year loaded method in edition manager
-                $yearAlreadyLoaded = isset($existingEditions[$year]);
-                if (!$yearAlreadyLoaded) {
-                    $this->editionManager->updateEditions($year, $this->parseArchiveEditions($year));
-                }
-            }
-        }
-
-        $this->editionManager->saveEditions();
     }
 }
