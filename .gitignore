@@ -1,4 +1,5 @@
 .idea
 .vagrant
+*.komodoproject
 
 api/data/*.json
