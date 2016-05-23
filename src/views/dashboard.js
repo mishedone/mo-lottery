@@ -1,15 +1,11 @@
 /*global $, _, Backbone*/
 
-var DashboardView = (function () {
-    "use strict";
+var DashboardView = Backbone.View.extend({
+    template: _.template($('#dashboard').html()),
 
-    return Backbone.View.extend({
-        template: _.template($('#dashboard').html()),
+    render: function () {
+        this.$el.html(this.template());
 
-        render: function () {
-            this.$el.html(this.template());
-
-            return this;
-        }
-    });
-}());
+        return this;
+    }
+});
