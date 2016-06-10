@@ -2,5 +2,5 @@
 
 var YearCollection = new Backbone.Collection.extend({
     model: YearModel,
-    localStorage: new Backbone.localStorage('years')
+    localStorage: new Backbone.LocalStorage('years')
 });
