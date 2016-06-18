@@ -82,7 +82,7 @@ class BSTProvider
      * @param int $year
      * @return array
      */
-    public function getYearEditions($year)
+    public function getEditions($year)
     {
         // unsupported year
         if (!$this->hasYear($year)) {

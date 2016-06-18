@@ -18,12 +18,12 @@ $provider = new BSTProvider($editionManager, $lastParseManager);
 
 // routing
 switch ($_GET['action']) {
-    case 'available-years':
-        $availableYears = $provider->getYears();
-        $response->renderJson(['years' => $availableYears]);
+    case 'years':
+        $years = $provider->getYears();
+        $response->renderJson(['years' => $years]);
 
         break;
-    case 'year':
+    case 'editions':
         $year = $_GET['year'];
         if (!$provider->hasYear($year)) {
             $response->render404();
@@ -31,7 +31,7 @@ switch ($_GET['action']) {
 
         // ok - we have data for the requested year - return it
         try {
-            $editions = $provider->getYearEditions($year);
+            $editions = $provider->getEditions($year);
             $response->renderJson(['editions' => $editions]);
         } catch (Exception $error) {
             $response->renderJsonServerError($error->getMessage());

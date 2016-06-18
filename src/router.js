@@ -14,12 +14,12 @@ var Router = Backbone.Router.extend({
     },
 
     reloadDatabase: function () {
-        var view, loader;
+        var view, storage;
         view = new ReloadDatabaseView({
             el: '#content'
         });
         view.render();
-        loader = new YearLoader();
-        loader.load();
+        storage = new EditionsStorage();
+        storage.load();
     }
 });
