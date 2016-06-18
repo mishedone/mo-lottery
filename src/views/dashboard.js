@@ -1,5 +1,3 @@
-/*global $, _, Backbone*/
-
 var DashboardView = Backbone.View.extend({
     template: _.template($('#dashboard').html()),
 

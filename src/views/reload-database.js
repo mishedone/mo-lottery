@@ -1,5 +1,3 @@
-/*global $, _, Backbone*/
-
 var ReloadDatabaseView = Backbone.View.extend({
     template: _.template($('#reload-database').html()),
 

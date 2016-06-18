@@ -1,5 +1,3 @@
-/*global Backbone*/
-
 var AvailableYearsModel = Backbone.Model.extend({
     defaults: {
         'years': []

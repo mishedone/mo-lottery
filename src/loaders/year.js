@@ -1,5 +1,3 @@
-/*global Backbone*/
-
 function YearLoader() {
     // TODO: consider catching parsing errors so when the data structure is changed app works fine
     this.data = JSON.parse(localStorage.getItem(this.storageKey));

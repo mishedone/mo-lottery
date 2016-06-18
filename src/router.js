@@ -1,5 +1,3 @@
-/*global Backbone*/
-
 var Router = Backbone.Router.extend({
     routes: {
         'dashboard': 'dashboard',
