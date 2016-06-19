@@ -6,10 +6,15 @@ var Router = Backbone.Router.extend({
     },
 
     dashboard: function () {
-        var view;
+        var view, drawCountsStorage;
+
+        // load storage
+        drawCountsStorage = new DrawCountsStorage();
         
+        // render view
         view = new DashboardView({
-            el: '#content'
+            el: '#content',
+            drawCounts: drawCountsStorage.getCounts()
         });
         view.render();
     },
