@@ -14,12 +14,9 @@ function EditionsStorage() {
         };
         this.saveStatus();
     }
-    
-    // extend events
-    _.extend(this, Backbone.Events);
 }
 
-EditionsStorage.prototype = {
+EditionsStorage.prototype = _.extend({
     constructor: EditionsStorage,
     editionsKey: 'editions',
     statusKey: 'editions-status',
@@ -68,14 +65,6 @@ EditionsStorage.prototype = {
         this.editions[year] = editions;
     },
     
-    loadData: function (key) {
-        return JSON.parse(localStorage.getItem(key));
-    },
-    
-    saveData: function (key, data) {
-        localStorage.setItem(key, JSON.stringify(data));
-    },
-    
     saveEditions: function () {
         this.saveData(this.editionsKey, this.editions);
     },
@@ -83,4 +72,4 @@ EditionsStorage.prototype = {
     saveStatus: function () {
         this.saveData(this.statusKey, this.status);
     }
-};
+}, BasicStorage.prototype, Backbone.Events);
