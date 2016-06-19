@@ -47,7 +47,22 @@
         <script type="text/template" id="dashboard">
             <h1>Dashboard</h1>
             <hr/>
-            <%- drawCounts %>
+            <h3>Suggestions</h3>
+            <br/>
+            <hr/>
+            <h3>Draw counts</h3>
+            <br/>
+            <div class="row">
+                <% _.each(drawCounts, function (count, number) { %>
+                    <div class="col-xs-6 col-sm-2 col-lg-1">
+                        <div class="panel panel-default">
+                            <div class="panel-body text-center">
+                                <span class="badge"><%- number %></span> <%- count %>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
         </script>
 
         <script type="text/template" id="reload-database">
