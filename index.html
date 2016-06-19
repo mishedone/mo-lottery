@@ -49,15 +49,26 @@
             <hr/>
             <h3>Suggestions</h3>
             <br/>
+            <div class="row">
+                <% _.each(suggestions, function (draw) { %>
+                    <div class="col-xs-6 col-sm-2 col-lg-1">
+                        <div class="panel panel-default">
+                            <div class="panel-body text-center">
+                                <span class="badge"><%- draw.number %></span> <%- draw.count %>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
             <hr/>
             <h3>Draw counts</h3>
             <br/>
             <div class="row">
-                <% _.each(drawCounts, function (count, number) { %>
+                <% _.each(drawCounts, function (draw) { %>
                     <div class="col-xs-6 col-sm-2 col-lg-1">
                         <div class="panel panel-default">
                             <div class="panel-body text-center">
-                                <span class="badge"><%- number %></span> <%- count %>
+                                <span class="badge"><%- draw.number %></span> <%- draw.count %>
                             </div>
                         </div>
                     </div>

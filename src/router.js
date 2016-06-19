@@ -14,7 +14,7 @@ var Router = Backbone.Router.extend({
         // render view
         view = new DashboardView({
             el: '#content',
-            drawCounts: drawCountsStorage.getCounts()
+            drawCountsStorage: drawCountsStorage
         });
         view.render();
     },
