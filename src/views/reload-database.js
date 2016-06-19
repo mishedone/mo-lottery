@@ -5,5 +5,9 @@ var ReloadDatabaseView = Backbone.View.extend({
         this.$el.html(this.template());
 
         return this;
+    },
+    
+    done: function () {
+        this.$('#done').html('Done.');
     }
 });

@@ -20,6 +20,11 @@ var Router = Backbone.Router.extend({
         });
         view.render();
         storage = new EditionsStorage();
+        storage.on({
+            'loaded': function () {
+                view.done();
+            }
+        });
         storage.load();
     }
 });

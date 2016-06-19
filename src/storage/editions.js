@@ -14,6 +14,9 @@ function EditionsStorage() {
         };
         this.saveStatus();
     }
+    
+    // extend events
+    _.extend(this, Backbone.Events);
 }
 
 EditionsStorage.prototype = {
@@ -32,6 +35,9 @@ EditionsStorage.prototype = {
         // save
         this.saveEditions();
         this.saveStatus();
+        
+        // trigger done event
+        this.trigger('loaded');
     },
     
     loadCurrentYearEditions: function () {
