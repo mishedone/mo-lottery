@@ -16,7 +16,7 @@ function EditionsStorage() {
     }
 }
 
-EditionsStorage.prototype = _.extend({
+EditionsStorage.prototype = _.extend({}, BasicStorage.prototype, Backbone.Events, {
     constructor: EditionsStorage,
     editionsKey: 'editions',
     statusKey: 'editions-status',
@@ -58,6 +58,10 @@ EditionsStorage.prototype = _.extend({
         return years.getYears();
     },
     
+    getEditions: function () {
+        return this.editions;
+    },
+    
     updateEditions: function (year) {
         var editions = new EditionsModel({year: year});
         editions.fetch({async: false});
@@ -72,4 +76,4 @@ EditionsStorage.prototype = _.extend({
     saveStatus: function () {
         this.saveData(this.statusKey, this.status);
     }
-}, BasicStorage.prototype, Backbone.Events);
+});

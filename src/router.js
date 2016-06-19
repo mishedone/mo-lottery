@@ -7,6 +7,7 @@ var Router = Backbone.Router.extend({
 
     dashboard: function () {
         var view;
+        
         view = new DashboardView({
             el: '#content'
         });
@@ -14,17 +15,23 @@ var Router = Backbone.Router.extend({
     },
 
     reloadDatabase: function () {
-        var view, storage;
+        var view, editionsStorage, drawCountsStorage;
+        
+        // render view
         view = new ReloadDatabaseView({
             el: '#content'
         });
         view.render();
-        storage = new EditionsStorage();
-        storage.on({
+        
+        // load storages
+        editionsStorage = new EditionsStorage();
+        drawCountsStorage = new DrawCountsStorage(editionsStorage);
+        editionsStorage.on({
             'loaded': function () {
+                drawCountsStorage.load();
                 view.done();
             }
         });
-        storage.load();
+        editionsStorage.load();
     }
 });
