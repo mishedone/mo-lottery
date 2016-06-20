@@ -50,25 +50,25 @@
             <h3>Suggestions</h3>
             <br/>
             <div class="row">
-                <% _.each(suggestions, function (draw) { %>
+                <% _.each(suggestions, function (suggestion) { %>
                     <div class="col-xs-6 col-sm-2 col-lg-1">
                         <div class="panel panel-default">
                             <div class="panel-body text-center">
-                                <span class="badge"><%- draw.number %></span> <%- draw.count %>
+                                <span class="badge"><%- suggestion.number %></span> <%- suggestion.count %>
                             </div>
                         </div>
                     </div>
                 <% }); %>
             </div>
             <hr/>
-            <h3>Draw counts</h3>
+            <h3>Number counts</h3>
             <br/>
             <div class="row">
-                <% _.each(drawCounts, function (draw) { %>
+                <% _.each(numberCounts, function (numberCount) { %>
                     <div class="col-xs-6 col-sm-2 col-lg-1">
                         <div class="panel panel-default">
                             <div class="panel-body text-center">
-                                <span class="badge"><%- draw.number %></span> <%- draw.count %>
+                                <span class="badge"><%- numberCount.number %></span> <%- numberCount.count %>
                             </div>
                         </div>
                     </div>
@@ -88,11 +88,11 @@
         <script src="vendor/backbone/backbone-min.js"></script>
         <script src="vendor/backbone/backbone.local-storage-min.js"></script>
 
+        <script src="src/models/draws.js"></script>
         <script src="src/models/years.js"></script>
-        <script src="src/models/editions.js"></script>
         <script src="src/storage/basic.js"></script>
-        <script src="src/storage/editions.js"></script>
-        <script src="src/storage/draw-counts.js"></script>
+        <script src="src/storage/draws.js"></script>
+        <script src="src/storage/number-counts.js"></script>
         <script src="src/views/dashboard.js"></script>
         <script src="src/views/reload-database.js"></script>
         <script src="src/router.js"></script>

@@ -1,11 +1,11 @@
-function EditionsStorage() {
-    this.editions = this.loadData(this.editionsKey);
+function DrawsStorage() {
+    this.draws = this.loadData(this.drawsKey);
     this.status = this.loadData(this.statusKey);
 
     // local storage is empty so we save some default values
-    if (null == this.editions) {
-        this.editions = {};
-        this.saveEditions();
+    if (null == this.draws) {
+        this.draws = {};
+        this.saveDraws();
     }
     
     if (null == this.status) {
@@ -16,38 +16,38 @@ function EditionsStorage() {
     }
 }
 
-EditionsStorage.prototype = _.extend({}, BasicStorage.prototype, Backbone.Events, {
-    constructor: EditionsStorage,
-    editionsKey: 'editions',
-    statusKey: 'editions-status',
+DrawsStorage.prototype = _.extend({}, BasicStorage.prototype, Backbone.Events, {
+    constructor: DrawsStorage,
+    drawsKey: 'draws',
+    statusKey: 'draws-status',
 
     load: function () {
         if (this.status.isLoaded) {
-            this.loadCurrentYearEditions();
+            this.loadCurrentYearDraws();
         } else {
-            this.loadAllEditions();
+            this.loadAllDraws();
             this.status.isLoaded = true;
         }
         
         // save
-        this.saveEditions();
+        this.saveDraws();
         this.saveStatus();
         
         // trigger done event
         this.trigger('loaded');
     },
     
-    loadCurrentYearEditions: function () {
+    loadCurrentYearDraws: function () {
         var currentYear = new Date().getFullYear();
         
-        this.updateEditions(currentYear);
+        this.updateDraws(currentYear);
     },
     
-    loadAllEditions: function () {
+    loadAllDraws: function () {
         var years = this.getYears();
         
         for (i = 0; i < years.length; i++) {
-            this.updateEditions(years[i]);
+            this.updateDraws(years[i]);
         }
     },
     
@@ -58,19 +58,19 @@ EditionsStorage.prototype = _.extend({}, BasicStorage.prototype, Backbone.Events
         return years.getYears();
     },
     
-    getEditions: function () {
-        return this.editions;
+    getDraws: function () {
+        return this.draws;
     },
     
-    updateEditions: function (year) {
-        var editions = new EditionsModel({year: year});
-        editions.fetch({async: false});
+    updateDraws: function (year) {
+        var draws = new DrawsModel({year: year});
+        draws.fetch({async: false});
             
-        this.editions[year] = editions;
+        this.draws[year] = draws;
     },
     
-    saveEditions: function () {
-        this.saveData(this.editionsKey, this.editions);
+    saveDraws: function () {
+        this.saveData(this.drawsKey, this.draws);
     },
     
     saveStatus: function () {

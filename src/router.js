@@ -6,21 +6,21 @@ var Router = Backbone.Router.extend({
     },
 
     dashboard: function () {
-        var view, drawCountsStorage;
+        var view, numberCountsStorage;
 
         // load storage
-        drawCountsStorage = new DrawCountsStorage();
+        numberCountsStorage = new NumberCountsStorage();
         
         // render view
         view = new DashboardView({
             el: '#content',
-            drawCountsStorage: drawCountsStorage
+            numberCountsStorage: numberCountsStorage
         });
         view.render();
     },
 
     reloadDatabase: function () {
-        var view, editionsStorage, drawCountsStorage;
+        var view, drawsStorage, numberCountsStorage;
         
         // render view
         view = new ReloadDatabaseView({
@@ -28,15 +28,15 @@ var Router = Backbone.Router.extend({
         });
         view.render();
         
-        // load storages
-        editionsStorage = new EditionsStorage();
-        drawCountsStorage = new DrawCountsStorage(editionsStorage);
-        editionsStorage.on({
+        // load storage data
+        drawsStorage = new DrawsStorage();
+        numberCountsStorage = new NumberCountsStorage(drawsStorage);
+        drawsStorage.on({
             'loaded': function () {
-                drawCountsStorage.load();
+                numberCountsStorage.load();
                 view.done();
             }
         });
-        editionsStorage.load();
+        drawsStorage.load();
     }
 });

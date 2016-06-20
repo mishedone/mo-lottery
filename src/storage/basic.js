@@ -11,5 +11,5 @@ BasicStorage.prototype = {
     
     saveData: function (key, data) {
         localStorage.setItem(key, JSON.stringify(data));
-    },
+    }
 };

@@ -1,6 +1,6 @@
-function DrawCountsStorage(editionsStorage) {
+function NumberCountsStorage(drawsStorage) {
     this.counts = this.loadData(this.countsKey);
-    this.editionsStorage = editionsStorage;
+    this.drawsStorage = drawsStorage;
 
     // local storage is empty so we save some default values
     if (null == this.counts) {
@@ -9,9 +9,9 @@ function DrawCountsStorage(editionsStorage) {
     }
 }
 
-DrawCountsStorage.prototype = _.extend({}, BasicStorage.prototype, {
-    constructor: DrawCountsStorage,
-    countsKey: 'draw-counts',
+NumberCountsStorage.prototype = _.extend({}, BasicStorage.prototype, {
+    constructor: NumberCountsStorage,
+    countsKey: 'number-counts',
     
     load: function () {
         var self, counts;
@@ -20,9 +20,9 @@ DrawCountsStorage.prototype = _.extend({}, BasicStorage.prototype, {
         counts = {};
         
         // accumulate counts into a hash map
-        _.each(this.getEditionsStorage().getEditions(), function (editions, year) {
-            _.each(editions.editions, function (draws) {
-                _.each(draws, function (number) {
+        _.each(this.getDrawsStorage().getDraws(), function (draws, year) {
+            _.each(draws.draws, function (numbers) {
+                _.each(numbers, function (number) {
                     if (!counts.hasOwnProperty(number)) {
                         counts[number] = 0;
                     }
@@ -47,12 +47,12 @@ DrawCountsStorage.prototype = _.extend({}, BasicStorage.prototype, {
         return this.getOrderedCounts().slice(0, 6);
     },
     
-    getEditionsStorage: function () {
-        if (null == this.editionsStorage) {
-            this.editionsStorage = new EditionsStorage();
+    getDrawsStorage: function () {
+        if (null == this.drawsStorage) {
+            this.drawsStorage = new DrawsStorage();
         }
         
-        return this.editionsStorage;
+        return this.drawsStorage;
     },
     
     getCounts: function () {

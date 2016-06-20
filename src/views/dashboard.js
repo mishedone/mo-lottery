@@ -1,18 +1,18 @@
 var DashboardView = Backbone.View.extend({
-    drawCountsStorage: {},
+    numberCountsStorage: {},
     template: _.template($('#dashboard').html()),
     
     initialize: function (options) {
-        if (!options.hasOwnProperty('drawCountsStorage')) {
-            options.drawCountsStorage = new DrawCountsStorage();
+        if (!options.hasOwnProperty('numberCountsStorage')) {
+            options.numberCountsStorage = new NumberCountsStorage();
         }
-        this.drawCountsStorage = options.drawCountsStorage;
+        this.numberCountsStorage = options.numberCountsStorage;
     },
 
     render: function () {
         this.$el.html(this.template({
-            suggestions: this.drawCountsStorage.getSuggestions(),
-            drawCounts: this.drawCountsStorage.getCounts()
+            suggestions: this.numberCountsStorage.getSuggestions(),
+            numberCounts: this.numberCountsStorage.getCounts()
         }));
 
         return this;
