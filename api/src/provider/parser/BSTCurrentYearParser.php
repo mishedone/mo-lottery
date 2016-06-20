@@ -65,7 +65,7 @@ class BSTCurrentYearParser
      * @return array
      * @throws Exception
      */
-    private function parseEdition($name)
+    private function parseDraw($name)
     {
         $html = $this->curlPost(static::DRAW_PAGE_URL, array(
             'tir' => $name
