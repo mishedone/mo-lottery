@@ -2,7 +2,7 @@
 
 namespace MoLottery\Provider;
 
-use MoLottery\Manager\EditionManager;
+use MoLottery\Manager\DrawManager;
 use MoLottery\Manager\LastParseManager;
 use MoLottery\Provider\Parser\BSTArchiveYearParser;
 use MoLottery\Provider\Parser\BSTCurrentYearParser;
@@ -18,9 +18,9 @@ class BSTProvider
     const CURRENT_YEAR_LAST_PARSE_KEY = 'bst-provider-current-year';
 
     /**
-     * @var EditionManager
+     * @var DrawManager
      */
-    private $editionManager;
+    private $drawManager;
 
     /**
      * @var LastParseManager
@@ -43,12 +43,12 @@ class BSTProvider
     private $years = array();
 
     /**
-     * @param EditionManager $editionManager
+     * @param DrawManager $drawManager
      * @param LastParseManager $lastParseManager
      */
-    public function __construct(EditionManager $editionManager, LastParseManager $lastParseManager)
+    public function __construct(DrawManager $drawManager, LastParseManager $lastParseManager)
     {
-        $this->editionManager = $editionManager;
+        $this->drawManager = $drawManager;
         $this->lastParseManager = $lastParseManager;
 
         // initialize parsers
@@ -82,7 +82,7 @@ class BSTProvider
      * @param int $year
      * @return array
      */
-    public function getEditions($year)
+    public function getDraws($year)
     {
         // unsupported year
         if (!$this->hasYear($year)) {
@@ -92,18 +92,18 @@ class BSTProvider
         // current year vs archive year
         if (date('Y') == $year) {
             if (!$this->lastParseManager->hasLastParseToday(static::CURRENT_YEAR_LAST_PARSE_KEY)) {
-                $this->editionManager->updateEditions($year, $this->currentYearParser->parse());
+                $this->drawManager->updateDraws($year, $this->currentYearParser->parse());
                 $this->lastParseManager->setLastParse(static::CURRENT_YEAR_LAST_PARSE_KEY, new \DateTime());
             }
         } else {
-            $archiveIsLoaded = $this->editionManager->hasEditions($year);
+            $archiveIsLoaded = $this->drawManager->hasDraws($year);
 
             // load archive editions if missing
             if (!$archiveIsLoaded) {
-                $this->editionManager->updateEditions($year, $this->archiveYearParser->parse($year));
+                $this->drawManager->updateDraws($year, $this->archiveYearParser->parse($year));
             }
         }
 
-        return $this->editionManager->getEditions($year);
+        return $this->drawManager->getDraws($year);
     }
 }

@@ -7,9 +7,9 @@ use MoLottery\Tool\Clean;
 use MoLottery\Tool\Curl;
 
 /**
- * Bulgarian Sport Totalizator current year editions parser.
+ * Bulgarian Sport Totalizator current year draws parser.
  *
- * Those editions are stored on the BST website pages - scattered through the html. This class makes some ajax requests
+ * Those draws are stored on the BST website pages - scattered through the html. This class makes some ajax requests
  * to extract all necessary data and return it in a unified format.
  */
 class BSTCurrentYearParser
@@ -17,49 +17,49 @@ class BSTCurrentYearParser
     use Clean, Curl;
 
     /**
-     * @const EDITION_PAGE_URL Url of the page listing editions for the current year.
+     * @const DRAW_PAGE_URL Url of the page listing draws for the current year.
      */
-    const EDITION_PAGE_URL = 'http://www.toto.bg/index.php?lang=1&pid=32&sid=50';
+    const DRAW_PAGE_URL = 'http://www.toto.bg/index.php?lang=1&pid=32&sid=50';
 
     /**
      * @return array
      */
     public function parse()
     {
-        $editions = array();
-        foreach ($this->parseEditionNames() as $name) {
-            $editions[] = $this->parseEdition($name);
+        $draws = array();
+        foreach ($this->parseDrawNames() as $name) {
+            $draws[] = $this->parseDraw($name);
         }
 
-        return $editions;
+        return $draws;
     }
 
     /**
-     * Extracts all available edition names for the current year.
+     * Extracts all available draw names for the current year.
      *
      * @return array
      */
-    private function parseEditionNames()
+    private function parseDrawNames()
     {
-        $html = $this->curlPost(static::EDITION_PAGE_URL, array(
+        $html = $this->curlPost(static::DRAW_PAGE_URL, array(
             'tir' => date('YEAR') . '/1'
         ));
 
         $selectOptions = array();
         preg_match('/<select id="tir".*?>(?<options>.*)<\/select>/s', $html, $selectOptions);
 
-        $editionNames = array();
-        preg_match_all('/value="(?<names>.*?)"/s', $selectOptions['options'], $editionNames);
+        $drawNames = array();
+        preg_match_all('/value="(?<names>.*?)"/s', $selectOptions['options'], $drawNames);
 
-        // reorder matched edition names in ascending order
-        $editionNames = $editionNames['names'];
-        krsort($editionNames);
+        // reorder matched draw names in ascending order
+        $drawNames = $drawNames['names'];
+        krsort($drawNames);
 
-        return array_values($editionNames);
+        return array_values($drawNames);
     }
 
     /**
-     * Extracts the numbers in a certain edition from it's dedicated web page.
+     * Extracts the numbers in a certain draw from it's dedicated web page.
      *
      * @param string $name
      * @return array
@@ -67,7 +67,7 @@ class BSTCurrentYearParser
      */
     private function parseEdition($name)
     {
-        $html = $this->curlPost(static::EDITION_PAGE_URL, array(
+        $html = $this->curlPost(static::DRAW_PAGE_URL, array(
             'tir' => $name
         ));
 

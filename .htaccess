@@ -3,5 +3,5 @@
 
     # define available endpoints
     RewriteRule ^api/years$ api/index.php?action=years [L]
-    RewriteRule ^api/editions/(\d+)$ api/index.php?action=editions&year=$1 [L]
+    RewriteRule ^api/draws/(\d+)$ api/index.php?action=draws&year=$1 [L]
 </IfModule>

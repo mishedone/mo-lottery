@@ -4,7 +4,7 @@ require_once 'autoload.php';
 
 use MoLottery\Exception\Exception;
 use MoLottery\Http\Response;
-use MoLottery\Manager\EditionManager;
+use MoLottery\Manager\DrawManager;
 use MoLottery\Manager\LastParseManager;
 use MoLottery\Provider\BSTProvider;
 
@@ -12,9 +12,9 @@ $dataPath = __DIR__ . DIRECTORY_SEPARATOR . 'data';
 
 // build services
 $response = new Response();
-$editionManager = new EditionManager($dataPath);
+$drawManager = new DrawManager($dataPath);
 $lastParseManager = new LastParseManager($dataPath);
-$provider = new BSTProvider($editionManager, $lastParseManager);
+$provider = new BSTProvider($drawManager, $lastParseManager);
 
 // routing
 switch ($_GET['action']) {
@@ -23,7 +23,7 @@ switch ($_GET['action']) {
         $response->renderJson(['years' => $years]);
 
         break;
-    case 'editions':
+    case 'draws':
         $year = $_GET['year'];
         if (!$provider->hasYear($year)) {
             $response->render404();
@@ -31,8 +31,8 @@ switch ($_GET['action']) {
 
         // ok - we have data for the requested year - return it
         try {
-            $editions = $provider->getEditions($year);
-            $response->renderJson(['editions' => $editions]);
+            $draws = $provider->getDraws($year);
+            $response->renderJson(['draws' => $draws]);
         } catch (Exception $error) {
             $response->renderJsonServerError($error->getMessage());
         }
