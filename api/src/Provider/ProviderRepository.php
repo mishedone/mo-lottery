@@ -97,4 +97,18 @@ class ProviderRepository
             ->getGame($gameId)
             ->getYears();
     }
+    
+    /**
+     * @param string $providerId
+     * @param string $gameId
+     * @param int $year
+     * @return array
+     * @throws NotFoundException
+     */
+    public function getDraws($providerId, $gameId, $year)
+    {
+        return $this->getProvider($providerId)
+            ->getGame($gameId)
+            ->getDraws($year);
+    }
 }

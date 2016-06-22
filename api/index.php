@@ -42,14 +42,13 @@ try {
     
             break;
         case 'draws':
-            $year = $_GET['year'];
-            if (!$providerBST->hasYear($year)) {
-                $response->render404();
-            }
-    
-            // ok - we have data for the requested year - return it
-            $draws = $providerBST->getDraws($year);
-            $response->renderJson(['draws' => $draws]);
+            $response->renderJson([
+                'draws' => $providerRepository->getDraws(
+                    $_GET['provider'],
+                    $_GET['game'],
+                    $_GET['year']
+                )
+            ]);
     
             break;
         default:
