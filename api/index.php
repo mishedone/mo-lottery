@@ -2,7 +2,7 @@
 
 require_once 'autoload.php';
 
-use MoLottery\Exception\Exception;
+use MoLottery\Exception\ParseException;
 use MoLottery\Http\Response;
 use MoLottery\Manager\DrawManager;
 use MoLottery\Manager\LastParseManager;
@@ -62,7 +62,7 @@ switch ($_GET['action']) {
         try {
             $draws = $providerBST->getDraws($year);
             $response->renderJson(['draws' => $draws]);
-        } catch (Exception $error) {
+        } catch (ParseException $error) {
             $response->renderJsonServerError($error->getMessage());
         }
 

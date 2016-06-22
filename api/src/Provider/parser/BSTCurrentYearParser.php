@@ -76,7 +76,7 @@ class BSTCurrentYearParser
 
         $numbers = $numbers['numbers'];
         if (count($numbers) != 6) {
-            throw Exception::parsedWrongNumberCount(count($numbers), 6, $html);
+            throw ParseException::wrongNumberCount(count($numbers), 6, $html);
         }
 
         return $this->cleanNumbers($numbers);

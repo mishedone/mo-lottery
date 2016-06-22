@@ -3,7 +3,7 @@
 // utilities
 require_once 'src/Tool/Clean.php';
 require_once 'src/Tool/Curl.php';
-require_once 'src/Exception/Exception.php';
+require_once 'src/Exception/ParseException.php';
 require_once 'src/Http/Response.php';
 
 // managers

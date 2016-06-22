@@ -46,7 +46,7 @@ class BSTArchiveYearParser
             foreach ($sections as $section) {
                 $numbers = explode(',', $section);
                 if (count($numbers) != 6) {
-                    throw Exception::parsedWrongNumberCount(count($numbers), 6, $section);
+                    throw ParseException::wrongNumberCount(count($numbers), 6, $section);
                 }
 
                 $draws[] = $this->cleanNumbers($numbers);
