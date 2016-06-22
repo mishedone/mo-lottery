@@ -13,12 +13,7 @@ require_once 'src/Manager/LastParseManager.php';
 require_once 'src/Manager/DrawManager.php';
 require_once 'src/Manager/ManagerRepository.php';
 
-// old providers - keep them until new provider schema starts working
-require_once 'src/Provider/parser/BSTArchiveYearParser.php';
-require_once 'src/Provider/parser/BSTCurrentYearParser.php';
-require_once 'src/Provider/BSTProvider.php';
-
-// new provider structure
+// providers
 require_once 'src/Provider/AbstractGame.php';
 require_once 'src/Provider/AbstractProvider.php';
 require_once 'src/Provider/BST/Game649/Parser/ArchiveYearParser.php';
