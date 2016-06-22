@@ -64,6 +64,6 @@ abstract class AbstractProvider
      */
     public function getGames()
     {
-        return $this->games;
+        return array_values($this->games);
     }
 }
