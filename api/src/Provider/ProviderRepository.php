@@ -3,6 +3,7 @@
 namespace MoLottery\Provider;
 
 use MoLottery\Manager\ManagerRepository;
+use MoLottery\Provider\AbstractProvider;
 use MoLottery\Provider\BST\BSTProvider;
 
 /**
@@ -13,13 +14,21 @@ class ProviderRepository
     /**
      * @var array
      */
-    protected $providers = [];
+    private $providers = [];
+    
+    /**
+     * @param AbstractProvider $provider
+     */
+    private function addProvider(AbstractProvider $provider)
+    {
+        $this->providers[$provider->getId()] = $provider;
+    }
 
     /**
      * @param string $providerId
      * @return bool
      */
-    public function hasProvider($providerId)
+    private function hasProvider($providerId)
     {
         return array_key_exists($providerId, $this->providers);
     }
@@ -31,6 +40,30 @@ class ProviderRepository
     {
         return $this->providers;
     }
+    
+    /**
+     * Builds an array with simple data about the providers and their games.
+     *
+     * @return array
+     */
+    public function getProvidersData()
+    {
+        $result = [];
+        foreach ($this->getProviders() as $provider) {
+            $result[] = [
+                'id' => $provider->getId(),
+                'name' => $provider->getName(),
+                'games' => array_map(function ($game) {
+                    return [
+                        'id' => $game->getId(),
+                        'name' => $game->getName()
+                    ];
+                }, $provider->getGames())
+            ];
+        }
+        
+        return $result;
+    }
 
     /**
      * Instantiates available providers.
@@ -39,13 +72,6 @@ class ProviderRepository
      */
     public function __construct(ManagerRepository $managerRepository)
     {
-        $providers = [
-            new BSTProvider()
-        ];
-
-        // index providers by their ids internally
-        foreach ($providers as $provider) {
-            $this->providers[$provider->getId()] = $provider;
-        }
+        $this->addProvider(new BSTProvider());
     }
 }

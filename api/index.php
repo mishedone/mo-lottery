@@ -27,25 +27,9 @@ $providerRepository = new ProviderRepository($managerRepository);
 try {
     switch ($_GET['action']) {
         case 'providers':
-            $providers = [];
-    
-            // build response data for the providers with their games
-            foreach ($providerRepository->getProviders() as $provider) {
-                $games = [];
-                foreach ($provider->getGames() as $game) {
-                    $games[] = [
-                        'id' => $game->getId(),
-                        'name' => $game->getName()
-                    ];
-                }
-    
-                $providers[] = [
-                    'id' => $provider->getId(),
-                    'name' => $provider->getName(),
-                    'games' => $games
-                ];
-            }
-            $response->renderJson(['providers' => $providers]);
+            $response->renderJson([
+                'providers' => $providerRepository->getProvidersData()
+            ]);
     
             break;
         case 'years':
