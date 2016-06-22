@@ -8,9 +8,9 @@ namespace MoLottery\Manager;
 class DrawManager extends AbstractManager
 {
     /**
-     * @const FILE The file in which data is stored and read from.
+     * @var string
      */
-    const FILE = 'draws.json';
+    protected $file = '';
 
     /**
      * @var array
@@ -19,10 +19,20 @@ class DrawManager extends AbstractManager
 
     /**
      * @param string $dataPath
+     * @param string $provider Default: null.
+     * @param string $game     Default: null.
      */
-    public function __construct($dataPath)
+    public function __construct($dataPath, $provider = null, $game = null)
     {
         parent::__construct($dataPath);
+
+        // tailor specific file for the provider and game pair
+        $this->file = sprintf(
+            'draws%s%s.json',
+            ($provider) ? '-' . $provider : '',
+            ($game) ? '-' . $game : ''
+        );
+
         $this->draws = $this->readData();
     }
 

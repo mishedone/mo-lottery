@@ -8,9 +8,9 @@ namespace MoLottery\Manager;
 abstract class AbstractManager
 {
     /**
-     * @const FILE The file in which data is stored and read from.
+     * @var string
      */
-    const FILE = '_.json';
+    protected $file = '_.json';
 
     /**
      * @var string
@@ -30,7 +30,7 @@ abstract class AbstractManager
      */
     protected function getFilePath()
     {
-        return $this->dataPath . DIRECTORY_SEPARATOR . static::FILE;
+        return $this->dataPath . DIRECTORY_SEPARATOR . $this->file;
     }
 
     /**

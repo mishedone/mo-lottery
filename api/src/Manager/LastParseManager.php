@@ -8,9 +8,9 @@ namespace MoLottery\Manager;
 class LastParseManager extends AbstractManager
 {
     /**
-     * @const FILE The file in which data is stored and read from.
+     * @var string
      */
-    const FILE = 'last-parses.json';
+    protected $file = 'last-parses.json';
 
     /**
      * @const FORMAT In what format to store dates.
