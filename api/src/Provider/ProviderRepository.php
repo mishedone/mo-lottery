@@ -2,6 +2,7 @@
 
 namespace MoLottery\Provider;
 
+use MoLottery\Exception\NotFoundException;
 use MoLottery\Manager\ManagerRepository;
 use MoLottery\Provider\AbstractProvider;
 use MoLottery\Provider\BST\BSTProvider;
@@ -32,13 +33,32 @@ class ProviderRepository
     {
         return array_key_exists($providerId, $this->providers);
     }
+    
+    /**
+     * @param string $providerId
+     * @return AbstractProvider
+     * @throws NotFoundException
+     */
+    private function getProvider($providerId)
+    {
+        if (!$this->hasProvider($providerId)) {
+            throw NotFoundException::notFound(sprintf(
+                'no provider with id "%s"',
+                $providerId
+            ));
+        }
+        
+        return $this->providers[$providerId];
+    }
 
     /**
-     * @return array
+     * Instantiates available providers.
+     *
+     * @param ManagerRepository $managerRepository
      */
-    public function getProviders()
+    public function __construct(ManagerRepository $managerRepository)
     {
-        return $this->providers;
+        $this->addProvider(new BSTProvider());
     }
     
     /**
@@ -49,7 +69,7 @@ class ProviderRepository
     public function getProvidersData()
     {
         $result = [];
-        foreach ($this->getProviders() as $provider) {
+        foreach ($this->providers as $provider) {
             $result[] = [
                 'id' => $provider->getId(),
                 'name' => $provider->getName(),
@@ -64,14 +84,17 @@ class ProviderRepository
         
         return $result;
     }
-
+    
     /**
-     * Instantiates available providers.
-     *
-     * @param ManagerRepository $managerRepository
+     * @param string $providerId
+     * @param string $gameId
+     * @return array
+     * @throws NotFoundException
      */
-    public function __construct(ManagerRepository $managerRepository)
+    public function getYears($providerId, $gameId)
     {
-        $this->addProvider(new BSTProvider());
+        return $this->getProvider($providerId)
+            ->getGame($gameId)
+            ->getYears();
     }
 }

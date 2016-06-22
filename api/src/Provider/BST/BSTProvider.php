@@ -31,13 +31,6 @@ class BSTProvider extends AbstractProvider
      */
     public function __construct()
     {
-        $games = [
-            new Game649()
-        ];
-
-        // index games by their ids internally
-        foreach ($games as $game) {
-            $this->games[$game->getId()] = $game;
-        }
+        $this->addGame(new Game649());
     }
 }

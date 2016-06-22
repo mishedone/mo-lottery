@@ -8,11 +8,6 @@ namespace MoLottery\Provider;
 abstract class AbstractGame
 {
     /**
-     * @var array
-     */
-    protected $years = [];
-
-    /**
      * @return string
      */
     abstract public function getId();
@@ -21,12 +16,17 @@ abstract class AbstractGame
      * @return string
      */
     abstract public function getName();
+    
+    /**
+     * @var array
+     */
+    protected $years = [];
 
     /**
      * @param int $year
      * @return bool
      */
-    public function hasYear($year)
+    protected function hasYear($year)
     {
         return in_array((int) $year, $this->years);
     }

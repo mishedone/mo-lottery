@@ -33,9 +33,12 @@ try {
     
             break;
         case 'years':
-    
-            $years = $provider->getYears();
-            $response->renderJson(['years' => $years]);
+            $response->renderJson([
+                'years' => $providerRepository->getYears(
+                    $_GET['provider'],
+                    $_GET['game']
+                )
+            ]);
     
             break;
         case 'draws':

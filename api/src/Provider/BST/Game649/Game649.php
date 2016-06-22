@@ -30,7 +30,6 @@ class Game649 extends AbstractGame
      */
     public function __construct()
     {
-        // build years
         for ($year = 1958; $year <= date('Y'); $year++) {
             $this->years[] = $year;
         }
