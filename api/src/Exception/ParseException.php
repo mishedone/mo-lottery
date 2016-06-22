@@ -16,7 +16,7 @@ class ParseException extends \Exception
     static public function wrongNumberCount($count, $expectedCount, $parsedText)
     {
         return new ParseException(sprintf(
-            'Parsed wrong number count (%d/%d) in "%s".',
+            'Parse error: wrong number count (%d/%d) in "%s".',
             $count,
             $expectedCount,
             $parsedText
