@@ -6,7 +6,9 @@ use MoLottery\Exception\Exception;
 use MoLottery\Http\Response;
 use MoLottery\Manager\DrawManager;
 use MoLottery\Manager\LastParseManager;
+use MoLottery\Manager\ManagerRepository;
 use MoLottery\Provider\BSTProvider;
+use MoLottery\Provider\ProviderRepository;
 
 $dataPath = __DIR__ . DIRECTORY_SEPARATOR . 'data';
 
@@ -14,24 +16,51 @@ $dataPath = __DIR__ . DIRECTORY_SEPARATOR . 'data';
 $response = new Response();
 $drawManager = new DrawManager($dataPath);
 $lastParseManager = new LastParseManager($dataPath);
-$provider = new BSTProvider($drawManager, $lastParseManager);
+$providerBST = new BSTProvider($drawManager, $lastParseManager);
+
+// new provider stuff in here
+$managerRepository = new ManagerRepository($dataPath);
+$providerRepository = new ProviderRepository($managerRepository);
 
 // routing
 switch ($_GET['action']) {
+    case 'providers':
+        $providers = [];
+
+        // build response data for the providers with their games
+        foreach ($providerRepository->getProviders() as $provider) {
+            $games = [];
+            foreach ($provider->getGames() as $game) {
+                $games[] = [
+                    'id' => $game->getId(),
+                    'name' => $game->getName()
+                ];
+            }
+
+            $providers[] = [
+                'id' => $provider->getId(),
+                'name' => $provider->getName(),
+                'games' => $games
+            ];
+        }
+        $response->renderJson(['providers' => $providers]);
+
+        break;
     case 'years':
+
         $years = $provider->getYears();
         $response->renderJson(['years' => $years]);
 
         break;
     case 'draws':
         $year = $_GET['year'];
-        if (!$provider->hasYear($year)) {
+        if (!$providerBST->hasYear($year)) {
             $response->render404();
         }
 
         // ok - we have data for the requested year - return it
         try {
-            $draws = $provider->getDraws($year);
+            $draws = $providerBST->getDraws($year);
             $response->renderJson(['draws' => $draws]);
         } catch (Exception $error) {
             $response->renderJsonServerError($error->getMessage());
