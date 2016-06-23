@@ -66,7 +66,7 @@ class ProviderRepository
      *
      * @return array
      */
-    public function getProvidersData()
+    public function getProviders()
     {
         $result = [];
         foreach ($this->providers as $provider) {

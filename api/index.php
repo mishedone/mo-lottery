@@ -20,7 +20,7 @@ try {
     switch ($_GET['action']) {
         case 'providers':
             $response->renderJson([
-                'providers' => $providerRepository->getProvidersData()
+                'providers' => $providerRepository->getProviders()
             ]);
     
             break;
