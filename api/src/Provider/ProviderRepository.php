@@ -4,7 +4,7 @@ namespace MoLottery\Provider;
 
 use MoLottery\Exception\NotFoundException;
 use MoLottery\Manager\ManagerRepository;
-use MoLottery\Provider\AbstractProvider;
+use MoLottery\Provider\ACME\ACMEProvider;
 use MoLottery\Provider\BST\BSTProvider;
 
 /**
@@ -65,6 +65,7 @@ class ProviderRepository
     {
         $this->managerRepository = $managerRepository;
 
+        $this->addProvider(new ACMEProvider());
         $this->addProvider(new BSTProvider());
     }
     
