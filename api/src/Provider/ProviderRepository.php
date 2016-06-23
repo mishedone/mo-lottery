@@ -13,6 +13,11 @@ use MoLottery\Provider\BST\BSTProvider;
 class ProviderRepository
 {
     /**
+     * @var ManagerRepository
+     */
+    private $managerRepository;
+
+    /**
      * @var array
      */
     private $providers = [];
@@ -58,6 +63,8 @@ class ProviderRepository
      */
     public function __construct(ManagerRepository $managerRepository)
     {
+        $this->managerRepository = $managerRepository;
+
         $this->addProvider(new BSTProvider());
     }
     
@@ -107,8 +114,26 @@ class ProviderRepository
      */
     public function getDraws($providerId, $gameId, $year)
     {
-        return $this->getProvider($providerId)
-            ->getGame($gameId)
-            ->getDraws($year);
+        $game = $this->getProvider($providerId)->getGame($gameId);
+        $game->validateYear($year);
+
+        // prepare managers
+        $drawManager = $this->managerRepository->getDrawManager($providerId, $gameId);
+        $lastParseManager = $this->managerRepository->getLastParseManager();
+        $lastParseKey = sprintf('draws-%s-%s', $providerId, $gameId);
+
+        // check current versus archive year
+        if (date('Y') == $year) {
+            if (!$lastParseManager->hasLastParseToday($lastParseKey)) {
+                $drawManager->updateDraws($year, $game->getDraws($year));
+                $lastParseManager->setLastParse($lastParseKey, new \DateTime());
+            }
+        } else {
+            if (!$drawManager->hasDraws($year)) {
+                $drawManager->updateDraws($year, $game->getDraws($year));
+            }
+        }
+
+        return $drawManager->getDraws($year);
     }
 }

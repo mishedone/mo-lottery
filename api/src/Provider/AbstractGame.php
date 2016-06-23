@@ -43,14 +43,14 @@ abstract class AbstractGame
      * @param int $year
      * @throws NotFoundException
      */
-    protected function validateYear($year)
+    public function validateYear($year)
     {
         if (!$this->hasYear($year)) {
-            throw NotFoundException::notFound(
+            throw NotFoundException::notFound(sprintf(
                 'game "%s" has no year like "%d"',
                 $this->getId(),
                 $year
-            );
+            ));
         }
     }
 

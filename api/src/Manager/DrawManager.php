@@ -19,20 +19,13 @@ class DrawManager extends AbstractManager
 
     /**
      * @param string $dataPath
-     * @param string $provider Default: null.
-     * @param string $game     Default: null.
+     * @param string $providerId
+     * @param string $gameId
      */
-    public function __construct($dataPath, $provider = null, $game = null)
+    public function __construct($dataPath, $providerId, $gameId)
     {
         parent::__construct($dataPath);
-
-        // tailor specific file for the provider and game pair
-        $this->file = sprintf(
-            'draws%s%s.json',
-            ($provider) ? '-' . $provider : '',
-            ($game) ? '-' . $game : ''
-        );
-
+        $this->file = sprintf('draws-%s-%s.json', $providerId, $gameId);
         $this->draws = $this->readData();
     }
 
