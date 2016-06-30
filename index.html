@@ -16,28 +16,7 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#/dashboard">Lottery</a>
-                </div>
-
-                <div id="navbar" class="collapse navbar-collapse pull-right">
-                    <ul class="nav navbar-nav">
-                        <li>
-                            <a href="#/dashboard">
-                                <span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/reload-database">
-                                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-                            </a>
-                        </li>
-                    </ul>
+                    <a class="navbar-brand" href="#">Lottery</a>
                 </div>
             </div>
         </nav>
@@ -46,44 +25,6 @@
 
         <script type="text/template" id="dashboard">
             <h1>Dashboard</h1>
-            <hr/>
-            <h3>Suggestions</h3>
-            <br/>
-            <div class="row">
-                <% _.each(suggestions, function (suggestion) { %>
-                    <div class="col-xs-6 col-sm-2 col-lg-1">
-                        <div class="panel panel-default">
-                            <div class="panel-body text-center">
-                                <span class="badge"><%- suggestion.number %></span>
-                                <br/>
-                                <%- suggestion.count %>
-                            </div>
-                        </div>
-                    </div>
-                <% }); %>
-            </div>
-            <hr/>
-            <h3>Number counts</h3>
-            <br/>
-            <div class="row">
-                <% _.each(numberCounts, function (numberCount) { %>
-                    <div class="col-xs-6 col-sm-2 col-lg-1">
-                        <div class="panel panel-default">
-                            <div class="panel-body text-center">
-                                <span class="badge"><%- numberCount.number %></span>
-                                <br/>
-                                <%- numberCount.count %>
-                            </div>
-                        </div>
-                    </div>
-                <% }); %>
-            </div>
-        </script>
-
-        <script type="text/template" id="reload-database">
-            <h1>Reload database</h1>
-            <hr/>
-            <h3 id="done">Reloading...</h3>
         </script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -92,13 +33,8 @@
         <script src="vendor/backbone/backbone-min.js"></script>
         <script src="vendor/backbone/backbone.local-storage-min.js"></script>
 
-        <script src="src/models/draws.js"></script>
-        <script src="src/models/years.js"></script>
         <script src="src/storage/basic.js"></script>
-        <script src="src/storage/draws.js"></script>
-        <script src="src/storage/number-counts.js"></script>
         <script src="src/views/dashboard.js"></script>
-        <script src="src/views/reload-database.js"></script>
         <script src="src/router.js"></script>
         <script src="src/app.js"></script>
     </body>
