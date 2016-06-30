@@ -5,8 +5,4 @@
     RewriteRule ^api/providers$ api/index.php?action=providers [L]
     RewriteRule ^api/years/([a-z0-9]+)/([a-z0-9]+)$ api/index.php?action=years&provider=$1&game=$2 [L]
     RewriteRule ^api/draws/([a-z0-9]+)/([a-z0-9]+)/(\d+)$ api/index.php?action=draws&provider=$1&game=$2&year=$3 [L]
-    
-    # define legacy endpoints
-    RewriteRule ^api/years$ api/index.php?action=years&provider=bst&game=649 [L]
-    RewriteRule ^api/draws/(\d+)$ api/index.php?action=draws&provider=bst&game=649&year=$1 [L]
 </IfModule>
