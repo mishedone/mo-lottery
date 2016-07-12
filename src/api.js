@@ -3,29 +3,27 @@ function Api() {}
 Api.prototype = {
     constructor: Api,
 
-    getProviders: function () {
-        return this.get('/api/providers').providers;
+    getProviders: function (success) {
+        var url = '/api/providers';
+        this.get(url, success, 'providers');
     },
 
-    getYears: function (providerId, gameId) {
-        return this.get('/api/years/' + providerId + '/' + gameId).years;
+    getYears: function (success, params) {
+        var url = '/api/years/' + params.providerId + '/' + params.gameId;
+        this.get(url, success, 'years');
     },
 
-    getDraws: function (providerId, gameId, year) {
-        return this.get('/api/draws/' + providerId + '/' + gameId + '/' + year).draws;
+    getDraws: function (success, params) {
+        var url = '/api/draws/' + params.providerId + '/' + params.gameId + '/' + params.year;
+        this.get(url, success, 'draws');
     },
 
-    get: function (url) {
-        var data;
-
+    get: function (url, success, property) {
         jQuery.ajax({
             url: url,
-            async: false,
             success: function (result) {
-                data = result;
+                success(result[property]);
             }
         });
-
-        return data;
     }
 };
