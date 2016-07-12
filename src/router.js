@@ -8,7 +8,7 @@ var Router = Backbone.Router.extend({
 
         // render view
         view = new DashboardView({
-            el: '#content'
+            el: '#content-slot'
         });
         view.render();
     }

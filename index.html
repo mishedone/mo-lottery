@@ -18,10 +18,27 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">Lottery</a>
                 </div>
+
+                <div class="collapse navbar-collapse" id="navigation-slot"></div>
             </div>
         </nav>
 
-        <div id="content" class="container"></div>
+        <div id="content-slot" class="container"></div>
+
+        <script type="text/template" id="navigation">
+            <ul class="nav navbar-nav navbar-right">
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <select class="form-control">
+                            <option>-- Choose a game --</option>
+                            <option>Acme - Rocket</option>
+                            <option>Bulgarian Sport Totalizator - 6/42</option>
+                            <option>Bulgarian Sport Totalizator - 6/49</option>
+                        </select>
+                    </div>
+                </form>
+            </ul>
+        </script>
 
         <script type="text/template" id="dashboard">
             <h1>Dashboard</h1>
@@ -34,6 +51,7 @@
         <script src="vendor/backbone/backbone.local-storage-min.js"></script>
 
         <script src="src/storage/basic.js"></script>
+        <script src="src/views/navigation/navigation.js"></script>
         <script src="src/views/dashboard.js"></script>
         <script src="src/api.js"></script>
         <script src="src/router.js"></script>
