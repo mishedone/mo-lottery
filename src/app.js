@@ -1,35 +1,43 @@
-var api = new Api();
-var router = new Router();
-Backbone.history.start();
-
-// render navigation
-var navigation = new NavigationView({
-    el: '#navigation-slot',
-    providers: [
-        {
-            games: [
+function App() {
+    this.api = new Api();
+    this.router = new Router();
+    
+    this.render = function () {
+        var navigation = new NavigationView({
+            el: '#navigation-slot',
+            providers: [
                 {
-                    id: 'rocket',
-                    name: 'Rocket'
-                }
-            ],
-            id: 'acme',
-            name: 'ACME'
-        },
-        {
-            games: [
-                {
-                    id: '642',
-                    name: '6/42'
+                    games: [
+                        {
+                            id: 'rocket',
+                            name: 'Rocket'
+                        }
+                    ],
+                    id: 'acme',
+                    name: 'ACME'
                 },
                 {
-                    id: '649',
-                    name: '6/49'
+                    games: [
+                        {
+                            id: '642',
+                            name: '6/42'
+                        },
+                        {
+                            id: '649',
+                            name: '6/49'
+                        }
+                    ],
+                    id: 'bst',
+                    name: 'Bulgarian TOTO'
                 }
-            ],
-            id: 'bst',
-            name: 'Bulgarian TOTO'
-        }
-    ]
-});
-navigation.render();
+            ]
+        });
+        navigation.render();
+        
+        // start router
+        Backbone.history.start();
+    };
+}
+
+var app = new App();
+app.render();
