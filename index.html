@@ -16,6 +16,13 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation-slot" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    
                     <a class="navbar-brand" href="#">Lottery</a>
                 </div>
 
@@ -27,16 +34,16 @@
 
         <script type="text/template" id="navigation">
             <ul class="nav navbar-nav navbar-right">
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <select class="form-control">
-                            <option>-- Choose a game --</option>
-                            <option>Acme - Rocket</option>
-                            <option>Bulgarian Sport Totalizator - 6/42</option>
-                            <option>Bulgarian Sport Totalizator - 6/49</option>
-                        </select>
-                    </div>
-                </form>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Choose a game <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <% _.each(providers, function(provider){ %>
+                            <% _.each(provider.games, function(game){ %>
+                                <li><a href="#"><%= provider.name %> - <%= game.name %></a></li>
+                            <% }); %>
+                        <% }); %>
+                    </ul>
+                </li>
             </ul>
         </script>
 
