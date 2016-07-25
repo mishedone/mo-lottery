@@ -23,4 +23,4 @@ require_once 'src/Provider/BST/Game649/Parser/ArchiveYearParser.php';
 require_once 'src/Provider/BST/Game649/Parser/CurrentYearParser.php';
 require_once 'src/Provider/BST/Game649/Game649.php';
 require_once 'src/Provider/BST/BSTProvider.php';
-require_once 'src/Provider/ProviderRepository.php';
+require_once 'src/Provider/GameRepository.php';

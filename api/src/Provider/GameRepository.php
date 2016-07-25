@@ -8,10 +8,15 @@ use MoLottery\Provider\ACME\ACMEProvider;
 use MoLottery\Provider\BST\BSTProvider;
 
 /**
- * Starting point for available provider discovery. Use it to fetch and inspect them.
+ * Starting point for available provider and game discovery. Use it to fetch and inspect.
  */
-class ProviderRepository
+class GameRepository
 {
+    /**
+     * @const GAME_HASH_SEPARATOR Separator for building game hashes (provider id - game id pair).
+     */
+    const GAME_HASH_SEPARATOR = '-';
+
     /**
      * @var ManagerRepository
      */
@@ -57,6 +62,25 @@ class ProviderRepository
     }
 
     /**
+     * @param string $providerId
+     * @param string $gameId
+     * @return string
+     */
+    private function getGameHash($providerId, $gameId)
+    {
+        return sprintf('%s%s%s', $providerId, self::GAME_HASH_SEPARATOR, $gameId);
+    }
+
+    /**
+     * @param string $gameHash
+     * @return array
+     */
+    private function parseGameHash($gameHash)
+    {
+        return explode(self::GAME_HASH_SEPARATOR, $gameHash);
+    }
+
+    /**
      * Instantiates available providers.
      *
      * @param ManagerRepository $managerRepository
@@ -70,51 +94,50 @@ class ProviderRepository
     }
     
     /**
-     * Builds an array with simple data about the providers and their games.
+     * Builds an array with simple data about the available games.
      *
      * @return array
      */
-    public function getProviders()
+    public function getGames()
     {
         $result = [];
         foreach ($this->providers as $provider) {
-            $result[] = [
-                'id' => $provider->getId(),
-                'name' => $provider->getName(),
-                'games' => array_map(function ($game) {
-                    return [
-                        'id' => $game->getId(),
-                        'name' => $game->getName()
-                    ];
-                }, $provider->getGames())
-            ];
+            foreach ($provider->getGames() as $game) {
+                $result[] = [
+                    // do not get confused - id here is game hash actually, api consumers should not be aware of internals
+                    'id' => $this->getGameHash($provider->getId(), $game->getId()),
+                    'name' => sprintf('%s - %s', $provider->getName(), $game->getName())
+                ];
+            }
         }
         
         return $result;
     }
     
     /**
-     * @param string $providerId
-     * @param string $gameId
+     * @param string $gameHash
      * @return array
      * @throws NotFoundException
      */
-    public function getYears($providerId, $gameId)
+    public function getYears($gameHash)
     {
+        list($providerId, $gameId) = $this->parseGameHash($gameHash);
+
         return $this->getProvider($providerId)
             ->getGame($gameId)
             ->getYears();
     }
     
     /**
-     * @param string $providerId
-     * @param string $gameId
+     * @param string $gameHash
      * @param int $year
      * @return array
      * @throws NotFoundException
      */
-    public function getDraws($providerId, $gameId, $year)
+    public function getDraws($gameHash, $year)
     {
+        list($providerId, $gameId) = $this->parseGameHash($gameHash);
+
         $game = $this->getProvider($providerId)->getGame($gameId);
         $game->validateYear($year);
 

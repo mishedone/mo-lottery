@@ -6,28 +6,27 @@ use MoLottery\Exception\NotFoundException;
 use MoLottery\Exception\ParseException;
 use MoLottery\Http\Response;
 use MoLottery\Manager\ManagerRepository;
-use MoLottery\Provider\ProviderRepository;
+use MoLottery\Provider\GameRepository;
 
 $dataPath = __DIR__ . DIRECTORY_SEPARATOR . 'data';
 
 // build services
 $response = new Response();
 $managerRepository = new ManagerRepository($dataPath);
-$providerRepository = new ProviderRepository($managerRepository);
+$providerRepository = new GameRepository($managerRepository);
 
 // routing
 try {
     switch ($_GET['action']) {
-        case 'providers':
+        case 'games':
             $response->renderJson([
-                'providers' => $providerRepository->getProviders()
+                'games' => $providerRepository->getGames()
             ]);
     
             break;
         case 'years':
             $response->renderJson([
                 'years' => $providerRepository->getYears(
-                    $_GET['provider'],
                     $_GET['game']
                 )
             ]);
@@ -36,7 +35,6 @@ try {
         case 'draws':
             $response->renderJson([
                 'draws' => $providerRepository->getDraws(
-                    $_GET['provider'],
                     $_GET['game'],
                     $_GET['year']
                 )

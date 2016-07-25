@@ -2,7 +2,7 @@
     RewriteEngine On
 
     # define available endpoints
-    RewriteRule ^api/providers$ api/index.php?action=providers [L]
-    RewriteRule ^api/years/([a-z0-9]+)/([a-z0-9]+)$ api/index.php?action=years&provider=$1&game=$2 [L]
-    RewriteRule ^api/draws/([a-z0-9]+)/([a-z0-9]+)/(\d+)$ api/index.php?action=draws&provider=$1&game=$2&year=$3 [L]
+    RewriteRule ^api/games$ api/index.php?action=games [L]
+    RewriteRule ^api/years/([a-z0-9\-]+)$ api/index.php?action=years&game=$1 [L]
+    RewriteRule ^api/draws/([a-z0-9\-]+)/(\d+)$ api/index.php?action=draws&game=$1&year=$2 [L]
 </IfModule>
