@@ -1,60 +1,57 @@
 function App() {
     this.router = {};
     this.games = {};
-    this.lastGame = {};
     this.lastGameStorage = new LastGameStorage();
 }
 
 App.prototype = _.extend({}, Backbone.Events, {
     constructor: App,
 
-    start: function () {
+    init: function () {
         var app = this;
 
         this.games = new GameCollection();
         this.games.fetch({
             success: function () {
-                app.loadLastGame();
-                app.render();
+                app.initLastGame();
+                app.renderNavigation();
+                app.initRouting();
             }
         });
     },
 
-    loadLastGame: function () {
+    initLastGame: function () {
         if (!this.lastGameStorage.has()) {
             this.lastGameStorage.set(this.games.first());
         }
-
-        this.lastGame = this.lastGameStorage.get();
-    },
-
-    render: function () {
-        this.renderNavigation();
-
-        // build and start routing
-        this.router = new Router({
-            games: this.games
-        });
-        Backbone.history.start();
     },
 
     renderNavigation: function () {
         var navigation = new NavigationView({
             el: '#navigation-slot',
             games: this.games,
-            currentGame: this.lastGame
+            initGame: this.lastGameStorage.get()
         });
-        this.listenTo(navigation, 'game:change', this.changeGame);
         navigation.render();
     },
 
-    changeGame: function (game) {
-        this.lastGameStorage.set(game);
+    initRouting: function () {
+        this.router = new Router({
+            games: this.games,
+            initGame: this.lastGameStorage.get()
+        });
+        this.listenTo(Backbone.history, 'route', this.changeGame);
+        Backbone.history.start();
+    },
 
-        // refresh current page
-        Backbone.history.loadUrl(Backbone.history.fragment);
+    changeGame: function (router, route, params) {
+        console.log(route);
+        console.log(params);
+        /*this.lastGameStorage.set(this.games.findWhere({
+            id: params[0]
+        }));*/
     }
 });
 
 var app = new App();
-app.start();
+app.init();

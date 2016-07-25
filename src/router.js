@@ -1,5 +1,6 @@
 var Router = Backbone.Router.extend({
     games: {},
+    initGame: {},
 
     routes: {
         '': 'index',
@@ -8,10 +9,11 @@ var Router = Backbone.Router.extend({
 
     initialize: function (options) {
         this.games = options.games;
+        this.initGame = options.initGame;
     },
 
     index: function () {
-        // TODO: redirect to last game browse page
+        this.navigate('browse/' + this.initGame.get('id'));
     },
 
     browse: function (id) {

@@ -1,7 +1,7 @@
 var NavigationView = Backbone.View.extend({
     template: _.template($('#navigation').html()),
     games: [],
-    currentGame: {},
+    initGame: {},
 
     events: {
         'click .game': 'changeGame'
@@ -9,32 +9,19 @@ var NavigationView = Backbone.View.extend({
 
     initialize: function (options) {
         this.games = options.games;
-        this.currentGame = options.currentGame;
+        this.initGame = options.initGame;
     },
     
     render: function () {
         this.$el.html(this.template({
             games: this.games,
-            currentGame: this.currentGame
+            initGame: this.initGame
         }));
 
         return this;
     },
 
     changeGame: function (event) {
-        var game, gameId;
-        event.preventDefault();
-
-        // identify selected game
-        gameId = this.$(event.target).data('game-id');
-        game = this.games.findWhere({
-            id: gameId
-        });
-
-        // update view
-        this.$('.current-game').html(game.get('name'));
-
-        // trigger change event
-        this.trigger('game:change', game);
+        this.$('.current-game').html(this.$(event.target).html());
     }
 });
