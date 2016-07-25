@@ -19,9 +19,7 @@ $providerRepository = new GameRepository($managerRepository);
 try {
     switch ($_GET['action']) {
         case 'games':
-            $response->renderJson([
-                'games' => $providerRepository->getGames()
-            ]);
+            $response->renderJson($providerRepository->getGames());
     
             break;
         case 'years':
