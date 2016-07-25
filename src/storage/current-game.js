@@ -7,7 +7,7 @@ function CurrentGameStorage() {
     }
 }
 
-CurrentGameStorage.prototype = _.extend({}, BasicStorage.prototype, {
+CurrentGameStorage.prototype = _.extend({}, BaseStorage.prototype, {
     constructor: CurrentGameStorage,
     key: 'current-game',
 

@@ -1,7 +1,7 @@
-function BasicStorage() {}
+function BaseStorage() {}
 
-BasicStorage.prototype = {
-    constructor: BasicStorage,
+BaseStorage.prototype = {
+    constructor: BaseStorage,
 
     loadData: function (key) {
         return JSON.parse(localStorage.getItem(key));
