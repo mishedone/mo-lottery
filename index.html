@@ -36,13 +36,11 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <%= providerGame.get('provider').name %> - <%= providerGame.get('game').name %> <span class="caret"></span>
+                        <%= currentGame.get('name') %> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <% _.each(providers, function(provider){ %>
-                            <% _.each(provider.games, function(game){ %>
-                                <li><a href="#"><%= provider.name %> - <%= game.name %></a></li>
-                            <% }); %>
+                        <% games.forEach(function (game) { %>
+                            <li><a href="#"><%= game.get('name') %></a></li>
                         <% }); %>
                     </ul>
                 </li>
@@ -59,7 +57,8 @@
         <script src="vendor/backbone/backbone-min.js"></script>
         <script src="vendor/backbone/backbone.local-storage-min.js"></script>
 
-        <script src="src/models/provider-game.js"></script>
+        <script src="src/models/game.js"></script>
+        <script src="src/collections/game.js"></script>
         <script src="src/storage/basic.js"></script>
         <script src="src/views/navigation/navigation.js"></script>
         <script src="src/views/dashboard.js"></script>

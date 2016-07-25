@@ -1,6 +1,6 @@
-var ProviderGameModel = Backbone.Model.extend({
+var GameModel = Backbone.Model.extend({
     defaults: {
-        provider: {},
-        game: {}
+        id: null,
+        name: ''
     }
 });

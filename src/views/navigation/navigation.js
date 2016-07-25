@@ -1,17 +1,17 @@
 var NavigationView = Backbone.View.extend({
     template: _.template($('#navigation').html()),
-    providers: [],
-    providerGame: {},
+    games: [],
+    currentGame: {},
 
     initialize: function (options) {
-        this.providers = options.providers;
-        this.providerGame = options.providerGame;
+        this.games = options.games;
+        this.currentGame = options.currentGame;
     },
     
     render: function () {
         this.$el.html(this.template({
-            providers: this.providers,
-            providerGame: this.providerGame
+            games: this.games,
+            currentGame: this.currentGame
         }));
 
         return this;

@@ -1,33 +1,43 @@
 function App() {
-    this.api = new Api();
+    this.games = {};
+    this.currentGame = {};
     this.router = new Router();
-    
-    this.renderNavigation = function (providers) {
-        var providerGame, navigation;
 
-        providerGame = new ProviderGameModel({
-            provider: providers[0],
-            game: providers[0].games[0]
-        });
+    this.start = function () {
+        var app = this;
 
-        navigation = new NavigationView({
-            el: '#navigation-slot',
-            providers: providers,
-            providerGame: providerGame
+        this.games = new GameCollection();
+        this.games.fetch({
+            success: function () {
+                app.loadCurrentGame();
+                app.render();
+            }
         });
-        navigation.render();
+    };
+
+    this.loadCurrentGame = function () {
+        this.currentGame = this.games.first();
     };
     
     this.render = function () {
-        this.api.getProviders(this.renderNavigation);
+        this.renderNavigation();
         
         // start router
         Backbone.history.start();
     };
+
+    this.renderNavigation = function () {
+        var navigation = new NavigationView({
+            el: '#navigation-slot',
+            games: this.games,
+            currentGame: this.currentGame
+        });
+        navigation.render();
+    };
 }
 
 var app = new App();
-app.render();
+app.start();
 
 /**
  * TODOS:

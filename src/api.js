@@ -3,11 +3,6 @@ function Api() {}
 Api.prototype = {
     constructor: Api,
 
-    getProviders: function (success) {
-        var url = '/api/providers';
-        this.get(url, success, 'providers');
-    },
-
     getYears: function (success, params) {
         var url = '/api/years/' + params.providerId + '/' + params.gameId;
         this.get(url, success, 'years');
