@@ -1,7 +1,7 @@
 function App() {
     this.games = {};
-    this.currentGame = {};
-    this.currentGameStorage = new CurrentGameStorage();
+    this.lastGame = {};
+    this.lastGameStorage = new LastGameStorage();
     this.router = new Router();
 }
 
@@ -14,18 +14,18 @@ App.prototype = _.extend({}, Backbone.Events, {
         this.games = new GameCollection();
         this.games.fetch({
             success: function () {
-                app.loadCurrentGame();
+                app.loadLastGame();
                 app.render();
             }
         });
     },
 
-    loadCurrentGame: function () {
-        if (!this.currentGameStorage.has()) {
-            this.currentGameStorage.set(this.games.first());
+    loadLastGame: function () {
+        if (!this.lastGameStorage.has()) {
+            this.lastGameStorage.set(this.games.first());
         }
 
-        this.currentGame = this.currentGameStorage.get();
+        this.lastGame = this.lastGameStorage.get();
     },
 
     render: function () {
@@ -39,14 +39,14 @@ App.prototype = _.extend({}, Backbone.Events, {
         var navigation = new NavigationView({
             el: '#navigation-slot',
             games: this.games,
-            currentGame: this.currentGame
+            currentGame: this.lastGame
         });
         this.listenTo(navigation, 'game:change', this.changeGame);
         navigation.render();
     },
 
     changeGame: function (game) {
-        this.currentGameStorage.set(game);
+        this.lastGameStorage.set(game);
 
         // refresh current page
         Backbone.history.loadUrl(Backbone.history.fragment);
