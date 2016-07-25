@@ -1,8 +1,8 @@
 function App() {
+    this.router = {};
     this.games = {};
     this.lastGame = {};
     this.lastGameStorage = new LastGameStorage();
-    this.router = new Router();
 }
 
 App.prototype = _.extend({}, Backbone.Events, {
@@ -31,7 +31,10 @@ App.prototype = _.extend({}, Backbone.Events, {
     render: function () {
         this.renderNavigation();
 
-        // start router
+        // build and start routing
+        this.router = new Router({
+            games: this.games
+        });
         Backbone.history.start();
     },
 

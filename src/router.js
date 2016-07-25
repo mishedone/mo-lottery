@@ -1,14 +1,25 @@
 var Router = Backbone.Router.extend({
+    games: {},
+
     routes: {
-        '': 'dashboard'
+        '': 'index',
+        'browse/:id': 'browse'
     },
 
-    dashboard: function () {
-        var view;
+    initialize: function (options) {
+        this.games = options.games;
+    },
 
-        // render view
-        view = new DashboardView({
-            el: '#content-slot'
+    index: function () {
+        // TODO: redirect to last game browse page
+    },
+
+    browse: function (id) {
+        var view = new BrowseView({
+            el: '#content-slot',
+            game: this.games.findWhere({
+                id: id
+            })
         });
         view.render();
     }
