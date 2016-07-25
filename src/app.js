@@ -1,6 +1,7 @@
 function App() {
     this.games = {};
     this.currentGame = {};
+    this.currentGameStorage = new CurrentGameStorage();
     this.router = new Router();
 
     this.start = function () {
@@ -16,7 +17,11 @@ function App() {
     };
 
     this.loadCurrentGame = function () {
-        this.currentGame = this.games.first();
+        if (!this.currentGameStorage.has()) {
+            this.currentGameStorage.set(this.games.first());
+        }
+
+        this.currentGame = this.currentGameStorage.get();
     };
     
     this.render = function () {
@@ -38,12 +43,3 @@ function App() {
 
 var app = new App();
 app.start();
-
-/**
- * TODOS:
- * [x] 1. create provider-game model that has provider and game properties
- * [x] 2. choose provider-game for initial load
- * [ ] 3. create provider-game storage and save current state in there
- * [ ] 4. show last saved current provider-game when loading the application
- * [ ] 5. trigger on game changed event and save new state
- */
