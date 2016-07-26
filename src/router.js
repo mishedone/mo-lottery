@@ -4,7 +4,7 @@ var Router = Backbone.Router.extend({
 
     routes: {
         '': 'index',
-        'browse/:id': 'browse'
+        'browse/:id': 'browseYears'
     },
 
     initialize: function (options) {
@@ -23,13 +23,13 @@ var Router = Backbone.Router.extend({
         this.navigate('browse/' + this.lastGame.get('id'), {trigger: true});
     },
 
-    browse: function (id) {
+    browseYears: function (id) {
         var view, years;
 
         years = new YearCollection(null, {game: this.findGame(id)});
         years.fetch({
             success: function (years) {
-                view = new BrowseView({
+                view = new BrowseYearsView({
                     el: '#content-slot',
                     years: years
                 });
