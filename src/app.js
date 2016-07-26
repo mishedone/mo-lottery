@@ -30,7 +30,7 @@ App.prototype = _.extend({}, Backbone.Events, {
         var navigation = new NavigationView({
             el: '#navigation-slot',
             games: this.games,
-            initGame: this.lastGameStorage.get()
+            currentGame: this.lastGameStorage.get()
         });
         navigation.render();
     },
@@ -38,7 +38,7 @@ App.prototype = _.extend({}, Backbone.Events, {
     initRouting: function () {
         this.router = new Router({
             games: this.games,
-            initGame: this.lastGameStorage.get()
+            lastGame: this.lastGameStorage.get()
         });
         this.listenTo(Backbone.history, 'route', this.changeGame);
         Backbone.history.start();

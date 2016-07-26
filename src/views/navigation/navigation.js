@@ -1,7 +1,7 @@
 var NavigationView = Backbone.View.extend({
     template: _.template($('#navigation').html()),
     games: [],
-    initGame: {},
+    currentGame: {},
 
     events: {
         'click .game': 'changeGame'
@@ -9,13 +9,13 @@ var NavigationView = Backbone.View.extend({
 
     initialize: function (options) {
         this.games = options.games;
-        this.initGame = options.initGame;
+        this.currentGame = options.currentGame;
     },
     
     render: function () {
         this.$el.html(this.template({
             games: this.games,
-            initGame: this.initGame
+            currentGame: this.currentGame
         }));
 
         return this;
