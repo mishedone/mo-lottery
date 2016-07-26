@@ -10,7 +10,7 @@ use MoLottery\Provider\BST\BSTProvider;
 /**
  * Starting point for available provider and game discovery. Use it to fetch and inspect.
  */
-class GameRepository
+class ProviderRepository
 {
     /**
      * @const GAME_HASH_SEPARATOR Separator for building game hashes (provider id - game id pair).
@@ -94,11 +94,11 @@ class GameRepository
     }
     
     /**
-     * Builds an array with simple data about the available games.
+     * Builds an array with simple data about the available providers.
      *
      * @return array
      */
-    public function getGames()
+    public function getProviders()
     {
         $result = [];
         foreach ($this->providers as $provider) {
