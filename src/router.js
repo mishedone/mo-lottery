@@ -4,7 +4,8 @@ var Router = Backbone.Router.extend({
 
     routes: {
         '': 'index',
-        'browse/:id': 'browseYears'
+        'browse/:id': 'browseYears',
+        'browse/:id/:year': 'browseDraws'
     },
 
     initialize: function (options) {
@@ -32,6 +33,24 @@ var Router = Backbone.Router.extend({
                 view = new BrowseYearsView({
                     el: '#content-slot',
                     years: years
+                });
+                view.render();
+            }
+        });
+    },
+
+    browseDraws: function (id, year) {
+        var view, draws;
+
+        draws = new DrawCollection(null, {
+            game: this.findGame(id),
+            year: new YearModel({year: year})
+        });
+        draws.fetch({
+            success: function (draws) {
+                view = new BrowseDrawsView({
+                    el: '#content-slot',
+                    draws: draws
                 });
                 view.render();
             }
