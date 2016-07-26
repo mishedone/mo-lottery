@@ -163,7 +163,13 @@ class GameRepository
                 $drawManager->updateDraws($year, $game->getDraws($year));
             }
         }
+        $draws = $drawManager->getDraws($year);
 
-        return $drawManager->getDraws($year);
+        $result = [];
+        foreach ($draws as $draw) {
+            $result[] = ['draw' => $draw];
+        }
+
+        return $result;
     }
 }

@@ -27,12 +27,7 @@ try {
     
             break;
         case 'draws':
-            $response->renderJson([
-                'draws' => $providerRepository->getDraws(
-                    $_GET['game'],
-                    $_GET['year']
-                )
-            ]);
+            $response->renderJson($providerRepository->getDraws($_GET['game'], $_GET['year']));
     
             break;
         default:
