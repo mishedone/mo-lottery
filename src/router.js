@@ -29,7 +29,6 @@ var Router = Backbone.Router.extend({
         years = new YearCollection(null, {game: this.findGame(id)});
         years.fetch({
             success: function (years) {
-                console.log(years);
                 view = new BrowseView({
                     el: '#content-slot',
                     years: years
