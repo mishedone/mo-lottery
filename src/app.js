@@ -40,16 +40,12 @@ App.prototype = _.extend({}, Backbone.Events, {
             games: this.games,
             lastGame: this.lastGameStorage.get()
         });
-        this.listenTo(Backbone.history, 'route', this.changeGame);
+        this.listenTo(this.router, 'game:found', this.changeGame);
         Backbone.history.start();
     },
 
-    changeGame: function (router, route, params) {
-        console.log(route);
-        console.log(params);
-        /*this.lastGameStorage.set(this.games.findWhere({
-            id: params[0]
-        }));*/
+    changeGame: function (game) {
+        this.lastGameStorage.set(game);
     }
 });
 

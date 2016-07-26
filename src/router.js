@@ -12,16 +12,21 @@ var Router = Backbone.Router.extend({
         this.lastGame = options.lastGame;
     },
 
+    findGame: function (id) {
+        var game = this.games.findWhere({id: id});
+        this.trigger('game:found', game);
+
+        return game;
+    },
+
     index: function () {
-        this.navigate('browse/' + this.lastGame.get('id'));
+        this.navigate('browse/' + this.lastGame.get('id'), {trigger: true});
     },
 
     browse: function (id) {
         var view = new BrowseView({
             el: '#content-slot',
-            game: this.games.findWhere({
-                id: id
-            })
+            game: this.findGame(id)
         });
         view.render();
     }
