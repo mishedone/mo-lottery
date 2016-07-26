@@ -3,6 +3,7 @@
 // utilities
 require_once 'src/Tool/Clean.php';
 require_once 'src/Tool/Curl.php';
+require_once 'src/Tool/GameHash.php';
 require_once 'src/Exception/NotFoundException.php';
 require_once 'src/Exception/ParseException.php';
 require_once 'src/Http/Response.php';
@@ -24,3 +25,6 @@ require_once 'src/Provider/BST/Game649/Parser/CurrentYearParser.php';
 require_once 'src/Provider/BST/Game649/Game649.php';
 require_once 'src/Provider/BST/BSTProvider.php';
 require_once 'src/Provider/ProviderRepository.php';
+
+// controllers
+require_once 'src/Controller/Controller.php';

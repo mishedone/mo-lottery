@@ -2,6 +2,7 @@
 
 require_once 'autoload.php';
 
+use MoLottery\Controller\Controller;
 use MoLottery\Exception\NotFoundException;
 use MoLottery\Exception\ParseException;
 use MoLottery\Http\Response;
@@ -14,20 +15,21 @@ $dataPath = __DIR__ . DIRECTORY_SEPARATOR . 'data';
 $response = new Response();
 $managerRepository = new ManagerRepository($dataPath);
 $providerRepository = new ProviderRepository($managerRepository);
+$controller = new Controller($providerRepository);
 
-// routing
+// routing / controller
 try {
     switch ($_GET['action']) {
         case 'games':
-            $response->renderJson($providerRepository->getProviders());
+            $response->renderJson($controller->getGames());
     
             break;
         case 'years':
-            $response->renderJson($providerRepository->getYears($_GET['game']));
+            $response->renderJson($controller->getYears($_GET['game']));
     
             break;
         case 'draws':
-            $response->renderJson($providerRepository->getDraws($_GET['game'], $_GET['year']));
+            $response->renderJson($controller->getDraws($_GET['game'], $_GET['year']));
     
             break;
         default:

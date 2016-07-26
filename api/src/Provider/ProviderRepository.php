@@ -13,11 +13,6 @@ use MoLottery\Provider\BST\BSTProvider;
 class ProviderRepository
 {
     /**
-     * @const GAME_HASH_SEPARATOR Separator for building game hashes (provider id - game id pair).
-     */
-    const GAME_HASH_SEPARATOR = '-';
-
-    /**
      * @var ManagerRepository
      */
     private $managerRepository;
@@ -62,25 +57,6 @@ class ProviderRepository
     }
 
     /**
-     * @param string $providerId
-     * @param string $gameId
-     * @return string
-     */
-    private function getGameHash($providerId, $gameId)
-    {
-        return sprintf('%s%s%s', $providerId, self::GAME_HASH_SEPARATOR, $gameId);
-    }
-
-    /**
-     * @param string $gameHash
-     * @return array
-     */
-    private function parseGameHash($gameHash)
-    {
-        return explode(self::GAME_HASH_SEPARATOR, $gameHash);
-    }
-
-    /**
      * Instantiates available providers.
      *
      * @param ManagerRepository $managerRepository
@@ -94,56 +70,35 @@ class ProviderRepository
     }
     
     /**
-     * Builds an array with simple data about the available providers.
-     *
      * @return array
      */
     public function getProviders()
     {
-        $result = [];
-        foreach ($this->providers as $provider) {
-            foreach ($provider->getGames() as $game) {
-                $result[] = [
-                    // do not get confused - id here is game hash actually, api consumers should not be aware of internals
-                    'id' => $this->getGameHash($provider->getId(), $game->getId()),
-                    'name' => sprintf('%s - %s', $provider->getName(), $game->getName())
-                ];
-            }
-        }
-        
-        return $result;
+        return $this->providers;
     }
     
     /**
-     * @param string $gameHash
+     * @param string $providerId
+     * @param string $gameId
      * @return array
      * @throws NotFoundException
      */
-    public function getYears($gameHash)
+    public function getYears($providerId, $gameId)
     {
-        list($providerId, $gameId) = $this->parseGameHash($gameHash);
-        $years = $this->getProvider($providerId)
+        return $this->getProvider($providerId)
             ->getGame($gameId)
             ->getYears();
-
-        $result = [];
-        foreach ($years as $year) {
-            $result[] = ['year' => $year];
-        }
-
-        return $result;
     }
     
     /**
-     * @param string $gameHash
+     * @param string $providerId
+     * @param string $gameId
      * @param int $year
      * @return array
      * @throws NotFoundException
      */
-    public function getDraws($gameHash, $year)
+    public function getDraws($providerId, $gameId, $year)
     {
-        list($providerId, $gameId) = $this->parseGameHash($gameHash);
-
         $game = $this->getProvider($providerId)->getGame($gameId);
         $game->validateYear($year);
 
@@ -163,13 +118,7 @@ class ProviderRepository
                 $drawManager->updateDraws($year, $game->getDraws($year));
             }
         }
-        $draws = $drawManager->getDraws($year);
-
-        $result = [];
-        foreach ($draws as $draw) {
-            $result[] = ['draw' => $draw];
-        }
-
-        return $result;
+        
+        return $drawManager->getDraws($year);
     }
 }
