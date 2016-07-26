@@ -1,14 +1,14 @@
 var BrowseView = Backbone.View.extend({
     template: _.template($('#browse').html()),
-    game: {},
+    years: {},
 
     initialize: function (options) {
-        this.game = options.game;
+        this.years = options.years;
     },
 
     render: function () {
         this.$el.html(this.template({
-            game: this.game
+            years: this.years
         }));
 
         return this;

@@ -53,7 +53,11 @@
         </script>
 
         <script type="text/template" id="browse">
-            <h1>Browse <%= game.get('name') %></h1>
+            <h1>Browse <%= years.game.get('name') %></h1>
+            <hr/>
+            <% years.forEach(function (year) { %>
+                <%= year.get('year') %>
+            <% }); %>
         </script>
 
         <script src="vendor/jquery/jquery.min.js"></script>
@@ -63,7 +67,9 @@
         <script src="vendor/backbone/backbone.local-storage-min.js"></script>
 
         <script src="src/models/game.js"></script>
+        <script src="src/models/year.js"></script>
         <script src="src/collections/game.js"></script>
+        <script src="src/collections/year.js"></script>
         <script src="src/storage/base.js"></script>
         <script src="src/storage/last-game.js"></script>
         <script src="src/views/navigation/navigation.js"></script>

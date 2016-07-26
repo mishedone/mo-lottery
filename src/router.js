@@ -24,10 +24,18 @@ var Router = Backbone.Router.extend({
     },
 
     browse: function (id) {
-        var view = new BrowseView({
-            el: '#content-slot',
-            game: this.findGame(id)
+        var view, years;
+
+        years = new YearCollection(null, {game: this.findGame(id)});
+        years.fetch({
+            success: function (years) {
+                console.log(years);
+                view = new BrowseView({
+                    el: '#content-slot',
+                    years: years
+                });
+                view.render();
+            }
         });
-        view.render();
     }
 });

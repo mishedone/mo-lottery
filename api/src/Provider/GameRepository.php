@@ -122,10 +122,16 @@ class GameRepository
     public function getYears($gameHash)
     {
         list($providerId, $gameId) = $this->parseGameHash($gameHash);
-
-        return $this->getProvider($providerId)
+        $years = $this->getProvider($providerId)
             ->getGame($gameId)
             ->getYears();
+
+        $result = [];
+        foreach ($years as $year) {
+            $result[] = ['year' => $year];
+        }
+
+        return $result;
     }
     
     /**
