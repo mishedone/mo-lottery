@@ -1,5 +1,5 @@
 var BrowseYearsView = Backbone.View.extend({
-    template: _.template($('#browse').html()),
+    template: _.template($('#browse-years').html()),
     years: {},
 
     initialize: function (options) {
