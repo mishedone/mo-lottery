@@ -67,7 +67,7 @@
             <hr/>
             <a href="#/browse/<%= game.get('id') %>">Back to years</a>
             <br/>
-            <% game.getDraw(year).forEach(function (draw) { %>
+            <% game.getDraws(year).forEach(function (draw) { %>
                 <% _.each(draw.get('draw'), function (number) { %>
                     <%= number %>&nbsp;
                 <% }); %>

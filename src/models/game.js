@@ -37,7 +37,7 @@ var GameModel = Backbone.Model.extend({
         });
     },
 
-    getDraw: function (year) {
+    getDraws: function (year) {
         return this.get('draws')[year];
     }
 });
