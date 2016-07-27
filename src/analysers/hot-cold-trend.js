@@ -7,8 +7,13 @@ HotColdTrendAnalyser.prototype = {
 
     reset: function (game) {
         this.game = game;
-        this.currentYear = null;
         this.hits = {};
+        this.periods = {};
+        this.current = {
+            year: null,
+            period: null,
+            draw: 1
+        };
     },
 
     analyse: function (game) {
@@ -24,7 +29,7 @@ HotColdTrendAnalyser.prototype = {
         var analyser = this;
 
         analyser.game.get('years').forEach(function (year) {
-            analyser.currentYear = year.get('year');
+            analyser.current.year = year.get('year');
             analyser.game.loadDraws(year.get('year'), function () {
                 analyser.analyseDraws();
             });
@@ -33,8 +38,8 @@ HotColdTrendAnalyser.prototype = {
 
     analyseDraws: function () {
         var analyser = this;
-
-        analyser.game.getDraws(this.currentYear).forEach(function (draw) {
+        
+        analyser.game.getDraws(this.current.year).forEach(function (draw) {
             _.each(draw.get('draw'), function (number) {
                 if (!analyser.hits.hasOwnProperty(number)) {
                     analyser.hits[number] = 0;
