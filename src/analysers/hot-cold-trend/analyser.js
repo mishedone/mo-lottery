@@ -13,6 +13,7 @@ HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
     reset: function (game) {
         this.game = game;
         this.hits = {};
+        this.drawCount = 0;
     },
 
     analyse: function (game) {
@@ -25,11 +26,14 @@ HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
         
         _.each(draws, function (yearDraws, year) {
             _.each(yearDraws, function (draw) {
+                analyser.drawCount++;
                 _.each(draw, function (number) {
                     analyser.hit(number);
                 });
             });
         });
+        
+        this.trigger('analysis:finished');
     },
     
     hit: function (number) {
