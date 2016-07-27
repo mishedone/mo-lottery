@@ -7,12 +7,27 @@ var GameModel = Backbone.Model.extend({
     },
 
     loadYears: function (success) {
+        if (this.get('years').length) {
+            return success();
+        }
+
+        // load years
         this.set('years', new YearCollection(null, {gameId: this.get('id')}));
         this.get('years').fetch({success: success});
     },
 
     loadDraws: function (year, success) {
-        var game = this, draws = this.get('draws');
+        var game, draws, currentYear;
+
+        game = this;
+        draws = this.get('draws');
+        currentYear = new Date().getFullYear();
+
+        if (currentYear != year  && draws.hasOwnProperty(year)) {
+            return success();
+        }
+
+        // load draws for wanted year (current year is always reloaded)
         draws[year] = new DrawCollection(null, {gameId: this.get('id'), year: year});
         draws[year].fetch({
             success: function () {
