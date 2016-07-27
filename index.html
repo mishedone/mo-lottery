@@ -53,10 +53,10 @@
         </script>
 
         <script type="text/template" id="browse-years">
-            <h1><%= years.game.get('name') %></h1>
+            <h1><%= game.get('name') %></h1>
             <hr/>
-            <% years.forEach(function (year) { %>
-                <a href="#/browse/<%= years.game.get('id') %>/<%= year.get('year') %>">
+            <% game.get('years').forEach(function (year) { %>
+                <a href="#/browse/<%= game.get('id') %>/<%= year.get('year') %>">
                     <%= year.get('year') %>
                 </a>
             <% }); %>

@@ -1,12 +1,12 @@
 var YearCollection = Backbone.Collection.extend({
     model: YearModel,
-    game: {},
+    gameId: null,
 
     initialize: function (models, options) {
-        this.game = options.game;
+        this.gameId = options.gameId;
     },
 
     url: function () {
-        return '/api/years/' + this.game.get('id')
+        return '/api/years/' + this.gameId;
     }
 });
