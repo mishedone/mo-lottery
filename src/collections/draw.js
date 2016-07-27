@@ -1,14 +1,14 @@
 var DrawCollection = Backbone.Collection.extend({
     model: DrawModel,
-    game: {},
+    gameId: {},
     year: {},
 
     initialize: function (models, options) {
-        this.game = options.game;
+        this.gameId = options.gameId;
         this.year = options.year;
     },
 
     url: function () {
-        return '/api/draws/' + this.game.get('id') + '/' + this.year.get('year');
+        return '/api/draws/' + this.gameId + '/' + this.year;
     }
 });

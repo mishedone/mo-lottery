@@ -1,14 +1,17 @@
 var BrowseDrawsView = Backbone.View.extend({
     template: _.template($('#browse-draws').html()),
-    draws: {},
+    game: {},
+    year: null,
 
     initialize: function (options) {
-        this.draws = options.draws;
+        this.game = options.game;
+        this.year = options.year;
     },
 
     render: function () {
         this.$el.html(this.template({
-            draws: this.draws
+            game: this.game,
+            year: this.year
         }));
 
         return this;

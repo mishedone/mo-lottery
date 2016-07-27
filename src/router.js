@@ -37,20 +37,15 @@ var Router = Backbone.Router.extend({
     },
 
     browseDraws: function (id, year) {
-        var view, draws;
+        var game = this.findGame(id);
 
-        draws = new DrawCollection(null, {
-            game: this.findGame(id),
-            year: new YearModel({year: year})
-        });
-        draws.fetch({
-            success: function (draws) {
-                view = new BrowseDrawsView({
-                    el: '#content-slot',
-                    draws: draws
-                });
-                view.render();
-            }
+        game.loadDraws(year, function () {
+            view = new BrowseDrawsView({
+                el: '#content-slot',
+                game: game,
+                year: year
+            });
+            view.render();
         });
     }
 });

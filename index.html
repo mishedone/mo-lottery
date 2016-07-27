@@ -63,11 +63,11 @@
         </script>
 
         <script type="text/template" id="browse-draws">
-            <h1><%= draws.game.get('name') %> (<%= draws.year.get('year') %>)</h1>
+            <h1><%= game.get('name') %> (<%= year %>)</h1>
             <hr/>
-            <a href="#/browse/<%= draws.game.get('id') %>">Back to years</a>
+            <a href="#/browse/<%= game.get('id') %>">Back to years</a>
             <br/>
-            <% draws.forEach(function (draw) { %>
+            <% game.getDraw(year).forEach(function (draw) { %>
                 <% _.each(draw.get('draw'), function (number) { %>
                     <%= number %>&nbsp;
                 <% }); %>
