@@ -10,7 +10,9 @@ HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
     reset: function (game) {
         this.game = game;
         this.hits = {};
+        this.periods = {};
         this.drawCount = 0;
+        this.currentPeriod = 0;
     },
 
     analyse: function (game) {
@@ -28,6 +30,13 @@ HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
         game.get('years').forEach(function (year) {
             game.getDraws(year.get('year')).forEach(function (draw) {
                 analyser.drawCount++;
+
+                // recalculate current period
+                if (analyser.drawCount % analyser.periodSize == 0) {
+                    analyser.currentPeriod++;
+                }
+
+                // hit
                 _.each(draw.get('draw'), function (number) {
                     analyser.hit(number);
                 });
@@ -38,9 +47,19 @@ HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
     },
     
     hit: function (number) {
+        // add to hits
         if (!this.hits.hasOwnProperty(number)) {
             this.hits[number] = 0;
         }
         this.hits[number]++;
+
+        // add to periods
+        if (!this.periods.hasOwnProperty(this.currentPeriod)) {
+            this.periods[this.currentPeriod] = {};
+        }
+        if (!this.periods[this.currentPeriod].hasOwnProperty(number)) {
+            this.periods[this.currentPeriod][number] = 0;
+        }
+        this.periods[this.currentPeriod][number]++;
     }
 });
