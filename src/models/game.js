@@ -2,18 +2,23 @@ var GameModel = Backbone.Model.extend({
     defaults: {
         id: null,
         name: '',
-        years: {},
+        drawSize: null,
+        numbers: [],
+        years: [],
         draws: {}
     },
 
-    loadYears: function (success) {
-        if (this.get('years').length) {
-            return success();
-        }
+    load: function (success) {
+        var game = this, loadedDraws = 0;
 
-        // load years
-        this.set('years', new YearCollection(null, {gameId: this.get('id')}));
-        this.get('years').fetch({success: success});
+        _.each(game.get('years'), function (year) {
+            game.loadDraws(year, function () {
+                loadedDraws++;
+                if (loadedDraws == game.get('years').length) {
+                    success();
+                }
+            });
+        });
     },
 
     loadDraws: function (year, success) {
