@@ -1,10 +1,17 @@
-function HotColdTrendAnalyser(gameReader, periodSize) {
+function HotColdTrendAnalyser(gameLoader, periodSize) {
+    var analyser = this;
+
     this.reset({});
-    this.gameReader = gameReader;
+    this.gameLoader = gameLoader;
     this.periodSize = periodSize;
+    this.name = 'hot-cold-trend-analyser';
     
-    // listen to game reader read finished events
-    this.listenTo(this.gameReader, 'read:finished', this.analyseDraws);
+    // listen to game loader loaded events
+    this.listenTo(this.gameLoader, 'game:loaded', function (caller) {
+        if (analyser.name == caller) {
+            analyser.analyseDraws()
+        }
+    });
 }
 
 HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
@@ -18,22 +25,22 @@ HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
 
     analyse: function (game) {
         this.reset(game);
-        this.gameReader.read(game);
+        this.gameLoader.load(game, this.name);
     },
 
-    analyseDraws: function (draws) {
+    analyseDraws: function () {
         var analyser = this;
-        
-        _.each(draws, function (yearDraws, year) {
-            _.each(yearDraws, function (draw) {
+
+        analyser.game.get('years').forEach(function (year) {
+            analyser.game.getDraws(year.get('year')).forEach(function (draw) {
                 analyser.drawCount++;
-                _.each(draw, function (number) {
+                _.each(draw.get('draw'), function (number) {
                     analyser.hit(number);
                 });
             });
         });
-        
-        this.trigger('analysis:finished');
+
+        analyser.trigger('game:analysed');
     },
     
     hit: function (number) {
