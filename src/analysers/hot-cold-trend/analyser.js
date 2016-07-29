@@ -9,6 +9,7 @@ HotColdTrendAnalyser.prototype = {
         this.game = game;
         this.result = {
             hits: {},
+            ranks: [],
             totalDraws: 0,
             averageHits: 0
         };
@@ -37,6 +38,7 @@ HotColdTrendAnalyser.prototype = {
             });
         });
 
+        analyser.determineRanks();
         analyser.calculateAverageHits();
     },
     
@@ -44,7 +46,23 @@ HotColdTrendAnalyser.prototype = {
         if (!this.result.hits.hasOwnProperty(number)) {
             this.result.hits[number] = 0;
         }
+
         this.result.hits[number]++;
+    },
+
+    determineRanks: function () {
+        var analyser = this, ranks = [];
+
+        _.each(this.result.hits, function (hits, number) {
+            ranks.push([number, analyser.result.hits[number]]);
+        });
+
+        ranks.sort(function (a, b) {
+            return a[1] - b[1]
+        });
+        ranks.reverse();
+
+        this.result.ranks = ranks;
     },
 
     calculateAverageHits: function () {
