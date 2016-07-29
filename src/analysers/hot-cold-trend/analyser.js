@@ -29,10 +29,10 @@ HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
     },
 
     analyseDraws: function () {
-        var analyser = this;
+        var analyser = this, game = this.game;
 
-        analyser.game.get('years').forEach(function (year) {
-            analyser.game.getDraws(year.get('year')).forEach(function (draw) {
+        game.get('years').forEach(function (year) {
+            game.getDraws(year.get('year')).forEach(function (draw) {
                 analyser.drawCount++;
                 _.each(draw.get('draw'), function (number) {
                     analyser.hit(number);
