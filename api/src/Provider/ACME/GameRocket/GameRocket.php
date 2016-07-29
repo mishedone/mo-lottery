@@ -27,6 +27,14 @@ class GameRocket extends AbstractGame
     }
 
     /**
+     * @return int
+     */
+    public function getDrawSize()
+    {
+        return 6;
+    }
+
+    /**
      * @param int $year
      * @return array
      * @throws NotFoundException
@@ -41,10 +49,11 @@ class GameRocket extends AbstractGame
     }
 
     /**
-     * Builds years.
+     * Builds years and numbers.
      */
     public function __construct()
     {
         $this->years[] = 2016;
+        $this->numbers[] = 7;
     }
 }

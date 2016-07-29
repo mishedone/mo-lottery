@@ -18,13 +18,31 @@ abstract class AbstractGame
      * @return string
      */
     abstract public function getName();
+
+    /**
+     * @return int
+     */
+    abstract public function getDrawSize();
     
     /**
      * @param int $year
      * @return array
      */
     abstract public function getDraws($year);
-    
+
+    /**
+     * @var array
+     */
+    protected $numbers = [];
+
+    /**
+     * @return array
+     */
+    public function getNumbers()
+    {
+        return $this->numbers;
+    }
+
     /**
      * @var array
      */

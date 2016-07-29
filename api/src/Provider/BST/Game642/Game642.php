@@ -27,6 +27,14 @@ class Game642 extends AbstractGame
     }
 
     /**
+     * @return int
+     */
+    public function getDrawSize()
+    {
+        return 6;
+    }
+
+    /**
      * @param int $year
      * @return array
      * @throws NotFoundException
@@ -41,10 +49,15 @@ class Game642 extends AbstractGame
     }
 
     /**
-     * Builds years.
+     * Builds years and numbers.
      */
     public function __construct()
     {
         $this->years[] = 2016;
+
+        // build numbers
+        for ($number = 1; $number <= 42; $number++) {
+            $this->numbers[] = $number;
+        }
     }
 }

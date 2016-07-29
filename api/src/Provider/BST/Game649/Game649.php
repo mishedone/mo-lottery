@@ -27,6 +27,14 @@ class Game649 extends AbstractGame
     {
         return '6/49';
     }
+
+    /**
+     * @return int
+     */
+    public function getDrawSize()
+    {
+        return 6;
+    }
     
     /**
      * @param int $year
@@ -56,7 +64,7 @@ class Game649 extends AbstractGame
     private $currentYearParser;
 
     /**
-     * Builds years and parsers.
+     * Builds years, numbers and parsers.
      */
     public function __construct()
     {
@@ -67,6 +75,11 @@ class Game649 extends AbstractGame
         // build years
         for ($year = 1958; $year <= date('Y'); $year++) {
             $this->years[] = $year;
+        }
+
+        // build numbers
+        for ($number = 1; $number <= 49; $number++) {
+            $this->numbers[] = $number;
         }
     }
 }

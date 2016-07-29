@@ -41,7 +41,9 @@ class Controller
                     // do not get confused - id here is game hash
                     // api consumers should not be aware of internals
                     'id' => $this->buildGameHash($provider->getId(), $game->getId()),
-                    'name' => sprintf('%s - %s', $provider->getName(), $game->getName())
+                    'name' => sprintf('%s - %s', $provider->getName(), $game->getName()),
+                    'drawSize' => $game->getDrawSize(),
+                    'numbers' => $game->getNumbers()
                 ];
             }
         }
