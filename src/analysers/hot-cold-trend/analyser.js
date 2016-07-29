@@ -1,17 +1,7 @@
 function HotColdTrendAnalyser(gameLoader, periodSize) {
-    var analyser = this;
-
     this.reset({});
     this.gameLoader = gameLoader;
     this.periodSize = periodSize;
-    this.name = 'hot-cold-trend-analyser';
-    
-    // listen to game loader loaded events
-    this.listenTo(this.gameLoader, 'game:loaded', function (caller) {
-        if (analyser.name == caller) {
-            analyser.analyseDraws()
-        }
-    });
 }
 
 HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
@@ -24,8 +14,12 @@ HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
     },
 
     analyse: function (game) {
+        var analyser = this;
+
         this.reset(game);
-        this.gameLoader.load(game, this.name);
+        this.gameLoader.load(game, function () {
+            analyser.analyseDraws();
+        });
     },
 
     analyseDraws: function () {

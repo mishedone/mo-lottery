@@ -1,9 +1,9 @@
 function GameLoader() {}
 
-GameLoader.prototype = _.extend({}, Backbone.Events, {
+GameLoader.prototype = {
     constructor: GameLoader,
 
-    load: function (game, caller) {
+    load: function (game, success) {
         var loader = this;
 
         game.loadYears(function () {
@@ -16,10 +16,10 @@ GameLoader.prototype = _.extend({}, Backbone.Events, {
             years.forEach(function (year) {
                 game.loadDraws(year.get('year'), function () {
                     if (lastYear == year.get('year')) {
-                        loader.trigger('game:loaded', caller);
+                        success();
                     }
                 });
             });
         });
     }
-});
+};
