@@ -8,7 +8,7 @@ HotColdTrendAnalyser.prototype = {
     reset: function (game) {
         this.game = game;
         this.result = {
-            hits: {},
+            hits: [],
             ranks: [],
             totalDraws: 0,
             averageHits: 0
@@ -51,16 +51,31 @@ HotColdTrendAnalyser.prototype = {
     },
 
     determineRanks: function () {
-        var analyser = this, ranks = [];
+        var analyser = this, ranks = [], currentRank = 0, lastHits = 0, hitsWithSameRank = 1;
 
+        // fill in ranks with data
         _.each(this.result.hits, function (hits, number) {
             ranks.push([number, analyser.result.hits[number]]);
         });
 
+        // sort ranks by hits in a reverse order
         ranks.sort(function (a, b) {
             return a[1] - b[1]
         });
         ranks.reverse();
+
+        // assign ranks
+        _.each(ranks, function (rankData, index) {
+            if (lastHits != rankData[1]) {
+                currentRank = currentRank + hitsWithSameRank;
+                hitsWithSameRank = 1;
+            } else {
+                hitsWithSameRank++;
+            }
+
+            lastHits = rankData[1];
+            ranks[index].push(currentRank);
+        });
 
         this.result.ranks = ranks;
     },
