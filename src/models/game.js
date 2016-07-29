@@ -4,8 +4,7 @@ var GameModel = Backbone.Model.extend({
         name: '',
         drawSize: null,
         numbers: [],
-        years: [],
-        draws: {}
+        years: []
     },
 
     load: function (success) {
@@ -22,27 +21,35 @@ var GameModel = Backbone.Model.extend({
     },
 
     loadDraws: function (year, success) {
-        var game, draws, currentYear;
+        var game, currentYear;
 
         game = this;
-        draws = this.get('draws');
         currentYear = new Date().getFullYear();
 
-        if (currentYear != year  && draws.hasOwnProperty(year)) {
+        if (currentYear != year  && game.getDraws(year)) {
             return success();
         }
 
         // load draws for wanted year (current year is always reloaded)
-        draws[year] = new DrawCollection(null, {gameId: this.get('id'), year: year});
-        draws[year].fetch({
-            success: function () {
-                game.set('draws', draws);
-                success();
-            }
+        $.get(game.getDrawsUrl(year), function (draws) {
+            var key = game.getDrawsKey(year);
+
+            game.set(key, draws);
+            success();
         });
     },
 
     getDraws: function (year) {
-        return this.get('draws')[year];
+        var key = this.getDrawsKey(year);
+
+        return (typeof this.get(key) == undefined) ? null : this.get(key);
+    },
+
+    getDrawsUrl: function (year) {
+        return '/api/draws/' + this.get('id') + '/' + year;
+    },
+
+    getDrawsKey: function (year) {
+        return 'draws:' + year;
     }
 });

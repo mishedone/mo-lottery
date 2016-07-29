@@ -67,8 +67,8 @@
             <hr/>
             <a href="#/browse/<%= game.get('id') %>">Back to years</a>
             <br/>
-            <% game.getDraws(year).forEach(function (draw) { %>
-                <% _.each(draw.get('draw'), function (number) { %>
+            <% _.each(game.getDraws(year), function (draw) { %>
+                <% _.each(draw, function (number) { %>
                     <%= number %>&nbsp;
                 <% }); %>
                 <br/>
@@ -81,9 +81,7 @@
         <script src="vendor/backbone/backbone-min.js"></script>
         <script src="vendor/backbone/backbone.local-storage-min.js"></script>
 
-        <script src="src/models/draw.js"></script>
         <script src="src/models/game.js"></script>
-        <script src="src/collections/draw.js"></script>
         <script src="src/collections/game.js"></script>
         <script src="src/views/navigation/navigation.js"></script>
         <script src="src/views/browse/draws.js"></script>

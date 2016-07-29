@@ -61,7 +61,7 @@ class Controller
     public function getDraws($gameHash, $year)
     {
         list($providerId, $gameId) = $this->parseGameHash($gameHash);
-        $draws = $this->providerRepository->getDraws($providerId, $gameId, $year);
+        return $this->providerRepository->getDraws($providerId, $gameId, $year);
 
         $result = [];
         foreach ($draws as $draw) {

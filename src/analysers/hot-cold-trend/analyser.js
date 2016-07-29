@@ -2,14 +2,16 @@ function HotColdTrendAnalyser() {
     this.reset({});
 }
 
-HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
+HotColdTrendAnalyser.prototype = {
     constructor: HotColdTrendAnalyser,
 
     reset: function (game) {
         this.game = game;
-        this.hits = {};
-        this.totalDraws = 0;
-        this.averageHits = 0;
+        this.result = {
+            hits: {},
+            totalDraws: 0,
+            averageHits: 0
+        };
     },
 
     analyse: function (game) {
@@ -26,27 +28,26 @@ HotColdTrendAnalyser.prototype = _.extend({}, Backbone.Events, {
 
         _.each(analyser.game.get('years'), function (year) {
             analyser.game.getDraws(year).forEach(function (draw) {
-                analyser.totalDraws++;
+                analyser.result.totalDraws++;
 
                 // hit
-                _.each(draw.get('draw'), function (number) {
+                _.each(draw, function (number) {
                     analyser.hit(number);
                 });
             });
         });
 
         analyser.calculateAverageHits();
-        analyser.trigger('game:analysed');
     },
     
     hit: function (number) {
-        if (!this.hits.hasOwnProperty(number)) {
-            this.hits[number] = 0;
+        if (!this.result.hits.hasOwnProperty(number)) {
+            this.result.hits[number] = 0;
         }
-        this.hits[number]++;
+        this.result.hits[number]++;
     },
 
     calculateAverageHits: function () {
-        this.averageHits = (this.totalDraws * this.game.get('drawSize')) / this.game.get('numbers').length;
+        this.result.averageHits = (this.result.totalDraws * this.game.get('drawSize')) / this.game.get('numbers').length;
     }
-});
+};
