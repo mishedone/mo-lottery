@@ -80,19 +80,6 @@ class ProviderRepository
     /**
      * @param string $providerId
      * @param string $gameId
-     * @return array
-     * @throws NotFoundException
-     */
-    public function getYears($providerId, $gameId)
-    {
-        return $this->getProvider($providerId)
-            ->getGame($gameId)
-            ->getYears();
-    }
-    
-    /**
-     * @param string $providerId
-     * @param string $gameId
      * @param int $year
      * @return array
      * @throws NotFoundException

@@ -43,29 +43,12 @@ class Controller
                     'id' => $this->buildGameHash($provider->getId(), $game->getId()),
                     'name' => sprintf('%s - %s', $provider->getName(), $game->getName()),
                     'drawSize' => $game->getDrawSize(),
-                    'numbers' => $game->getNumbers()
+                    'numbers' => $game->getNumbers(),
+                    'years' => $game->getYears()
                 ];
             }
         }
         
-        return $result;
-    }
-    
-    /**
-     * @param string $gameHash
-     * @return array
-     * @throws NotFoundException
-     */
-    public function getYears($gameHash)
-    {
-        list($providerId, $gameId) = $this->parseGameHash($gameHash);
-        $years = $this->providerRepository->getYears($providerId, $gameId);
-
-        $result = [];
-        foreach ($years as $year) {
-            $result[] = ['year' => $year];
-        }
-
         return $result;
     }
     

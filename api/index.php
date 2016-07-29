@@ -24,10 +24,6 @@ try {
             $response->renderJson($controller->getGames());
     
             break;
-        case 'years':
-            $response->renderJson($controller->getYears($_GET['game']));
-    
-            break;
         case 'draws':
             $response->renderJson($controller->getDraws($_GET['game'], $_GET['year']));
     
