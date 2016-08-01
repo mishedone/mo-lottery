@@ -1,6 +1,4 @@
-function HotColdTrendAnalyser() {
-    this.reset({});
-}
+function HotColdTrendAnalyser() {}
 
 HotColdTrendAnalyser.prototype = {
     constructor: HotColdTrendAnalyser,
@@ -8,11 +6,28 @@ HotColdTrendAnalyser.prototype = {
     reset: function (game) {
         this.game = game;
         this.result = {
+            periods: [],
             hits: [],
             ranks: [],
             totalDraws: 0,
             averageHits: 0
         };
+        this.initializePeriods();
+    },
+    
+    initializePeriods: function () {
+        var analyser = this;
+        
+        _.each(analyser.game.get('numbers'), function (number) {
+            analyser.result.periods.push({
+                number: number,
+                hits: 0
+            });
+        });
+    },
+    
+    getNumberIndex: function (number) {
+        return number - 1;
     },
 
     analyse: function (game) {
@@ -39,6 +54,7 @@ HotColdTrendAnalyser.prototype = {
         });
 
         analyser.determineRanks();
+        analyser.calculateRanks();
         analyser.calculateAverageHits();
     },
     
@@ -48,6 +64,7 @@ HotColdTrendAnalyser.prototype = {
         }
 
         this.result.hits[number]++;
+        this.result.periods[this.getNumberIndex(number)].hits++;
     },
 
     determineRanks: function () {
@@ -78,6 +95,30 @@ HotColdTrendAnalyser.prototype = {
         });
 
         this.result.ranks = ranks;
+    },
+    
+    calculateRanks: function () {
+        var analyser = this, period, currentRank = 0, lastHits = 0, hitsWithSameRank = 1;
+        
+        // sort ranks by hits in a reverse order
+        period = analyser.result.periods;
+        period.sort(function (a, b) {
+            return a.hits - b.hits;
+        });
+        period.reverse();
+        
+        // calculate ranks
+        _.each(period, function (data, index) {
+            if (lastHits != data.hits) {
+                currentRank = currentRank + hitsWithSameRank;
+                hitsWithSameRank = 1;
+            } else {
+                hitsWithSameRank++;
+            }
+            
+            lastHits = data.hits;
+            period[index].rank = currentRank;
+        });
     },
 
     calculateAverageHits: function () {
