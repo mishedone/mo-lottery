@@ -1,33 +1,36 @@
-function HotColdTrendAnalyser() {}
+function HotColdTrendAnalyser(periodCount, periodSize) {
+    this.periodCount = periodCount;
+    this.periodSize = periodSize;
+}
 
 HotColdTrendAnalyser.prototype = {
     constructor: HotColdTrendAnalyser,
 
     reset: function (game) {
         this.game = game;
-        this.result = {
-            periods: [],
-            hits: [],
-            ranks: [],
-            totalDraws: 0,
-            averageHits: 0
-        };
-        this.initializePeriods();
+        this.result = [];
     },
-    
-    initializePeriods: function () {
-        var analyser = this;
-        
-        _.each(analyser.game.get('numbers'), function (number) {
-            analyser.result.periods.push({
+
+    getNumberIndex: function (number) {
+        return number - 1;
+    },
+
+    getPeriod: function () {
+        var period = {
+            stats: [],
+            drawCount: 0,
+            averageHit: 0
+        };
+
+        // add each number structure to stats
+        _.each(this.game.get('numbers'), function (number) {
+            period.stats.push({
                 number: number,
                 hits: 0
             });
         });
-    },
-    
-    getNumberIndex: function (number) {
-        return number - 1;
+
+        return period;
     },
 
     analyse: function (game) {
@@ -40,75 +43,66 @@ HotColdTrendAnalyser.prototype = {
     },
 
     run: function () {
-        var analyser = this;
+        var analyser = this, done = {}, reverseYears, currentPeriod = this.getPeriod();
 
-        _.each(analyser.game.get('years'), function (year) {
-            analyser.game.getDraws(year).forEach(function (draw) {
-                analyser.result.totalDraws++;
+        reverseYears = analyser.game.get('years').slice(0);
+        reverseYears.reverse();
 
-                // hit
-                _.each(draw, function (number) {
-                    analyser.hit(number);
+        try {
+            _.each(reverseYears, function (year) {
+                var reverseDraws;
+
+                reverseDraws = analyser.game.getDraws(year).slice(0);
+                reverseDraws.reverse();
+
+                _.each(reverseDraws, function (draw) {
+                    if (currentPeriod.drawCount == analyser.periodSize) {
+                        analyser.calculateRanks(currentPeriod);
+                        analyser.calculateAverageHits(currentPeriod);
+                        analyser.result.push(currentPeriod);
+
+                        if (analyser.result.length == analyser.periodCount) {
+                            throw done;
+                        }
+
+                        currentPeriod = analyser.getPeriod();
+                    }
+
+                    // increment current period draw count
+                    currentPeriod.drawCount++;
+
+                    // hit
+                    _.each(draw, function (number) {
+                        analyser.hit(currentPeriod, number);
+                    });
                 });
             });
-        });
 
-        analyser.determineRanks();
-        analyser.calculateRanks();
-        analyser.calculateAverageHits();
-    },
-    
-    hit: function (number) {
-        if (!this.result.hits.hasOwnProperty(number)) {
-            this.result.hits[number] = 0;
-        }
-
-        this.result.hits[number]++;
-        this.result.periods[this.getNumberIndex(number)].hits++;
-    },
-
-    determineRanks: function () {
-        var analyser = this, ranks = [], currentRank = 0, lastHits = 0, hitsWithSameRank = 1;
-
-        // fill in ranks with data
-        _.each(this.result.hits, function (hits, number) {
-            ranks.push([number, analyser.result.hits[number]]);
-        });
-
-        // sort ranks by hits in a reverse order
-        ranks.sort(function (a, b) {
-            return a[1] - b[1]
-        });
-        ranks.reverse();
-
-        // assign ranks
-        _.each(ranks, function (rankData, index) {
-            if (lastHits != rankData[1]) {
-                currentRank = currentRank + hitsWithSameRank;
-                hitsWithSameRank = 1;
-            } else {
-                hitsWithSameRank++;
+            analyser.calculateRanks(currentPeriod);
+            analyser.calculateAverageHits(currentPeriod);
+            analyser.result.push(currentPeriod);
+        } catch (error) {
+            if (error !== done) {
+                throw error;
             }
-
-            lastHits = rankData[1];
-            ranks[index].push(currentRank);
-        });
-
-        this.result.ranks = ranks;
+        }
     },
     
-    calculateRanks: function () {
-        var analyser = this, period, currentRank = 0, lastHits = 0, hitsWithSameRank = 1;
+    hit: function (period, number) {
+        period.stats[this.getNumberIndex(number)].hits++;
+    },
+    
+    calculateRanks: function (period) {
+        var analyser = this, currentRank = 0, lastHits = 0, hitsWithSameRank = 1;
         
         // sort ranks by hits in a reverse order
-        period = analyser.result.periods;
-        period.sort(function (a, b) {
+        period.stats.sort(function (a, b) {
             return a.hits - b.hits;
         });
-        period.reverse();
+        period.stats.reverse();
         
         // calculate ranks
-        _.each(period, function (data, index) {
+        _.each(period.stats, function (data, index) {
             if (lastHits != data.hits) {
                 currentRank = currentRank + hitsWithSameRank;
                 hitsWithSameRank = 1;
@@ -117,11 +111,14 @@ HotColdTrendAnalyser.prototype = {
             }
             
             lastHits = data.hits;
-            period[index].rank = currentRank;
+            period.stats[index].rank = currentRank;
         });
     },
 
-    calculateAverageHits: function () {
-        this.result.averageHits = (this.result.totalDraws * this.game.get('drawSize')) / this.game.get('numbers').length;
+    calculateAverageHits: function (period) {
+        period.averageHit = Math.round(
+            (period.drawCount * this.game.get('drawSize')) /
+            this.game.get('numbers').length
+        );
     }
 };
