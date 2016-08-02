@@ -3,3 +3,4 @@
 *.komodoproject
 
 api/data/*.json
+api/data/*/*.json

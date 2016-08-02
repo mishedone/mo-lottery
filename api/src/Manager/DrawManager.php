@@ -20,40 +20,46 @@ class DrawManager extends AbstractManager
     /**
      * @param string $dataPath
      * @param string $providerId
+     * @param int $year
      * @param string $gameId
      */
-    public function __construct($dataPath, $providerId, $gameId)
+    public function __construct($dataPath, $providerId, $gameId, $year)
     {
-        parent::__construct($dataPath);
-        $this->file = sprintf('draws-%s-%s.json', $providerId, $gameId);
+        $dir = sprintf('draws-%s-%s', $providerId, $gameId);
+        
+        // create dir if it's not existing
+        $fullPath = $dataPath . DIRECTORY_SEPARATOR . $dir;
+        if (!is_dir($fullPath)) {
+            mkdir($fullPath);
+        }
+        
+        parent::__construct($fullPath);
+        $this->file = sprintf('%d.json', $year);
         $this->draws = $this->readData();
     }
-
+    
     /**
-     * @param int $year
      * @return bool
      */
-    public function hasDraws($year)
+    public function hasDraws()
     {
-        return isset($this->draws[(int) $year]);
+        return $this->hasData();
     }
 
     /**
-     * @param int $year
      * @return array
      */
-    public function getDraws($year)
+    public function getDraws()
     {
-        return $this->hasDraws($year) ? $this->draws[(int) $year] : array();
+        return $this->draws;
     }
 
     /**
-     * @param int $year
      * @param array $draws
      */
-    public function updateDraws($year, array $draws)
+    public function updateDraws(array $draws)
     {
-        $this->draws[(int) $year] = $draws;
+        $this->draws = $draws;
         $this->saveData($this->draws);
     }
 }

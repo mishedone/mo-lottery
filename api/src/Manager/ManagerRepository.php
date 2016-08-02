@@ -33,19 +33,17 @@ class ManagerRepository
     /**
      * @param string $providerId
      * @param string $gameId
+     * @param int $year
      * @return DrawManager
      */
-    public function getDrawManager($providerId, $gameId)
+    public function getDrawManager($providerId, $gameId, $year)
     {
-        if (!array_key_exists($providerId, $this->drawManagers)) {
-            $this->drawManagers[$providerId] = [];
+        $key = sprintf('%s-%s-%d', $providerId, $gameId, $year);
+        if (!array_key_exists($key, $this->drawManagers)) {
+            $this->drawManagers[$key] = new DrawManager($this->dataPath, $providerId, $gameId, $year);
         }
 
-        if (!array_key_exists($gameId, $this->drawManagers[$providerId])) {
-            $this->drawManagers[$providerId][$gameId] = new DrawManager($this->dataPath, $providerId, $gameId);
-        }
-
-        return $this->drawManagers[$providerId][$gameId];
+        return $this->drawManagers[$key];
     }
 
     /**

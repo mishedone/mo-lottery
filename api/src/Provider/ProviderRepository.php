@@ -90,22 +90,22 @@ class ProviderRepository
         $game->validateYear($year);
 
         // prepare managers
-        $drawManager = $this->managerRepository->getDrawManager($providerId, $gameId);
+        $drawManager = $this->managerRepository->getDrawManager($providerId, $gameId, $year);
         $lastParseManager = $this->managerRepository->getLastParseManager();
         $lastParseKey = sprintf('draws-%s-%s', $providerId, $gameId);
 
         // check current versus archive year
         if (date('Y') == $year) {
             if (!$lastParseManager->hasLastParseToday($lastParseKey)) {
-                $drawManager->updateDraws($year, $game->getDraws($year));
+                $drawManager->updateDraws($game->getDraws($year));
                 $lastParseManager->setLastParse($lastParseKey, new \DateTime());
             }
         } else {
-            if (!$drawManager->hasDraws($year)) {
-                $drawManager->updateDraws($year, $game->getDraws($year));
+            if (!$drawManager->hasDraws()) {
+                $drawManager->updateDraws($game->getDraws($year));
             }
         }
         
-        return $drawManager->getDraws($year);
+        return $drawManager->getDraws();
     }
 }

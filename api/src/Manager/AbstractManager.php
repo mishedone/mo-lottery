@@ -32,13 +32,21 @@ abstract class AbstractManager
     {
         return $this->dataPath . DIRECTORY_SEPARATOR . $this->file;
     }
+    
+    /**
+     * @return bool
+     */
+    protected function hasData()
+    {
+        return file_exists($this->getFilePath());
+    }
 
     /**
      * @return array
      */
     protected function readData()
     {
-        if (!file_exists($this->getFilePath())) {
+        if (!$this->hasData()) {
             return array();
         }
 
