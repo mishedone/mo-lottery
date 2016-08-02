@@ -15,7 +15,7 @@ HotColdTrendAnalyser.prototype = {
         return number - 1;
     },
 
-    getPeriod: function () {
+    createPeriod: function () {
         var period = {
             stats: [],
             drawCount: 0,
@@ -43,7 +43,7 @@ HotColdTrendAnalyser.prototype = {
     },
 
     run: function () {
-        var analyser = this, done = {}, reverseYears, currentPeriod = this.getPeriod();
+        var analyser = this, done = {}, reverseYears, currentPeriod = this.createPeriod();
 
         reverseYears = analyser.game.get('years').slice(0);
         reverseYears.reverse();
@@ -57,15 +57,13 @@ HotColdTrendAnalyser.prototype = {
 
                 _.each(reverseDraws, function (draw) {
                     if (currentPeriod.drawCount == analyser.periodSize) {
-                        analyser.calculateRanks(currentPeriod);
-                        analyser.calculateAverageHits(currentPeriod);
-                        analyser.result.push(currentPeriod);
-
+                        analyser.addPeriod(currentPeriod);
+                        
                         if (analyser.result.length == analyser.periodCount) {
                             throw done;
                         }
 
-                        currentPeriod = analyser.getPeriod();
+                        currentPeriod = analyser.createPeriod();
                     }
 
                     // increment current period draw count
@@ -78,9 +76,7 @@ HotColdTrendAnalyser.prototype = {
                 });
             });
 
-            analyser.calculateRanks(currentPeriod);
-            analyser.calculateAverageHits(currentPeriod);
-            analyser.result.push(currentPeriod);
+            analyser.addPeriod(currentPeriod);
         } catch (error) {
             if (error !== done) {
                 throw error;
@@ -90,6 +86,12 @@ HotColdTrendAnalyser.prototype = {
     
     hit: function (period, number) {
         period.stats[this.getNumberIndex(number)].hits++;
+    },
+    
+    addPeriod: function (period) {
+        this.calculateRanks(period);
+        this.calculateAverageHits(period);
+        this.result.push(period);
     },
     
     calculateRanks: function (period) {
