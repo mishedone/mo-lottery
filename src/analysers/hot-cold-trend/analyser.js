@@ -33,12 +33,13 @@ HotColdTrendAnalyser.prototype = {
         return period;
     },
 
-    analyse: function (game) {
+    analyse: function (game, success) {
         var analyser = this;
 
         this.reset(game);
         this.game.load(function () {
             analyser.run();
+            success(analyser.result);
         });
     },
 
