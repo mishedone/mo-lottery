@@ -8,6 +8,7 @@ HotColdTrendSuggestions.prototype = {
     reset: function (game) {
         this.game = game;
         this.map = {};
+        this.risings = [];
         this.result = [];
     },
 
@@ -21,28 +22,31 @@ HotColdTrendSuggestions.prototype = {
         });
     },
 
-    calculate: function (analysis) {
-        var suggestions = this, averageHit;
+    initialize: function (period) {
+        var suggestions = this, averageHit = period.averageHit;
 
-        averageHit = analysis[0].averageHit;
-
-        // initialize result
-        _.each(analysis[0].stats, function (data) {
+        _.each(period.stats, function (data) {
             if (data.hits > averageHit) {
-                suggestions.result.push({
+                suggestions.risings.push({
                     number: data.number,
-                    previousHits: data.hits,
-                    risings: 1,
-                    stillRising: true
+                    lastHits: data.hits,
+                    count: 1,
+                    dropped: false
                 });
-                suggestions.map[data.number] = suggestions.result.length - 1;
+                suggestions.map[data.number] = suggestions.risings.length - 1;
             }
         });
+    },
+
+    calculate: function (analysis) {
+        var suggestions = this, averageHit = analysis[0].averageHit;
+
+        this.initialize(analysis[0]);
 
         // collect risings
-        _.each(analysis.slice(1), function (period, periodNumber) {
+        _.each(analysis.slice(1), function (period) {
             _.each(period.stats, function (data) {
-                var index, hitsAreRising, numberIsHot, stillRising;
+                var index, dropped, hitsAreRising, numberIsHot;
 
                 // current number was not hot in the latest period
                 if (!suggestions.map.hasOwnProperty(data.number)) {
@@ -51,27 +55,65 @@ HotColdTrendSuggestions.prototype = {
                 index = suggestions.map[data.number];
 
                 // update risings
-                stillRising = suggestions.result[index].stillRising;
+                dropped = suggestions.risings[index].dropped;
                 numberIsHot = (data.hits > averageHit);
-                hitsAreRising = (data.hits <= suggestions.result[index].previousHits);
-                if (stillRising && numberIsHot && hitsAreRising) {
-                    suggestions.result[index].risings++;
+                hitsAreRising = (data.hits <= suggestions.risings[index].lastHits);
+                if (!dropped && numberIsHot && hitsAreRising) {
+                    suggestions.risings[index].count++;
                 }
 
-                // update the still rising flag - stops calculations if the number has landed the average hit rate
-                if (stillRising && !numberIsHot) {
-                    suggestions.result[index].stillRising = false;
+                // update dropped flag - stops calculations if the number has landed the average hit rate
+                if (!dropped && !numberIsHot) {
+                    suggestions.risings[index].dropped = true;
                 }
 
-                // move previous hits to next period
-                suggestions.result[index].previousHits = data.hits;
+                // move last hits to next period
+                suggestions.risings[index].lastHits = data.hits;
             });
         });
 
         // sort results by risings
-        this.result.sort(function (a, b) {
-            return a.risings - b.risings;
+        this.risings.sort(function (a, b) {
+            return a.count - b.count;
         });
-        this.result.reverse();
+        this.risings.reverse();
+
+        this.suggest(analysis[0]);
+    },
+
+    suggest: function (lastPeriod) {
+        var suggestions = this;
+
+        // add rising numbers
+        _.each(suggestions.risings, function (data) {
+            var isRising;
+
+            // skip all if we have enough hot numbers
+            if (suggestions.getToSuggestCount() == 0) {
+                return;
+            }
+
+            isRising = (data.count > 1);
+            if (isRising) {
+                suggestions.result.push(data.number);
+            }
+        });
+
+        // add random hottest number if we have not filled in all suggestions
+        if (suggestions.getToSuggestCount() > 0) {
+            _.each(lastPeriod.stats, function (data) {
+                var alreadySuggested, toSuggestCount;
+
+                alreadySuggested = (suggestions.result.indexOf(data.number) != -1);
+                toSuggestCount = suggestions.getToSuggestCount();
+                if (!alreadySuggested && toSuggestCount > 0) {
+                    suggestions.result.push(data.number);
+                }
+            });
+        }
+    },
+
+    getToSuggestCount: function () {
+        return this.game.get('drawSize') - this.result.length;
     }
 };
