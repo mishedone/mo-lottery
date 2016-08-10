@@ -56,10 +56,10 @@
             <h1><%= game.get('name') %></h1>
             <hr/>
             <% _.each(game.get('years'), function (year) { %>
-                <a href="#/browse/<%= game.get('id') %>/<%= year %>">
-                    <%= year %>
-                </a>
+                <a href="#/browse/<%= game.get('id') %>/<%= year %>"><%= year %></a>&nbsp;
             <% }); %>
+            <hr/>
+            <span class="suggestions"></span>
         </script>
 
         <script type="text/template" id="browse-draws">

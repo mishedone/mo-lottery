@@ -7,12 +7,20 @@ HotColdTrendAnalyser.prototype = {
     constructor: HotColdTrendAnalyser,
 
     reset: function (game) {
+        var analyser = this;
+
         this.game = game;
         this.result = [];
+        this.map = {};
+
+        // create number index map
+        _.each(this.game.get('numbers'), function (number, index) {
+            analyser.map[number] = index;
+        });
     },
 
     getNumberIndex: function (number) {
-        return number - 1;
+        return this.map[number];
     },
 
     createPeriod: function () {
@@ -96,14 +104,14 @@ HotColdTrendAnalyser.prototype = {
     },
     
     calculateRanks: function (period) {
-        var analyser = this, currentRank = 0, lastHits = 0, hitsWithSameRank = 1;
-        
+        var currentRank = 0, lastHits = 0, hitsWithSameRank = 1;
+
         // sort ranks by hits in a reverse order
         period.stats.sort(function (a, b) {
             return a.hits - b.hits;
         });
         period.stats.reverse();
-        
+
         // calculate ranks
         _.each(period.stats, function (data, index) {
             if (lastHits != data.hits) {

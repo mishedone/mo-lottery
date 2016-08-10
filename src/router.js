@@ -25,11 +25,14 @@ var Router = Backbone.Router.extend({
     },
 
     browseYears: function (id) {
-        var game = this.findGame(id), view;
+        var game = this.findGame(id), view, suggestions;
+
+        suggestions = new HotColdTrendSuggestions();
 
         view = new BrowseYearsView({
             el: '#content-slot',
-            game: game
+            game: game,
+            suggestions: suggestions
         });
         view.render();
     },
