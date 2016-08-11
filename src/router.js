@@ -4,6 +4,7 @@ var Router = Backbone.Router.extend({
 
     routes: {
         '': 'index',
+        'suggestions/:id': 'suggestions',
         'browse/:id': 'browseYears',
         'browse/:id/:year': 'browseDraws'
     },
@@ -21,7 +22,21 @@ var Router = Backbone.Router.extend({
     },
 
     index: function () {
-        this.navigate('browse/' + this.lastGame.get('id'), {trigger: true});
+        this.navigate('suggestions/' + this.lastGame.get('id'), {trigger: true});
+    },
+    
+    suggestions: function (id) {
+        var game = this.findGame(id), view, suggestions;
+        
+        view = new SuggestionsView({
+            el: '#content-slot'
+        });
+        view.render();
+        
+        suggestions = new HotColdTrendSuggestions();
+        suggestions.get(game, function (numbers) {
+            view.renderSuggestions(numbers);
+        });
     },
 
     browseYears: function (id) {
