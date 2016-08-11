@@ -16,7 +16,7 @@ var Router = Backbone.Router.extend({
 
     findGame: function (id) {
         var game = this.games.findWhere({id: id});
-        this.trigger('game:found', game);
+        this.trigger('game:changed', game);
 
         return game;
     },
