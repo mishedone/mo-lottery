@@ -1,6 +1,7 @@
 .idea
 .vagrant
 *.komodoproject
+Thumbs.db
 
 api/data/*.json
 api/data/*/*.json

@@ -5,3 +5,10 @@ body {
 a {
     outline: 0 !important;
 }
+
+.navbar-brand.navbar-logo {
+    padding-left: 55px;
+    background-image: url("../img/logo/logo-40x40.png");
+    background-position: 0px 5px;
+    background-repeat: no-repeat;
+}
