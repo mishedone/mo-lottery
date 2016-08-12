@@ -65,7 +65,7 @@
                 <% games.forEach(function (game) { %>
                     <li>
                         <a href="#/suggestions/<%= game.get('id') %>" class="game">
-                            <%= game.get('name') %>
+                            <%= game.get('name') %> (<%= game.get('possibleDraws').toLocaleString('en-US') %>)
                         </a>
                     </li>
                 <% }); %>

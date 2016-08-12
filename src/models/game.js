@@ -3,6 +3,7 @@ var GameModel = Backbone.Model.extend({
         id: null,
         name: '',
         drawSize: null,
+        possibleDraws: 0,
         numbers: [],
         years: []
     },

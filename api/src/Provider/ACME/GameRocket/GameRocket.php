@@ -49,6 +49,14 @@ class GameRocket extends AbstractGame
     }
 
     /**
+     * @return int
+     */
+    public function getPossibleDraws()
+    {
+        return 1;
+    }
+
+    /**
      * Builds years and numbers.
      */
     public function __construct()

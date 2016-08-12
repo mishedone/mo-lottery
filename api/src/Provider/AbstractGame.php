@@ -31,6 +31,11 @@ abstract class AbstractGame
     abstract public function getDraws($year);
 
     /**
+     * @return int
+     */
+    abstract public function getPossibleDraws();
+
+    /**
      * @var array
      */
     protected $numbers = [];

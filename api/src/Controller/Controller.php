@@ -43,6 +43,7 @@ class Controller
                     'id' => $this->buildGameHash($provider->getId(), $game->getId()),
                     'name' => sprintf('%s - %s', $provider->getName(), $game->getName()),
                     'drawSize' => $game->getDrawSize(),
+                    'possibleDraws' => $game->getPossibleDraws(),
                     'numbers' => $game->getNumbers(),
                     'years' => $game->getYears()
                 ];

@@ -52,6 +52,14 @@ class Game649 extends AbstractGame
             return $this->archiveYearParser->parse($year);
         }
     }
+
+    /**
+     * @return int
+     */
+    public function getPossibleDraws()
+    {
+        return 113983816;
+    }
     
     /**
      * @var ArchiveYearParser

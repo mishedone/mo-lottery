@@ -49,6 +49,14 @@ class Game642 extends AbstractGame
     }
 
     /**
+     * @return int
+     */
+    public function getPossibleDraws()
+    {
+        return 5245786;
+    }
+
+    /**
      * Builds years and numbers.
      */
     public function __construct()
