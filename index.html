@@ -106,7 +106,8 @@
         </script>
 
         <script type="text/template" id="browse-draws">
-            <% _.each(game.getDraws(year), function (draw) { %>
+            <% reverse = game.getDraws(year).slice(0).reverse() %>
+            <% _.each(reverse, function (draw) { %>
                 <p class="pull-left"><%= numbersTemplate({numbers: draw}) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
             <% }); %>
         </script>
