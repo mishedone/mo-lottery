@@ -85,26 +85,21 @@
             <h2>Hot-cold Trend</h2>
             <hr/>
             <span class="hot-cold-trend"></span>
+
             <h2>Elapsed Time Trend</h2>
             <hr/>
             <span class="elapsed-time-trend">Coming soon...</span>
         </script>
 
-        <script type="text/template" id="browse-years">
-            <h1><%= game.get('name') %></h1>
+        <script type="text/template" id="browse">
+            <h2>Years (<%= year %>)</h2>
             <hr/>
             <% _.each(game.get('years'), function (year) { %>
                 <a href="#/browse/<%= game.get('id') %>/<%= year %>"><%= year %></a>&nbsp;
             <% }); %>
-            <hr/>
-            <span class="suggestions"></span>
-        </script>
 
-        <script type="text/template" id="browse-draws">
-            <h1><%= game.get('name') %> (<%= year %>)</h1>
+            <h2>Draws</h2>
             <hr/>
-            <a href="#/browse/<%= game.get('id') %>">Back to years</a>
-            <br/>
             <% _.each(game.getDraws(year), function (draw) { %>
                 <% _.each(draw, function (number) { %>
                     <%= number %>&nbsp;
@@ -124,8 +119,7 @@
         <script src="src/views/navigation/change-game.js"></script>
         <script src="src/views/navigation/game-menu.js"></script>
         <script src="src/views/suggestions.js"></script>
-        <script src="src/views/browse/draws.js"></script>
-        <script src="src/views/browse/years.js"></script>
+        <script src="src/views/browse.js"></script>
         
         <script src="src/storage/base.js"></script>
         <script src="src/storage/game-draws.js"></script>

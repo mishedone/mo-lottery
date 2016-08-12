@@ -1,5 +1,5 @@
-var BrowseDrawsView = Backbone.View.extend({
-    template: _.template($('#browse-draws').html()),
+var BrowseView = Backbone.View.extend({
+    template: _.template($('#browse').html()),
     game: {},
     year: null,
 

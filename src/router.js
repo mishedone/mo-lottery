@@ -5,8 +5,8 @@ var Router = Backbone.Router.extend({
     routes: {
         '': 'index',
         'suggestions/:id': 'suggestions',
-        'browse/:id': 'browseYears',
-        'browse/:id/:year': 'browseDraws'
+        'browse/:id': 'browse',
+        'browse/:id/:year': 'browse'
     },
 
     initialize: function (options) {
@@ -39,29 +39,18 @@ var Router = Backbone.Router.extend({
         });
     },
 
-    browseYears: function (id) {
-        var game = this.findGame(id), view, suggestions;
+    browse: function (id, year) {
+        var game = this.findGame(id), view;
 
-        suggestions = new HotColdTrendSuggestions();
+        if (year == undefined) {
+            year = _.last(game.get('years'));
+        }
 
-        view = new BrowseYearsView({
+        view = new BrowseView({
             el: '#content-slot',
             game: game,
-            suggestions: suggestions
+            year: year
         });
         view.render();
-    },
-
-    browseDraws: function (id, year) {
-        var game = this.findGame(id);
-
-        game.loadDraws(year, function () {
-            view = new BrowseDrawsView({
-                el: '#content-slot',
-                game: game,
-                year: year
-            });
-            view.render();
-        });
     }
 });
