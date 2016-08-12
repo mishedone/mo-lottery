@@ -6,7 +6,7 @@ a {
     outline: 0 !important;
 }
 
-.navbar-brand.navbar-logo {
+.logo {
     padding-left: 70px;
     background-image: url("../img/logo/logo-40x40.png");
     background-position: 15px 5px;
@@ -16,4 +16,11 @@ a {
 .btn-list {
     margin-right: 10px;
     margin-bottom: 10px;
+}
+
+.badge-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 14px;
+    padding-top: 8px;
 }

@@ -41,7 +41,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     
-                    <a class="navbar-brand navbar-logo" href="#">mo|lottery</a>
+                    <a class="navbar-brand logo" href="#">mo|lottery</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="navigation">
@@ -103,10 +103,13 @@
             <h3>Draws</h3>
             <hr/>
             <% _.each(game.getDraws(currentYear), function (draw) { %>
-                <% _.each(draw, function (number) { %>
-                    <%= number %>&nbsp;
-                <% }); %>
-                <br/>
+                <p class="pull-left"><%= numbersTemplate({numbers: draw}) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+            <% }); %>
+        </script>
+
+        <script type="text/template" id="numbers">
+            <% _.each(numbers, function (number) { %>
+                <span class="badge badge-number"><%= number %></span>
             <% }); %>
         </script>
 

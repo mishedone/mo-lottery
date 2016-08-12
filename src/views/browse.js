@@ -1,5 +1,6 @@
 var BrowseView = Backbone.View.extend({
     template: _.template($('#browse').html()),
+    numbersTemplate: _.template($('#numbers').html()),
     game: {},
     year: null,
 
@@ -11,7 +12,8 @@ var BrowseView = Backbone.View.extend({
     render: function () {
         this.$el.html(this.template({
             game: this.game,
-            currentYear: this.year
+            currentYear: this.year,
+            numbersTemplate: this.numbersTemplate
         }));
 
         return this;
