@@ -1,5 +1,5 @@
-var GameMenuView = Backbone.View.extend({
-    template: _.template($('#game-menu').html()),
+var NavigationGameMenuView = Backbone.View.extend({
+    template: _.template($('#navigation-game-menu').html()),
     fragment: '',
     game: {},
 

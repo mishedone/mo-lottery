@@ -1,5 +1,5 @@
-var ChangeGameView = Backbone.View.extend({
-    template: _.template($('#change-game').html()),
+var NavigationChangeGameView = Backbone.View.extend({
+    template: _.template($('#navigation-change-game').html()),
     games: [],
     currentGame: {},
 

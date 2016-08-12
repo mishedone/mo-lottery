@@ -1,7 +1,7 @@
 function App() {
     this.router = {};
     this.games = {};
-    this.navs = {};
+    this.navigation = {};
     this.lastGameStorage = new LastGameStorage();
 }
 
@@ -15,7 +15,7 @@ App.prototype = _.extend({}, Backbone.Events, {
         this.games.fetch({
             success: function () {
                 app.initLastGame();
-                app.renderNavs();
+                app.renderNavigation();
                 app.initRouting();
             }
         });
@@ -27,20 +27,20 @@ App.prototype = _.extend({}, Backbone.Events, {
         }
     },
 
-    renderNavs: function () {
-        this.navs.changeGame = new ChangeGameView({
-            el: '#change-game-slot',
+    renderNavigation: function () {
+        this.navigation.changeGame = new NavigationChangeGameView({
+            el: '#navigation-change-game-slot',
             games: this.games,
             currentGame: this.lastGameStorage.get()
         });
-        this.navs.changeGame.render();
+        this.navigation.changeGame.render();
         
-        this.navs.gameMenu = new GameMenuView({
-            el: '#game-menu-slot',
+        this.navigation.gameMenu = new NavigationGameMenuView({
+            el: '#navigation-game-menu-slot',
             game: this.lastGameStorage.get(),
             fragment: Backbone.history.fragment
         });
-        this.navs.gameMenu.render();
+        this.navigation.gameMenu.render();
     },
 
     initRouting: function () {
@@ -54,9 +54,9 @@ App.prototype = _.extend({}, Backbone.Events, {
 
     changeGame: function (game) {
         this.lastGameStorage.set(game);
-        this.navs.gameMenu.setGame(game);
-        this.navs.gameMenu.setFragment(Backbone.history.fragment);
-        this.navs.gameMenu.render();
+        this.navigation.gameMenu.setGame(game);
+        this.navigation.gameMenu.setFragment(Backbone.history.fragment);
+        this.navigation.gameMenu.render();
     }
 });
 
