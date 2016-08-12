@@ -2,13 +2,10 @@
 
 namespace MoLottery\Provider\BST;
 
-use MoLottery\Exception\NotFoundException;
-use MoLottery\Provider\AbstractGame;
-
 /**
  * Bulgarian Sport Totalizator - 6/42 game.
  */
-class Game642 extends AbstractGame
+class Game642 extends AbstractBSTGame
 {
     /**
      * @return string
@@ -35,20 +32,6 @@ class Game642 extends AbstractGame
     }
 
     /**
-     * @param int $year
-     * @return array
-     * @throws NotFoundException
-     */
-    public function getDraws($year)
-    {
-        $this->validateYear($year);
-
-        return array(
-            [15, 22, 24, 26, 29, 35]
-        );
-    }
-
-    /**
      * @return int
      */
     public function getPossibleDraws()
@@ -61,7 +44,12 @@ class Game642 extends AbstractGame
      */
     public function __construct()
     {
-        $this->years[] = 2016;
+        parent::__construct();
+
+        // build years
+        for ($year = 1995; $year <= date('Y'); $year++) {
+            $this->years[] = $year;
+        }
 
         // build numbers
         for ($number = 1; $number <= 42; $number++) {
