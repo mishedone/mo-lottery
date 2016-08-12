@@ -65,7 +65,6 @@ class ProviderRepository
     {
         $this->managerRepository = $managerRepository;
 
-        $this->addProvider(new ACMEProvider());
         $this->addProvider(new BSTProvider());
     }
     
