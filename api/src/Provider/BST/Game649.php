@@ -2,15 +2,10 @@
 
 namespace MoLottery\Provider\BST;
 
-use MoLottery\Exception\NotFoundException;
-use MoLottery\Provider\AbstractGame;
-use MoLottery\Provider\BST\Parser\ArchiveYearParser;
-use MoLottery\Provider\BST\Parser\CurrentYearParser;
-
 /**
  * Bulgarian Sport Totalizator - 6/49 game.
  */
-class Game649 extends AbstractGame
+class Game649 extends AbstractBSTGame
 {
     /**
      * @return string
@@ -35,23 +30,6 @@ class Game649 extends AbstractGame
     {
         return 6;
     }
-    
-    /**
-     * @param int $year
-     * @return array
-     * @throws NotFoundException
-     */
-    public function getDraws($year)
-    {
-        $this->validateYear($year);
-
-        // current year vs archive year
-        if (date('Y') == $year) {
-            return $this->currentYearParser->parse();
-        } else {
-            return $this->archiveYearParser->parse($year);
-        }
-    }
 
     /**
      * @return int
@@ -60,26 +38,14 @@ class Game649 extends AbstractGame
     {
         return 113983816;
     }
-    
-    /**
-     * @var ArchiveYearParser
-     */
-    private $archiveYearParser;
 
     /**
-     * @var CurrentYearParser
-     */
-    private $currentYearParser;
-
-    /**
-     * Builds years, numbers and parsers.
+     * Builds years and numbers.
      */
     public function __construct()
     {
-        // initialize parsers
-        $this->archiveYearParser = new ArchiveYearParser($this);
-        $this->currentYearParser = new CurrentYearParser($this);
-        
+        parent::__construct();
+
         // build years
         for ($year = 1958; $year <= date('Y'); $year++) {
             $this->years[] = $year;
