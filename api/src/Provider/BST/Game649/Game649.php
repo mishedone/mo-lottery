@@ -5,7 +5,7 @@ namespace MoLottery\Provider\BST\Game649;
 use MoLottery\Exception\NotFoundException;
 use MoLottery\Provider\AbstractGame;
 use MoLottery\Provider\BST\Parser\ArchiveYearParser;
-use MoLottery\Provider\BST\Game649\Parser\CurrentYearParser;
+use MoLottery\Provider\BST\Parser\CurrentYearParser;
 
 /**
  * Bulgarian Sport Totalizator - 6/49 game.
@@ -78,7 +78,7 @@ class Game649 extends AbstractGame
     {
         // initialize parsers
         $this->archiveYearParser = new ArchiveYearParser($this);
-        $this->currentYearParser = new CurrentYearParser();
+        $this->currentYearParser = new CurrentYearParser($this);
         
         // build years
         for ($year = 1958; $year <= date('Y'); $year++) {

@@ -1,8 +1,9 @@
 <?php
 
-namespace MoLottery\Provider\BST\Game649\Parser;
+namespace MoLottery\Provider\BST\Parser;
 
 use MoLottery\Exception\ParseException;
+use MoLottery\Provider\AbstractGame;
 use MoLottery\Tool\Clean;
 use MoLottery\Tool\Curl;
 
@@ -15,11 +16,36 @@ use MoLottery\Tool\Curl;
 class CurrentYearParser
 {
     use Clean, Curl;
-    
+
     /**
-     * @const DRAW_PAGE_URL Url of the page listing draws for the current year.
+     * @var AbstractGame
      */
-    const DRAW_PAGE_URL = 'http://www.toto.bg/index.php?lang=1&pid=32&sid=50';
+    private $game;
+
+    /**
+     * @var array
+     */
+    private $drawPageUrls = [
+        '535' => 'http://www.toto.bg/index.php?lang=1&pid=32&sid=52',
+        '642' => 'http://www.toto.bg/index.php?lang=1&pid=32&sid=51',
+        '649' => 'http://www.toto.bg/index.php?lang=1&pid=32&sid=50'
+    ];
+
+    /**
+     * @return string
+     */
+    private function getDrawPageUrl()
+    {
+        return $this->drawPageUrls[$this->game->getId()];
+    }
+
+    /**
+     * @param AbstractGame $game
+     */
+    public function __construct(AbstractGame $game)
+    {
+        $this->game = $game;
+    }
 
     /**
      * @return array
@@ -41,7 +67,7 @@ class CurrentYearParser
      */
     private function parseDrawNames()
     {
-        $html = $this->curlPost(static::DRAW_PAGE_URL, array(
+        $html = $this->curlPost($this->getDrawPageUrl(), array(
             'tir' => date('YEAR') . '/1'
         ));
 
@@ -67,7 +93,7 @@ class CurrentYearParser
      */
     private function parseDraw($name)
     {
-        $html = $this->curlPost(static::DRAW_PAGE_URL, array(
+        $html = $this->curlPost($this->getDrawPageUrl(), array(
             'tir' => $name
         ));
 
@@ -75,8 +101,9 @@ class CurrentYearParser
         preg_match_all('/images\/balls\/_(?<numbers>\d*)\./s', $html, $numbers);
 
         $numbers = $numbers['numbers'];
-        if (count($numbers) != 6) {
-            throw ParseException::wrongNumberCount(count($numbers), 6, $html);
+        $drawSize = $this->game->getDrawSize();
+        if (count($numbers) != $drawSize) {
+            throw ParseException::wrongNumberCount(count($numbers), $drawSize, $html);
         }
 
         return $this->cleanNumbers($numbers);
