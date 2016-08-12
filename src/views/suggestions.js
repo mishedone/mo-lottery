@@ -8,7 +8,7 @@ var SuggestionsView = Backbone.View.extend({
     },
     
     renderSuggestions: function (numbers) {
-        this.$el.find('.suggestions').html(numbers.join(' '));
+        this.$el.find('.hot-cold-trend').html(numbers.join(' '));
         
         return this;
     }
