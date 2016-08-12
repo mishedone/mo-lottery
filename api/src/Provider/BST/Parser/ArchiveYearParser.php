@@ -1,8 +1,9 @@
 <?php
 
-namespace MoLottery\Provider\BST\Game649\Parser;
+namespace MoLottery\Provider\BST\Parser;
 
 use MoLottery\Exception\ParseException;
+use MoLottery\Provider\AbstractGame;
 use MoLottery\Tool\Clean;
 
 /**
@@ -14,6 +15,19 @@ use MoLottery\Tool\Clean;
 class ArchiveYearParser
 {
     use Clean;
+
+    /**
+     * @var AbstractGame
+     */
+    private $game;
+
+    /**
+     * @param AbstractGame $game
+     */
+    public function __construct(AbstractGame $game)
+    {
+        $this->game = $game;
+    }
     
     /**
      * @param int $year
@@ -23,7 +37,8 @@ class ArchiveYearParser
     public function parse($year)
     {
         $archiveDraws = file_get_contents(sprintf(
-            'http://www.toto.bg/files/tiraji/649_%s.txt',
+            'http://www.toto.bg/files/tiraji/%s_%s.txt',
+            $this->game->getId(),
             ($year < 2005) ? substr($year, 2) : $year
         ));
 
@@ -45,8 +60,9 @@ class ArchiveYearParser
             $sections = preg_split('/\s{1,}/', $rawDraw);
             foreach ($sections as $section) {
                 $numbers = explode(',', $section);
-                if (count($numbers) != 6) {
-                    throw ParseException::wrongNumberCount(count($numbers), 6, $section);
+                $drawSize = $this->game->getDrawSize();
+                if (count($numbers) != $drawSize) {
+                    throw ParseException::wrongNumberCount(count($numbers), $drawSize, $section);
                 }
 
                 $draws[] = $this->cleanNumbers($numbers);

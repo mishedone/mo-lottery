@@ -4,7 +4,7 @@ namespace MoLottery\Provider\BST\Game649;
 
 use MoLottery\Exception\NotFoundException;
 use MoLottery\Provider\AbstractGame;
-use MoLottery\Provider\BST\Game649\Parser\ArchiveYearParser;
+use MoLottery\Provider\BST\Parser\ArchiveYearParser;
 use MoLottery\Provider\BST\Game649\Parser\CurrentYearParser;
 
 /**
@@ -77,7 +77,7 @@ class Game649 extends AbstractGame
     public function __construct()
     {
         // initialize parsers
-        $this->archiveYearParser = new ArchiveYearParser();
+        $this->archiveYearParser = new ArchiveYearParser($this);
         $this->currentYearParser = new CurrentYearParser();
         
         // build years
