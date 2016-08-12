@@ -1,21 +1,21 @@
 <?php
 
-namespace MoLottery\Provider\BST\Game535;
+namespace MoLottery\Provider\BST;
 
 use MoLottery\Exception\NotFoundException;
 use MoLottery\Provider\AbstractGame;
 
 /**
- * Bulgarian Sport Totalizator - 5/35 game.
+ * Bulgarian Sport Totalizator - 6/42 game.
  */
-class Game535 extends AbstractGame
+class Game642 extends AbstractGame
 {
     /**
      * @return string
      */
     public function getId()
     {
-        return '535';
+        return '642';
     }
 
     /**
@@ -23,7 +23,7 @@ class Game535 extends AbstractGame
      */
     public function getName()
     {
-        return '5/35';
+        return '6/42';
     }
 
     /**
@@ -31,7 +31,7 @@ class Game535 extends AbstractGame
      */
     public function getDrawSize()
     {
-        return 5;
+        return 6;
     }
 
     /**
@@ -44,7 +44,7 @@ class Game535 extends AbstractGame
         $this->validateYear($year);
 
         return array(
-            [15, 22, 24, 26, 29]
+            [15, 22, 24, 26, 29, 35]
         );
     }
 
@@ -53,7 +53,7 @@ class Game535 extends AbstractGame
      */
     public function getPossibleDraws()
     {
-        return 324632;
+        return 5245786;
     }
 
     /**
@@ -64,7 +64,7 @@ class Game535 extends AbstractGame
         $this->years[] = 2016;
 
         // build numbers
-        for ($number = 1; $number <= 35; $number++) {
+        for ($number = 1; $number <= 42; $number++) {
             $this->numbers[] = $number;
         }
     }

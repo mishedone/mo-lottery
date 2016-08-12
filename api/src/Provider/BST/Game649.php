@@ -1,6 +1,6 @@
 <?php
 
-namespace MoLottery\Provider\BST\Game649;
+namespace MoLottery\Provider\BST;
 
 use MoLottery\Exception\NotFoundException;
 use MoLottery\Provider\AbstractGame;
