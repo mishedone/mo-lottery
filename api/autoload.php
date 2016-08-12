@@ -20,9 +20,9 @@ require_once 'src/Provider/AbstractProvider.php';
 require_once 'src/Provider/BST/AbstractBSTGame.php';
 require_once 'src/Provider/BST/Parser/ArchiveYearParser.php';
 require_once 'src/Provider/BST/Parser/CurrentYearParser.php';
-require_once 'src/Provider/BST/Game535.php';
-require_once 'src/Provider/BST/Game642.php';
-require_once 'src/Provider/BST/Game649.php';
+require_once 'src/Provider/BST/Game535/Game535.php';
+require_once 'src/Provider/BST/Game642/Game642.php';
+require_once 'src/Provider/BST/Game649/Game649.php';
 require_once 'src/Provider/BST/BSTProvider.php';
 require_once 'src/Provider/ProviderRepository.php';
 

@@ -1,18 +1,20 @@
 <?php
 
-namespace MoLottery\Provider\BST;
+namespace MoLottery\Provider\BST\Game642;
+
+use MoLottery\Provider\BST\AbstractBSTGame;
 
 /**
- * Bulgarian Sport Totalizator - 6/49 game.
+ * Bulgarian Sport Totalizator - 6/42 game.
  */
-class Game649 extends AbstractBSTGame
+class Game642 extends AbstractBSTGame
 {
     /**
      * @return string
      */
     public function getId()
     {
-        return '649';
+        return '642';
     }
 
     /**
@@ -20,7 +22,7 @@ class Game649 extends AbstractBSTGame
      */
     public function getName()
     {
-        return '6/49';
+        return '6/42';
     }
 
     /**
@@ -36,7 +38,7 @@ class Game649 extends AbstractBSTGame
      */
     public function getPossibleDraws()
     {
-        return 113983816;
+        return 5245786;
     }
 
     /**
@@ -47,12 +49,12 @@ class Game649 extends AbstractBSTGame
         parent::__construct();
 
         // build years
-        for ($year = 1958; $year <= date('Y'); $year++) {
+        for ($year = 1995; $year <= date('Y'); $year++) {
             $this->years[] = $year;
         }
 
         // build numbers
-        for ($number = 1; $number <= 49; $number++) {
+        for ($number = 1; $number <= 42; $number++) {
             $this->numbers[] = $number;
         }
     }

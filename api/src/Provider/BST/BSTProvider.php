@@ -3,6 +3,9 @@
 namespace MoLottery\Provider\BST;
 
 use MoLottery\Provider\AbstractProvider;
+use MoLottery\Provider\BST\Game535\Game535;
+use MoLottery\Provider\BST\Game642\Game642;
+use MoLottery\Provider\BST\Game649\Game649;
 
 /**
  * Bulgarian Sport Totalizator data provider.
