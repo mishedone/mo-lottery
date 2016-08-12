@@ -11,7 +11,7 @@ var BrowseView = Backbone.View.extend({
     render: function () {
         this.$el.html(this.template({
             game: this.game,
-            year: this.year
+            currentYear: this.year
         }));
 
         return this;

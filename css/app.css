@@ -12,3 +12,8 @@ a {
     background-position: 15px 5px;
     background-repeat: no-repeat;
 }
+
+.btn-list {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}

@@ -34,7 +34,7 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation-slot" aria-expanded="false">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation" aria-expanded="false">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -44,7 +44,7 @@
                     <a class="navbar-brand navbar-logo" href="#">mo|lottery</a>
                 </div>
 
-                <div class="collapse navbar-collapse">
+                <div class="collapse navbar-collapse" id="navigation">
                     <ul class="nav navbar-nav" id="navigation-game-menu-slot"></ul>
                     
                     <ul class="nav navbar-nav navbar-right">
@@ -82,25 +82,27 @@
         </script>
         
         <script type="text/template" id="suggestions">
-            <h2>Hot-cold Trend</h2>
+            <h3>Hot-cold Trend</h3>
             <hr/>
             <span class="hot-cold-trend"></span>
 
-            <h2>Elapsed Time Trend</h2>
+            <h3>Elapsed Time Trend</h3>
             <hr/>
             <span class="elapsed-time-trend">Coming soon...</span>
         </script>
 
         <script type="text/template" id="browse">
-            <h2>Years (<%= year %>)</h2>
+            <h3>Years</h3>
             <hr/>
-            <% _.each(game.get('years'), function (year) { %>
-                <a href="#/browse/<%= game.get('id') %>/<%= year %>"><%= year %></a>&nbsp;
+            <% reverse = game.get('years').slice(0).reverse() %>
+            <% _.each(reverse, function (year) { %>
+                <% btn = (year == currentYear) ? 'btn-primary' : 'btn-default' %>
+                <a href="#/browse/<%= game.get('id') %>/<%= year %>" class="btn <%= btn %> btn-sm btn-list"><%= year %></a>
             <% }); %>
 
-            <h2>Draws</h2>
+            <h3>Draws</h3>
             <hr/>
-            <% _.each(game.getDraws(year), function (draw) { %>
+            <% _.each(game.getDraws(currentYear), function (draw) { %>
                 <% _.each(draw, function (number) { %>
                     <%= number %>&nbsp;
                 <% }); %>
