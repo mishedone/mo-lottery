@@ -102,7 +102,11 @@
 
             <h3>Draws</h3>
             <hr/>
-            <% _.each(game.getDraws(currentYear), function (draw) { %>
+            <div id="browse-draws-slot">Loading...</div>
+        </script>
+
+        <script type="text/template" id="browse-draws">
+            <% _.each(game.getDraws(year), function (draw) { %>
                 <p class="pull-left"><%= numbersTemplate({numbers: draw}) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
             <% }); %>
         </script>

@@ -1,5 +1,6 @@
 var BrowseView = Backbone.View.extend({
     template: _.template($('#browse').html()),
+    drawsTemplate: _.template($('#browse-draws').html()),
     numbersTemplate: _.template($('#numbers').html()),
     game: {},
     year: null,
@@ -12,7 +13,16 @@ var BrowseView = Backbone.View.extend({
     render: function () {
         this.$el.html(this.template({
             game: this.game,
-            currentYear: this.year,
+            currentYear: this.year
+        }));
+
+        return this;
+    },
+
+    renderDraws: function () {
+        this.$el.find('#browse-draws-slot').html(this.drawsTemplate({
+            game: this.game,
+            year: this.year,
             numbersTemplate: this.numbersTemplate
         }));
 

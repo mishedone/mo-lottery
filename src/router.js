@@ -46,13 +46,15 @@ var Router = Backbone.Router.extend({
             year = _.last(game.get('years'));
         }
 
+        view = new BrowseView({
+            el: '#content-slot',
+            game: game,
+            year: year
+        });
+        view.render();
+
         game.loadDraws(year, function () {
-            view = new BrowseView({
-                el: '#content-slot',
-                game: game,
-                year: year
-            });
-            view.render();
+            view.renderDraws();
         });
     }
 });
