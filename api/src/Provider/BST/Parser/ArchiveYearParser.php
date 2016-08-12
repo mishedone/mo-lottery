@@ -51,6 +51,9 @@ class ArchiveYearParser
                 continue;
             }
 
+            // fix specific game raw draws with typos
+            $rawDraw = $this->fixRawDrawTypos($rawDraw);
+
             // remove spaces after commas, remove leading nonsense, trim
             $rawDraw = preg_replace('/,\s{1,}/', ',', $rawDraw);
             $rawDraw = preg_replace('/^.*?[,\-\s]/', '', $rawDraw);
@@ -70,5 +73,25 @@ class ArchiveYearParser
         }
 
         return $draws;
+    }
+
+    private function fixRawDrawTypos($rawDraw)
+    {
+        // handle 5/35 inconsistencies
+        if ('535' == $this->game->getId()) {
+            $replacements = [
+                '417,18,20,24,27         8,15,18,26,31   4,7,9,13,25' => '4,17,18,20,24,27         8,15,18,26,31   4,7,9,13,25',
+                '812,15,21,23,30         4,23,27,28,33   5,16,18,28,32' => '8,12,15,21,23,30         4,23,27,28,33   5,16,18,28,32',
+                '80-4, 5,13,25,26		3, 7,10,13,27		5, 7, 9,16,26,' => '80-4, 5,13,25,26		3, 7,10,13,27		5, 7, 9,16,26'
+            ];
+
+            foreach ($replacements as $search => $replace) {
+                if ($rawDraw == $search) {
+                    $rawDraw = $replace;
+                }
+            }
+        }
+
+        return $rawDraw;
     }
 }

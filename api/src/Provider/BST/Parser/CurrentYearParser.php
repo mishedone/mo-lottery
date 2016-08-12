@@ -54,7 +54,9 @@ class CurrentYearParser
     {
         $draws = array();
         foreach ($this->parseDrawNames() as $name) {
-            $draws[] = $this->parseDraw($name);
+            foreach ($this->parseDraws($name) as $draw) {
+                $draws[] = $draw;
+            }
         }
 
         return $draws;
@@ -80,8 +82,11 @@ class CurrentYearParser
         // reorder matched draw names in ascending order
         $drawNames = $drawNames['names'];
         krsort($drawNames);
+        $drawNames = array_values($drawNames);
 
-        return array_values($drawNames);
+        return array_filter($drawNames, function ($name) {
+            return (substr($name, 0, 4) == date('Y'));
+        });
     }
 
     /**
@@ -91,7 +96,7 @@ class CurrentYearParser
      * @return array
      * @throws ParseException
      */
-    private function parseDraw($name)
+    private function parseDraws($name)
     {
         $html = $this->curlPost($this->getDrawPageUrl(), array(
             'tir' => $name
@@ -100,12 +105,15 @@ class CurrentYearParser
         $numbers = array();
         preg_match_all('/images\/balls\/_(?<numbers>\d*)\./s', $html, $numbers);
 
-        $numbers = $numbers['numbers'];
+        $numbers = $this->cleanNumbers($numbers['numbers']);
         $drawSize = $this->game->getDrawSize();
-        if (count($numbers) != $drawSize) {
-            throw ParseException::wrongNumberCount(count($numbers), $drawSize, $html);
+        $draws = array_chunk($numbers, $drawSize);
+        foreach ($draws as $numbersInDraw) {
+            if (count($numbersInDraw) != $drawSize) {
+                throw ParseException::wrongNumberCount(count($numbersInDraw), $drawSize, implode(',', $numbersInDraw));
+            }
         }
 
-        return $this->cleanNumbers($numbers);
+        return $draws;
     }
 }
