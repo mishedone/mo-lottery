@@ -3,7 +3,8 @@
 namespace MoLottery\Provider\BST\Parser;
 
 use MoLottery\Exception\ParseException;
-use MoLottery\Provider\AbstractGame;
+use MoLottery\Provider\BST\AbstractBSTGame;
+use MoLottery\Provider\BST\AbstractParserConfig;
 use MoLottery\Tool\Clean;
 use MoLottery\Tool\Curl;
 
@@ -18,33 +19,23 @@ class CurrentYearParser
     use Clean, Curl;
 
     /**
-     * @var AbstractGame
+     * @var AbstractBSTGame
      */
     private $game;
 
     /**
-     * @var array
+     * @var AbstractParserConfig
      */
-    private $drawPageUrls = [
-        '535' => 'http://www.toto.bg/index.php?lang=1&pid=32&sid=52',
-        '642' => 'http://www.toto.bg/index.php?lang=1&pid=32&sid=51',
-        '649' => 'http://www.toto.bg/index.php?lang=1&pid=32&sid=50'
-    ];
+    private $config;
 
     /**
-     * @return string
+     * @param AbstractBSTGame $game
+     * @param AbstractParserConfig $config
      */
-    private function getDrawPageUrl()
-    {
-        return $this->drawPageUrls[$this->game->getId()];
-    }
-
-    /**
-     * @param AbstractGame $game
-     */
-    public function __construct(AbstractGame $game)
+    public function __construct(AbstractBSTGame $game, AbstractParserConfig $config)
     {
         $this->game = $game;
+        $this->config = $config;
     }
 
     /**
@@ -69,7 +60,7 @@ class CurrentYearParser
      */
     private function parseDrawNames()
     {
-        $html = $this->curlPost($this->getDrawPageUrl(), array(
+        $html = $this->curlPost($this->config->getDrawPageUrl(), array(
             'tir' => date('YEAR') . '/1'
         ));
 
@@ -98,7 +89,7 @@ class CurrentYearParser
      */
     private function parseDraws($name)
     {
-        $html = $this->curlPost($this->getDrawPageUrl(), array(
+        $html = $this->curlPost($this->config->getDrawPageUrl(), array(
             'tir' => $name
         ));
 

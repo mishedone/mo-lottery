@@ -4,6 +4,7 @@ namespace MoLottery\Provider\BST;
 
 use MoLottery\Exception\NotFoundException;
 use MoLottery\Provider\AbstractGame;
+use MoLottery\Provider\BST\AbstractParserConfig;
 use MoLottery\Provider\BST\Parser\ArchiveYearParser;
 use MoLottery\Provider\BST\Parser\CurrentYearParser;
 
@@ -12,6 +13,11 @@ use MoLottery\Provider\BST\Parser\CurrentYearParser;
  */
 abstract class AbstractBSTGame extends AbstractGame
 {
+    /**
+     * @return AbstractParserConfig
+     */
+    abstract protected function getParserConfig();
+
     /**
      * @var ArchiveYearParser
      */
@@ -44,7 +50,8 @@ abstract class AbstractBSTGame extends AbstractGame
      */
     public function __construct()
     {
-        $this->archiveYearParser = new ArchiveYearParser($this);
-        $this->currentYearParser = new CurrentYearParser($this);
+        $parserConfig = $this->getParserConfig();
+        $this->archiveYearParser = new ArchiveYearParser($this, $parserConfig);
+        $this->currentYearParser = new CurrentYearParser($this, $parserConfig);
     }
 }

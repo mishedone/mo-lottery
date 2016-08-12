@@ -3,7 +3,8 @@
 namespace MoLottery\Provider\BST\Parser;
 
 use MoLottery\Exception\ParseException;
-use MoLottery\Provider\AbstractGame;
+use MoLottery\Provider\BST\AbstractBSTGame;
+use MoLottery\Provider\BST\AbstractParserConfig;
 use MoLottery\Tool\Clean;
 
 /**
@@ -17,16 +18,23 @@ class ArchiveYearParser
     use Clean;
 
     /**
-     * @var AbstractGame
+     * @var AbstractBSTGame
      */
     private $game;
 
     /**
-     * @param AbstractGame $game
+     * @var AbstractParserConfig
      */
-    public function __construct(AbstractGame $game)
+    private $config;
+
+    /**
+     * @param AbstractBSTGame $game
+     * @param AbstractParserConfig $config
+     */
+    public function __construct(AbstractBSTGame $game, AbstractParserConfig $config)
     {
         $this->game = $game;
+        $this->config = $config;
     }
     
     /**
@@ -75,36 +83,15 @@ class ArchiveYearParser
         return $draws;
     }
 
+    /**
+     * @param string $rawDraw
+     * @return string
+     */
     private function fixRawDrawTypos($rawDraw)
     {
-        // handle 5/35 inconsistencies
-        if ('535' == $this->game->getId()) {
-            $replacements = [
-                '417,18,20,24,27         8,15,18,26,31   4,7,9,13,25' => '4,17,18,20,24,27         8,15,18,26,31   4,7,9,13,25',
-                '812,15,21,23,30         4,23,27,28,33   5,16,18,28,32' => '8,12,15,21,23,30         4,23,27,28,33   5,16,18,28,32',
-                '80-4, 5,13,25,26		3, 7,10,13,27		5, 7, 9,16,26,' => '80-4, 5,13,25,26		3, 7,10,13,27		5, 7, 9,16,26'
-            ];
-
-            foreach ($replacements as $search => $replace) {
-                if ($rawDraw == $search) {
-                    $rawDraw = $replace;
-                }
-            }
-        }
-
-        // handle 6/42 inconsistencies
-        if ('642' == $this->game->getId()) {
-            $replacements = [
-                '64,4,7,10,11,16,19,     1,11,16,18,26,37        10,14,16,17,18,35' => '64,4,7,10,11,16,19     1,11,16,18,26,37        10,14,16,17,18,35',
-                '3311,14,26,29,32,39     3,6,11,17,27,30         10,18,25,29,33,39' => '33,11,14,26,29,32,39     3,6,11,17,27,30         10,18,25,29,33,39',
-                '3611,14,20,30,39,42     1,2,7,10,17,22          1,3,6,23,28,37' => '36,11,14,20,30,39,42     1,2,7,10,17,22          1,3,6,23,28,37',
-                '3811,17,20,21,30,37     9,18,23,32,37,38        1,18,20,25,26,31' => '38,11,17,20,21,30,37     9,18,23,32,37,38        1,18,20,25,26,31'
-            ];
-
-            foreach ($replacements as $search => $replace) {
-                if ($rawDraw == $search) {
-                    $rawDraw = $replace;
-                }
+        foreach ($this->config->getReplacements() as $search => $replace) {
+            if ($rawDraw == $search) {
+                $rawDraw = $replace;
             }
         }
 

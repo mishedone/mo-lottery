@@ -42,6 +42,14 @@ class Game649 extends AbstractBSTGame
     }
 
     /**
+     * @return ParserConfig
+     */
+    protected function getParserConfig()
+    {
+        return new ParserConfig();
+    }
+
+    /**
      * Builds years and numbers.
      */
     public function __construct()
