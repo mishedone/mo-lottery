@@ -3,6 +3,7 @@
 namespace MoLottery\Provider\BST;
 
 use MoLottery\Provider\AbstractProvider;
+use MoLottery\Provider\BST\Game535\Game535;
 use MoLottery\Provider\BST\Game642\Game642;
 use MoLottery\Provider\BST\Game649\Game649;
 
@@ -32,6 +33,7 @@ class BSTProvider extends AbstractProvider
      */
     public function __construct()
     {
+        $this->addGame(new Game535());
         $this->addGame(new Game642());
         $this->addGame(new Game649());
     }

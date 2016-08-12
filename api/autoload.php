@@ -17,6 +17,7 @@ require_once 'src/Manager/ManagerRepository.php';
 // providers
 require_once 'src/Provider/AbstractGame.php';
 require_once 'src/Provider/AbstractProvider.php';
+require_once 'src/Provider/BST/Game535/Game535.php';
 require_once 'src/Provider/BST/Game642/Game642.php';
 require_once 'src/Provider/BST/Game649/Parser/ArchiveYearParser.php';
 require_once 'src/Provider/BST/Game649/Parser/CurrentYearParser.php';
