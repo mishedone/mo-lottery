@@ -20,8 +20,8 @@ class DrawManager extends AbstractManager
     /**
      * @param string $dataPath
      * @param string $providerId
-     * @param int $year
      * @param string $gameId
+     * @param int $year
      */
     public function __construct($dataPath, $providerId, $gameId, $year)
     {
