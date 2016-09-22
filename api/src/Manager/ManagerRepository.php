@@ -16,6 +16,11 @@ class ManagerRepository
      * @var array
      */
     private $drawManagers = [];
+    
+    /**
+     * @var array
+     */
+    private $drawNameManagers = [];
 
     /**
      * @var LastParseManager
@@ -44,6 +49,21 @@ class ManagerRepository
         }
 
         return $this->drawManagers[$key];
+    }
+    
+    /**
+     * @param string $providerId
+     * @param string $gameId
+     * @return DrawNameManager
+     */
+    public function getDrawNameManager($providerId, $gameId)
+    {
+        $key = sprintf('%s-%s', $providerId, $gameId);
+        if (!array_key_exists($key, $this->drawNameManagers)) {
+            $this->drawNameManagers[$key] = new DrawNameManager($this->dataPath, $providerId, $gameId);
+        }
+        
+        return $this->drawNameManagers[$key];
     }
 
     /**

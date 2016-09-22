@@ -12,6 +12,7 @@ require_once 'src/Http/Response.php';
 require_once 'src/Manager/AbstractManager.php';
 require_once 'src/Manager/LastParseManager.php';
 require_once 'src/Manager/DrawManager.php';
+require_once 'src/Manager/DrawNameManager.php';
 require_once 'src/Manager/ManagerRepository.php';
 
 // providers
