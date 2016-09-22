@@ -30,12 +30,11 @@ class CurrentYearParser
 
     /**
      * @param AbstractBSTGame $game
-     * @param AbstractParserConfig $config
      */
-    public function __construct(AbstractBSTGame $game, AbstractParserConfig $config)
+    public function __construct(AbstractBSTGame $game)
     {
         $this->game = $game;
-        $this->config = $config;
+        $this->config = $game->getParserConfig();
     }
 
     /**

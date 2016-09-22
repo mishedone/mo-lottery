@@ -50,8 +50,7 @@ abstract class AbstractBSTGame extends AbstractGame
      */
     public function __construct()
     {
-        $parserConfig = $this->getParserConfig();
-        $this->archiveYearParser = new ArchiveYearParser($this, $parserConfig);
-        $this->currentYearParser = new CurrentYearParser($this, $parserConfig);
+        $this->archiveYearParser = new ArchiveYearParser($this);
+        $this->currentYearParser = new CurrentYearParser($this);
     }
 }
