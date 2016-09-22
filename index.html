@@ -113,6 +113,7 @@
         </script>
 
         <script type="text/template" id="numbers">
+            <% numbers.sort() %>
             <% _.each(numbers, function (number) { %>
                 <span class="badge badge-number"><%= number %></span>
             <% }); %>
