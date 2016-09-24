@@ -13,8 +13,8 @@ $dataPath = __DIR__ . DIRECTORY_SEPARATOR . 'data';
 
 // build services
 $response = new Response();
-$managerRepository = new ManagerRepository($dataPath);
-$providerRepository = new ProviderRepository($managerRepository);
+//$managerRepository = new ManagerRepository($dataPath);
+$providerRepository = new ProviderRepository();
 $controller = new Controller($providerRepository);
 
 // routing / controller

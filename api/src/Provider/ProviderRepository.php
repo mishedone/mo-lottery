@@ -3,8 +3,6 @@
 namespace MoLottery\Provider;
 
 use MoLottery\Exception\NotFoundException;
-use MoLottery\Manager\ManagerRepository;
-use MoLottery\Provider\ACME\ACMEProvider;
 use MoLottery\Provider\BST\BSTProvider;
 
 /**
@@ -12,11 +10,6 @@ use MoLottery\Provider\BST\BSTProvider;
  */
 class ProviderRepository
 {
-    /**
-     * @var ManagerRepository
-     */
-    private $managerRepository;
-
     /**
      * @var array
      */
@@ -58,13 +51,9 @@ class ProviderRepository
 
     /**
      * Instantiates available providers.
-     *
-     * @param ManagerRepository $managerRepository
      */
-    public function __construct(ManagerRepository $managerRepository)
+    public function __construct()
     {
-        $this->managerRepository = $managerRepository;
-
         $this->addProvider(new BSTProvider());
     }
     
@@ -86,15 +75,15 @@ class ProviderRepository
     public function getDraws($providerId, $gameId, $year)
     {
         $game = $this->getProvider($providerId)->getGame($gameId);
-        $game->validateYear($year);
+        //$game->validateYear($year);
 
         // prepare managers
-        $drawManager = $this->managerRepository->getDrawManager($providerId, $gameId, $year);
-        $lastParseManager = $this->managerRepository->getLastParseManager();
-        $lastParseKey = sprintf('draws-%s-%s', $providerId, $gameId);
+        //$drawManager = $this->managerRepository->getDrawManager($providerId, $gameId, $year);
+        //$lastParseManager = $this->managerRepository->getLastParseManager();
+        //$lastParseKey = sprintf('draws-%s-%s', $providerId, $gameId);
 
         // check current versus archive year
-        if (date('Y') == $year) {
+        /*if (date('Y') == $year) {
             if (!$lastParseManager->hasLastParseToday($lastParseKey)) {
                 $drawManager->updateDraws($game->getDraws($year));
                 $lastParseManager->setLastParse($lastParseKey, new \DateTime());
@@ -103,8 +92,8 @@ class ProviderRepository
             if (!$drawManager->hasDraws()) {
                 $drawManager->updateDraws($game->getDraws($year));
             }
-        }
+        }*/
         
-        return $drawManager->getDraws();
+        return $game->getDraws($year);
     }
 }

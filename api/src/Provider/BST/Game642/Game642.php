@@ -44,7 +44,7 @@ class Game642 extends AbstractBSTGame
     /**
      * @return ParserConfig
      */
-    protected function getParserConfig()
+    public function getParserConfig()
     {
         return new ParserConfig();
     }
