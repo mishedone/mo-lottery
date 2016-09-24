@@ -3,7 +3,7 @@
 namespace MoLottery\Manager;
 
 /**
- * Instantiates draw managers for different games and providers and keeps last parse manager as singleton.
+ * Instantiates storage managers.
  */
 class ManagerRepository
 {
@@ -16,16 +16,16 @@ class ManagerRepository
      * @var array
      */
     private $drawManagers = [];
-    
-    /**
-     * @var array
-     */
-    private $drawNameManagers = [];
 
     /**
      * @var LastParseManager
      */
     private $lastParseManager;
+    
+    /**
+     * @var array
+     */
+    private $optionManagers = [];
 
     /**
      * @param string $dataPath
@@ -50,21 +50,6 @@ class ManagerRepository
 
         return $this->drawManagers[$key];
     }
-    
-    /**
-     * @param string $providerId
-     * @param string $gameId
-     * @return DrawNameManager
-     */
-    public function getDrawNameManager($providerId, $gameId)
-    {
-        $key = sprintf('%s-%s', $providerId, $gameId);
-        if (!array_key_exists($key, $this->drawNameManagers)) {
-            $this->drawNameManagers[$key] = new DrawNameManager($this->dataPath, $providerId, $gameId);
-        }
-        
-        return $this->drawNameManagers[$key];
-    }
 
     /**
      * @return LastParseManager
@@ -76,5 +61,20 @@ class ManagerRepository
         }
 
         return $this->lastParseManager;
+    }
+    
+    /**
+     * @param string $providerId
+     * @param string $gameId
+     * @return OptionManager
+     */
+    public function getOptionManager($providerId, $gameId)
+    {
+        $key = sprintf('%s-%s', $providerId, $gameId);
+        if (!array_key_exists($key, $this->optionManagers)) {
+            $this->optionManagers[$key] = new OptionManager($this->dataPath, $providerId, $gameId);
+        }
+        
+        return $this->optionManagers[$key];
     }
 }

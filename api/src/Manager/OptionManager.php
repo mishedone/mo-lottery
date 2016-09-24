@@ -3,19 +3,19 @@
 namespace MoLottery\Manager;
 
 /**
- * Caches processed draw names for the current year to speed up parsing.
+ * Stores game specific options.
  */
-class DrawNameManager extends AbstractManager
+class OptionManager extends AbstractManager
 {
     /**
      * @var string
      */
-    protected $file = 'draw-names.json';
+    protected $file = '';
     
     /**
      * @var array
      */
-    private $drawNames = [];
+    private $options = [];
     
     /**
      * @param string $dataPath
@@ -24,15 +24,14 @@ class DrawNameManager extends AbstractManager
      */
     public function __construct($dataPath, $providerId, $gameId)
     {
-        $dir = sprintf('draws-%s-%s', $providerId, $gameId);
-        
         // create dir if it's not existing
-        $fullPath = $dataPath . DIRECTORY_SEPARATOR . $dir;
+        $fullPath = $dataPath . DIRECTORY_SEPARATOR . 'options';
         if (!is_dir($fullPath)) {
             mkdir($fullPath);
         }
         
         parent::__construct($fullPath);
+        $this->file = sprintf('%s-%s.json', $providerId, $gameId);
         $this->drawNames = $this->readData();
     }
 }
