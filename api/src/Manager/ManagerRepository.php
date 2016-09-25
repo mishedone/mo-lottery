@@ -8,31 +8,38 @@ namespace MoLottery\Manager;
 class ManagerRepository
 {
     /**
+     * @var ManagerRepository
+     */
+    private static $instance;
+    
+    /**
      * @var string
      */
-    private $dataPath;
+    private static $dataPath;
 
     /**
      * @var array
      */
     private $drawManagers = [];
-
-    /**
-     * @var LastParseManager
-     */
-    private $lastParseManager;
     
-    /**
-     * @var array
-     */
-    private $optionManagers = [];
-
     /**
      * @param string $dataPath
      */
-    public function __construct($dataPath)
+    public static function setDataPath($dataPath)
     {
-        $this->dataPath = $dataPath;
+        static::$dataPath = $dataPath;
+    }
+    
+    /**
+     * @return ManagerRepository
+     */
+    public static function get()
+    {
+        if (!static::$instance) {
+            static::$instance = new ManagerRepository();
+        }
+        
+        return static::$instance;
     }
 
     /**
@@ -45,36 +52,9 @@ class ManagerRepository
     {
         $key = sprintf('%s-%s-%d', $providerId, $gameId, $year);
         if (!array_key_exists($key, $this->drawManagers)) {
-            $this->drawManagers[$key] = new DrawManager($this->dataPath, $providerId, $gameId, $year);
+            $this->drawManagers[$key] = new DrawManager(static::$dataPath, $providerId, $gameId, $year);
         }
 
         return $this->drawManagers[$key];
-    }
-
-    /**
-     * @return LastParseManager
-     */
-    public function getLastParseManager()
-    {
-        if (!$this->lastParseManager) {
-            $this->lastParseManager = new LastParseManager($this->dataPath);
-        }
-
-        return $this->lastParseManager;
-    }
-    
-    /**
-     * @param string $providerId
-     * @param string $gameId
-     * @return OptionManager
-     */
-    public function getOptionManager($providerId, $gameId)
-    {
-        $key = sprintf('%s-%s', $providerId, $gameId);
-        if (!array_key_exists($key, $this->optionManagers)) {
-            $this->optionManagers[$key] = new OptionManager($this->dataPath, $providerId, $gameId);
-        }
-        
-        return $this->optionManagers[$key];
     }
 }

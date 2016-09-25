@@ -15,7 +15,7 @@ class DrawManager extends AbstractManager
     /**
      * @var array
      */
-    private $draws = array();
+    private $draws = [];
 
     /**
      * @param string $dataPath
@@ -41,7 +41,7 @@ class DrawManager extends AbstractManager
     /**
      * @return bool
      */
-    public function hasDraws()
+    public function has()
     {
         return $this->hasData();
     }
@@ -49,7 +49,7 @@ class DrawManager extends AbstractManager
     /**
      * @return array
      */
-    public function getDraws()
+    public function get()
     {
         return $this->draws;
     }
@@ -57,7 +57,7 @@ class DrawManager extends AbstractManager
     /**
      * @param array $draws
      */
-    public function updateDraws(array $draws)
+    public function set(array $draws)
     {
         $this->draws = $draws;
         $this->saveData($this->draws);

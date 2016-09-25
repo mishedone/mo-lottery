@@ -9,11 +9,12 @@ use MoLottery\Http\Response;
 use MoLottery\Manager\ManagerRepository;
 use MoLottery\Provider\ProviderRepository;
 
+// configure manager repository singleton
 $dataPath = __DIR__ . DIRECTORY_SEPARATOR . 'data';
+ManagerRepository::setDataPath($dataPath);
 
 // build services
 $response = new Response();
-//$managerRepository = new ManagerRepository($dataPath);
 $providerRepository = new ProviderRepository();
 $controller = new Controller($providerRepository);
 
