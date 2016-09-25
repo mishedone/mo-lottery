@@ -19,13 +19,12 @@ class DrawManager extends AbstractManager
 
     /**
      * @param string $dataPath
-     * @param string $providerId
      * @param string $gameId
      * @param int $year
      */
-    public function __construct($dataPath, $providerId, $gameId, $year)
+    public function __construct($dataPath, $gameId, $year)
     {
-        $dir = sprintf('draws-%s-%s', $providerId, $gameId);
+        $dir = sprintf('draws-%s', $gameId);
         
         // create dir if it's not existing
         $fullPath = $dataPath . DIRECTORY_SEPARATOR . $dir;
