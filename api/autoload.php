@@ -10,6 +10,7 @@ require_once 'src/Http/Response.php';
 // managers
 require_once 'src/Manager/AbstractManager.php';
 require_once 'src/Manager/DrawManager.php';
+require_once 'src/Manager/LastParseManager.php';
 require_once 'src/Manager/ParseManager.php';
 require_once 'src/Manager/ManagerRepository.php';
 
