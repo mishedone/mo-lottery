@@ -26,16 +26,30 @@ var Router = Backbone.Router.extend({
     },
     
     suggestions: function (id) {
-        var game = this.findGame(id), view, suggestions;
+        var game = this.findGame(id), view;
         
         view = new SuggestionsView({
             el: '#content-slot'
         });
         view.render();
         
-        suggestions = new HotColdTrendSuggestions();
-        suggestions.get(game, function (numbers) {
-            view.renderSuggestions(numbers);
+        game.load(function () {
+            var draws, periods, suggestions;
+            
+            draws = game.getAllDraws();
+            draws.reverse();
+            
+            periods = new HotColdTrendPeriods();
+            suggestions = new HotColdTrendSuggestions();
+            
+            view.renderSuggestions(suggestions.get(
+                periods.get(
+                    game.get('numbers'),
+                    draws.slice(0, 96),
+                    12
+                ),
+                game.get('drawSize')
+            ));
         });
     },
 

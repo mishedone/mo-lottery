@@ -13,12 +13,12 @@ var GameModel = Backbone.Model.extend({
     },
 
     load: function (success) {
-        var game = this, loadedDraws = 0;
+        var self = this, loadedDraws = 0;
 
-        _.each(game.get('years'), function (year) {
-            game.loadDraws(year, function () {
+        _.each(this.get('years'), function (year) {
+            self.loadDraws(year, function () {
                 loadedDraws++;
-                if (loadedDraws == game.get('years').length) {
+                if (loadedDraws == self.get('years').length) {
                     success();
                 }
             });
@@ -26,24 +26,32 @@ var GameModel = Backbone.Model.extend({
     },
 
     loadDraws: function (year, success) {
-        var game, currentYear;
+        var self = this, currentYear;
 
-        game = this;
         currentYear = new Date().getFullYear();
-
-        if (currentYear != year  && game.getDraws(year)) {
+        if (currentYear != year  && this.getDraws(year)) {
             return success();
         }
 
         // load draws for wanted year (current year is always reloaded)
-        $.get(game.getDrawsUrl(year), function (draws) {
-            game.drawsStorage.set(year, draws);
+        $.get(this.getDrawsUrl(year), function (draws) {
+            self.drawsStorage.set(year, draws);
             success();
         });
     },
 
     getDraws: function (year) {
         return this.drawsStorage.get(year);
+    },
+    
+    getAllDraws: function () {
+        var self = this, draws = [];
+
+        _.each(this.get('years'), function (year) {
+            draws = draws.concat(self.getDraws(year));
+        });
+        
+        return draws;
     },
 
     getDrawsUrl: function (year) {
