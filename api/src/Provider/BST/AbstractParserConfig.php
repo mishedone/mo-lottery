@@ -10,6 +10,11 @@ abstract class AbstractParserConfig
     /**
      * @return string
      */
+    abstract public function getArchiveId();
+    
+    /**
+     * @return string
+     */
     abstract public function getDrawPageUrl();
 
     /**

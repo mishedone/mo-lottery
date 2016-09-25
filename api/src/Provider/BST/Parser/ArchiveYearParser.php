@@ -45,7 +45,7 @@ class ArchiveYearParser
     {
         $archiveDraws = file_get_contents(sprintf(
             'http://www.toto.bg/files/tiraji/%s_%s.txt',
-            $this->game->getId(),
+            $this->config->getArchiveId(),
             ($year < 2005) ? substr($year, 2) : $year
         ));
 

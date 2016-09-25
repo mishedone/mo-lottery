@@ -14,7 +14,7 @@ class Game535 extends AbstractBSTGame
      */
     public function getId()
     {
-        return '535';
+        return 'bst-535';
     }
 
     /**
@@ -22,7 +22,7 @@ class Game535 extends AbstractBSTGame
      */
     public function getName()
     {
-        return '5/35';
+        return 'Bulgarian Sport Totalizator - 5/35';
     }
 
     /**

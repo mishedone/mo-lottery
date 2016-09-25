@@ -3,66 +3,58 @@
 namespace MoLottery\Controller;
 
 use MoLottery\Exception\NotFoundException;
-use MoLottery\Provider\ProviderRepository;
-use MoLottery\Tool\GameHash;
+use MoLottery\Provider\GameRepository;
 
 /**
  * Builds data for the available endpoints.
  */
 class Controller
 {
-    use GameHash;
+    /**
+     * @var GameRepository
+     */
+    private $gameRepository;
     
     /**
-     * @var ProviderRepository
+     * @param GameRepository $gameRepository
      */
-    private $providerRepository;
-    
-    /**
-     * @param ProviderRepository $providerRepository
-     */
-    public function __construct(ProviderRepository $providerRepository)
+    public function __construct(GameRepository $gameRepository)
     {
-        $this->providerRepository = $providerRepository;
+        $this->gameRepository = $gameRepository;
     }
     
     /**
-     * Builds an array with simple data about the available games based on providers.
+     * Builds an array with simple data about the available games.
      *
      * @return array
      */
     public function getGames()
     {
         $result = [];
-        $providers = $this->providerRepository->getProviders();
-        foreach ($providers as $provider) {
-            foreach ($provider->getGames() as $game) {
-                $result[] = [
-                    // do not get confused - id here is game hash
-                    // api consumers should not be aware of internals
-                    'id' => $this->buildGameHash($provider->getId(), $game->getId()),
-                    'name' => sprintf('%s - %s', $provider->getName(), $game->getName()),
-                    'drawSize' => $game->getDrawSize(),
-                    'possibleDraws' => $game->getPossibleDraws(),
-                    'numbers' => $game->getNumbers(),
-                    'years' => $game->getYears()
-                ];
-            }
+        foreach ($this->gameRepository->getGames() as $game) {
+            $result[] = [
+                'id' => $game->getId(),
+                'name' => $game->getName(),
+                'drawSize' => $game->getDrawSize(),
+                'possibleDraws' => $game->getPossibleDraws(),
+                'numbers' => $game->getNumbers(),
+                'years' => $game->getYears()
+            ];
         }
         
         return $result;
     }
     
     /**
-     * @param string $gameHash
+     * @param string $gameId
      * @param int $year
      * @return array
      * @throws NotFoundException
      */
-    public function getDraws($gameHash, $year)
+    public function getDraws($gameId, $year)
     {
-        list($providerId, $gameId) = $this->parseGameHash($gameHash);
-
-        return $this->providerRepository->getDraws($providerId, $gameId, $year);
+        $game = $this->gameRepository->getGame($gameId);
+        
+        return $game->getDraws($year);
     }
 }

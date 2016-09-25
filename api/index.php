@@ -7,7 +7,7 @@ use MoLottery\Exception\NotFoundException;
 use MoLottery\Exception\ParseException;
 use MoLottery\Http\Response;
 use MoLottery\Manager\ManagerRepository;
-use MoLottery\Provider\ProviderRepository;
+use MoLottery\Provider\GameRepository;
 
 // configure manager repository singleton
 $dataPath = __DIR__ . DIRECTORY_SEPARATOR . 'data';
@@ -15,8 +15,8 @@ ManagerRepository::setDataPath($dataPath);
 
 // build services
 $response = new Response();
-$providerRepository = new ProviderRepository();
-$controller = new Controller($providerRepository);
+$gameRepository = new GameRepository();
+$controller = new Controller($gameRepository);
 
 // routing / controller
 try {

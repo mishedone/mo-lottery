@@ -12,6 +12,14 @@ class ParserConfig extends AbstractParserConfig
     /**
      * @return string
      */
+    public function getArchiveId()
+    {
+        return '535';
+    }
+    
+    /**
+     * @return string
+     */
     public function getDrawPageUrl()
     {
         return 'http://www.toto.bg/index.php?lang=1&pid=32&sid=52';

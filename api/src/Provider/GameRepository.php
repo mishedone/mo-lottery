@@ -3,50 +3,60 @@
 namespace MoLottery\Provider;
 
 use MoLottery\Exception\NotFoundException;
-use MoLottery\Provider\BST\BSTProvider;
+use MoLottery\Provider\BST\Game535\Game535;
+use MoLottery\Provider\BST\Game642\Game642;
+use MoLottery\Provider\BST\Game649\Game649;
 
 /**
- * Starting point for available provider and game discovery. Use it to fetch and inspect.
+ * Starting point for available game discovery. Use it to fetch and inspect.
  */
-class ProviderRepository
+class GameRepository
 {
     /**
      * @var array
      */
-    private $providers = [];
+    private $games = [];
     
     /**
-     * @param AbstractProvider $provider
+     * @param AbstractGame $game
      */
-    private function addProvider(AbstractProvider $provider)
+    private function addGame(AbstractGame $game)
     {
-        $this->providers[$provider->getId()] = $provider;
+        $this->games[$game->getId()] = $game;
     }
 
     /**
-     * @param string $providerId
+     * @param string $gameId
      * @return bool
      */
-    private function hasProvider($providerId)
+    private function hasGame($gameId)
     {
-        return array_key_exists($providerId, $this->providers);
+        return array_key_exists($gameId, $this->games);
     }
     
     /**
-     * @param string $providerId
-     * @return AbstractProvider
+     * @param string $gameId
+     * @return AbstractGame
      * @throws NotFoundException
      */
-    private function getProvider($providerId)
+    public function getGame($gameId)
     {
-        if (!$this->hasProvider($providerId)) {
+        if (!$this->hasGame($gameId)) {
             throw NotFoundException::notFound(sprintf(
-                'no provider with id "%s"',
-                $providerId
+                'no game with id "%s"',
+                $gameId
             ));
         }
         
-        return $this->providers[$providerId];
+        return $this->games[$gameId];
+    }
+    
+    /**
+     * @return array
+     */
+    public function getGames()
+    {
+        return $this->games;
     }
 
     /**
@@ -54,27 +64,20 @@ class ProviderRepository
      */
     public function __construct()
     {
-        $this->addProvider(new BSTProvider());
+        $this->addGame(new Game535());
+        $this->addGame(new Game642());
+        $this->addGame(new Game649());
     }
     
     /**
-     * @return array
-     */
-    public function getProviders()
-    {
-        return $this->providers;
-    }
-    
-    /**
-     * @param string $providerId
      * @param string $gameId
      * @param int $year
      * @return array
      * @throws NotFoundException
      */
-    public function getDraws($providerId, $gameId, $year)
+    public function getDraws($gameId, $year)
     {
-        $game = $this->getProvider($providerId)->getGame($gameId);
+        return $this->getGame($gameId)->getDraws($year);
         //$game->validateYear($year);
 
         // prepare managers
@@ -93,7 +96,5 @@ class ProviderRepository
                 $drawManager->updateDraws($game->getDraws($year));
             }
         }*/
-        
-        return $game->getDraws($year);
     }
 }
