@@ -111,6 +111,11 @@ HotColdTrendSuggestions.prototype = {
                 }
             });
         }
+        
+        // order result ascendingly
+        suggestions.result.sort(function (a, b) {
+            return a - b;
+        });
     },
 
     getToSuggestCount: function () {
