@@ -11,6 +11,7 @@ var NavigationGameMenuView = Backbone.View.extend({
         this.$el.html(this.template({
             game: this.game,
             suggestionsClass: this.getClass('suggestions'),
+            testsClass: this.getClass('tests'),
             browseClass: this.getClass('browse')
         }));
 

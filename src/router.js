@@ -5,6 +5,7 @@ var Router = Backbone.Router.extend({
     routes: {
         '': 'index',
         'suggestions/:id': 'suggestions',
+        'tests/:id': 'tests',
         'browse/:id': 'browse',
         'browse/:id/:year': 'browse'
     },
@@ -50,6 +51,56 @@ var Router = Backbone.Router.extend({
                 ),
                 game.get('drawSize')
             ));
+        });
+    },
+    
+    tests: function (id) {
+        var game = this.findGame(id), view;
+        
+        view = new SuggestionsView({
+            el: '#content-slot'
+        });
+        view.render();
+        
+        game.load(function () {
+            var draws, lastDraw, currentStart, periods, suggestions, numbers, limit, hitCount, result = {};
+            
+            draws = game.getAllDraws();
+            draws.reverse();
+            
+            periods = new HotColdTrendPeriods();
+            suggestions = new HotColdTrendSuggestions();
+            
+            limit = 1;
+            currentStart = 1;
+            while (limit < 1000) {
+                hitCount = 0;
+                lastDraw = draws[currentStart - 1];
+                numbers = suggestions.get(
+                    periods.get(
+                        game.get('numbers'),
+                        draws.slice(currentStart, currentStart + 120),
+                        12
+                    ),
+                    game.get('drawSize')
+                );
+                
+                _.each(numbers, function (number) {
+                    if (lastDraw.indexOf(number) >= 0) {
+                        hitCount++;
+                    }
+                });
+                
+                if (!result.hasOwnProperty(hitCount)) {
+                    result[hitCount] = 0;
+                }
+                result[hitCount]++;
+                
+                limit++;
+                currentStart++;
+            }
+            
+            console.log(result);
         });
     },
 
