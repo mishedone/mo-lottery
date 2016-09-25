@@ -68,33 +68,4 @@ class GameRepository
         $this->addGame(new Game642());
         $this->addGame(new Game649());
     }
-    
-    /**
-     * @param string $gameId
-     * @param int $year
-     * @return array
-     * @throws NotFoundException
-     */
-    public function getDraws($gameId, $year)
-    {
-        return $this->getGame($gameId)->getDraws($year);
-        //$game->validateYear($year);
-
-        // prepare managers
-        //$drawManager = $this->managerRepository->getDrawManager($providerId, $gameId, $year);
-        //$lastParseManager = $this->managerRepository->getLastParseManager();
-        //$lastParseKey = sprintf('draws-%s-%s', $providerId, $gameId);
-
-        // check current versus archive year
-        /*if (date('Y') == $year) {
-            if (!$lastParseManager->hasLastParseToday($lastParseKey)) {
-                $drawManager->updateDraws($game->getDraws($year));
-                $lastParseManager->setLastParse($lastParseKey, new \DateTime());
-            }
-        } else {
-            if (!$drawManager->hasDraws()) {
-                $drawManager->updateDraws($game->getDraws($year));
-            }
-        }*/
-    }
 }

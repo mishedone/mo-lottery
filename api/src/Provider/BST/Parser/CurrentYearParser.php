@@ -3,6 +3,7 @@
 namespace MoLottery\Provider\BST\Parser;
 
 use MoLottery\Exception\ParseException;
+use MoLottery\Manager\ManagerRepository;
 use MoLottery\Provider\BST\AbstractBSTGame;
 use MoLottery\Provider\BST\AbstractParserConfig;
 use MoLottery\Tool\Clean;
@@ -42,12 +43,26 @@ class CurrentYearParser
      */
     public function parse()
     {
-        $draws = array();
+        // load manager
+        $parseManager = ManagerRepository::get()->getParseManager(
+            $this->game->getId(),
+            date('Y')
+        );
+        $parses = $parseManager->get();
+        
+        // parse
+        $draws = [];
         foreach ($this->parseDrawNames() as $name) {
-            foreach ($this->parseDraws($name) as $draw) {
+            if (!isset($parses[$name])) {
+                $parses[$name] = $this->parseDraws($name);
+            }
+            foreach ($parses[$name] as $draw) {
                 $draws[] = $draw;
             }
         }
+        
+        // cache parses
+        $parseManager->set($parses);
 
         return $draws;
     }

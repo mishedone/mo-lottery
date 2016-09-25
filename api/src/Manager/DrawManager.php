@@ -8,11 +8,6 @@ namespace MoLottery\Manager;
 class DrawManager extends AbstractManager
 {
     /**
-     * @var string
-     */
-    protected $file = '';
-
-    /**
      * @var array
      */
     private $draws = [];

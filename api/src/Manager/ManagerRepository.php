@@ -23,6 +23,11 @@ class ManagerRepository
     private $drawManagers = [];
     
     /**
+     * @var array
+     */
+    private $parseManagers = [];
+    
+    /**
      * @param string $dataPath
      */
     public static function setDataPath($dataPath)
@@ -55,5 +60,20 @@ class ManagerRepository
         }
 
         return $this->drawManagers[$key];
+    }
+    
+    /**
+     * @param string $gameId
+     * @param int $year
+     * @return ParseManager
+     */
+    public function getParseManager($gameId, $year)
+    {
+        $key = sprintf('%s-%d', $gameId, $year);
+        if (!array_key_exists($key, $this->parseManagers)) {
+            $this->parseManagers[$key] = new ParseManager(static::$dataPath, $gameId, $year);
+        }
+
+        return $this->parseManagers[$key];
     }
 }
