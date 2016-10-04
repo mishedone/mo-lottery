@@ -1,7 +1,7 @@
-function HotColdTrendPeriods() {}
+function HotColdTrendPeriodDataBuilder() {}
 
-HotColdTrendPeriods.prototype = {
-    constructor: HotColdTrendPeriods,
+HotColdTrendPeriodDataBuilder.prototype = {
+    constructor: HotColdTrendPeriodDataBuilder,
     
     get: function (numbers, draws, periodCount) {
         var self = this;
