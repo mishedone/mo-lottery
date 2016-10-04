@@ -9,6 +9,7 @@ function HotColdTrendPeriodData(numbers) {
     // create stats for each available number and cache number index map
     this.stats = [];
     this.statsNumberMap = {};
+    this.statsNumbers = [];
     _.each(this.numbers, function (number) {
         self.stats.push({
             number: number,
@@ -41,10 +42,15 @@ HotColdTrendPeriodData.prototype = {
     getNumberIndex: function (number) {
         return this.statsNumberMap[number];
     },
+    
+    getStatsNumbers: function () {
+        return this.statsNumbers;
+    },
 
     finish: function () {
         this.calculateRanks();
         this.calculateAverageHits();
+        this.collectStatsNumbers();
     },
 
     calculateRanks: function () {
@@ -75,5 +81,13 @@ HotColdTrendPeriodData.prototype = {
             (this.drawCount * this.drawSize) /
             this.numbers.length
         );
+    },
+    
+    collectStatsNumbers: function () {
+        var self = this;
+        
+        _.each(this.stats, function (data) {
+            self.statsNumbers.push(data.number);
+        });
     }
 };
