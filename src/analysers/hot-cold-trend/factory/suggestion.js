@@ -1,7 +1,7 @@
-function HotColdTrendSuggestionDataBuilder() {}
+function HotColdTrendSuggestionFactory() {}
 
-HotColdTrendSuggestionDataBuilder.prototype = {
-    constructor: HotColdTrendSuggestionDataBuilder,
+HotColdTrendSuggestionFactory.prototype = {
+    constructor: HotColdTrendSuggestionFactory,
     
     get: function (periods, drawSize) {
         this.map = {};

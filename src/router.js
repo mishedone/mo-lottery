@@ -40,8 +40,8 @@ var Router = Backbone.Router.extend({
             draws = game.getAllDraws();
             draws.reverse();
             
-            periods = new HotColdTrendPeriodDataBuilder();
-            suggestions = new HotColdTrendSuggestionDataBuilder();
+            periods = new HotColdTrendPeriodFactory();
+            suggestions = new HotColdTrendSuggestionFactory();
             
             view.renderSuggestions(suggestions.get(
                 periods.get(
@@ -68,8 +68,8 @@ var Router = Backbone.Router.extend({
             draws = game.getAllDraws();
             draws.reverse();
             
-            periods = new HotColdTrendPeriodDataBuilder();
-            suggestions = new HotColdTrendSuggestionDataBuilder();
+            periods = new HotColdTrendPeriodFactory();
+            suggestions = new HotColdTrendSuggestionFactory();
             
             limit = 1;
             currentStart = 1;

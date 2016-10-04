@@ -1,7 +1,7 @@
-function HotColdTrendPeriodDataBuilder() {}
+function HotColdTrendPeriodFactory() {}
 
-HotColdTrendPeriodDataBuilder.prototype = {
-    constructor: HotColdTrendPeriodDataBuilder,
+HotColdTrendPeriodFactory.prototype = {
+    constructor: HotColdTrendPeriodFactory,
     
     get: function (numbers, draws, periodCount) {
         this.numbers = numbers;

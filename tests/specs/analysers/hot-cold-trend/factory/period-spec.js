@@ -1,5 +1,5 @@
-describe('Hot-cold trend period data builder', function() {
-    var builder = new HotColdTrendPeriodDataBuilder();
+describe('Hot-cold trend period factory', function() {
+    var factory = new HotColdTrendPeriodFactory();
 
     it('slices a set of draws into analysable chunks called `periods`', function() {
         var numbers = [], draws, periods, iterator;
@@ -17,7 +17,7 @@ describe('Hot-cold trend period data builder', function() {
         ];
 
         // check results
-        periods = builder.get(numbers, draws, 3);
+        periods = factory.get(numbers, draws, 3);
         expect(periods.length).toEqual(3);
 
         expect(periods[0].drawCount).toEqual(2);
