@@ -41,7 +41,7 @@ var Router = Backbone.Router.extend({
             draws.reverse();
             
             periods = new HotColdTrendPeriodDataBuilder();
-            suggestions = new HotColdTrendSuggestions();
+            suggestions = new HotColdTrendSuggestionDataBuilder();
             
             view.renderSuggestions(suggestions.get(
                 periods.get(
@@ -69,7 +69,7 @@ var Router = Backbone.Router.extend({
             draws.reverse();
             
             periods = new HotColdTrendPeriodDataBuilder();
-            suggestions = new HotColdTrendSuggestions();
+            suggestions = new HotColdTrendSuggestionDataBuilder();
             
             limit = 1;
             currentStart = 1;
