@@ -24,6 +24,10 @@ describe('Hot-cold trend period data builder', function() {
         expect(periods[1].drawCount).toEqual(2);
         expect(periods[2].drawCount).toEqual(2);
 
+        expect(periods[0].drawSize).toEqual(2);
+        expect(periods[1].drawSize).toEqual(2);
+        expect(periods[2].drawSize).toEqual(2);
+
         expect(periods[0].averageHit).toEqual(1);
         expect(periods[1].averageHit).toEqual(1);
         expect(periods[2].averageHit).toEqual(1);
