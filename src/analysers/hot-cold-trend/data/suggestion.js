@@ -9,29 +9,26 @@ function HotColdTrendSuggestionData(suggestCount, hitThreshold, hotNumbers) {
 
 HotColdTrendSuggestionData.prototype = {
     constructor: HotColdTrendSuggestionData,
-    
-    addNumberHits: function (number, hits) {
-        if (this.isNumberHot(hits)) {
-            if (this.isNumberAlreadyAdded(number)) {
-                this.updateRising(number, hits);
-            } else {
-                this.initializeRising(number, hits);
-            }
+
+    initialize: function (number, hits) {
+        if (this.isNumberHot()) {
+            this.risings.push({
+                number: number,
+                lastHits: hits,
+                count: 1,
+                dropped: false
+            });
+            this.risingsNumberMap[number] = this.risings.length - 1;
         }
     },
-        
-    initializeRising: function (number, hits) {    
-        this.risings.push({
-            number: number,
-            lastHits: hits,
-            count: 1,
-            dropped: false
-        });
-        this.risingsNumberMap[number] = this.risings.length - 1;
-    },
     
-    updateRising: function (number, hits) {
-        var rising, hitsAreRising, numberIsHot; 
+    update: function (number, hits) {
+        var rising, hitsAreRising, numberIsHot;
+        
+        // skip if number is not available
+        if (!this.hasRising(number)) {
+            return;
+        }
 
         // update rising
         rising = this.getRising(number);
@@ -50,12 +47,16 @@ HotColdTrendSuggestionData.prototype = {
         rising.lastHits = hits; 
     },
     
-    isNumberAlreadyAdded: function (number) {
-        return this.risingsNumberMap.hasOwnProperty(number);
+    getNumbers: function () {
+        return this.numbers;
     },
     
     isNumberHot: function (hits) {
         return hits > this.hitThreshold;
+    },
+    
+    hasRising: function (number) {
+        return this.risingsNumberMap.hasOwnProperty(number);
     },
     
     getRising: function (number) {
