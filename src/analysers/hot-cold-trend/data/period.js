@@ -6,17 +6,16 @@ function HotColdTrendPeriodData(numbers) {
     this.drawCount = 0;
     this.averageHit = 0;
 
-    // create stats for each available number and cache number index map
-    this.stats = [];
-    this.statsNumberMap = {};
-    this.numbersByRank = [];
+    // create hits for each available number and cache number index map
+    this.hits = [];
+    this.hitsNumberMap = {};
     _.each(this.numbers, function (number) {
-        self.stats.push({
-            number: number,
-            hits: 0
-        });
-        self.statsNumberMap[number] = self.stats.length - 1;
+        self.hits.push(new HotColdTrendHitData(number));
+        self.hitsNumberMap[number] = self.hits.length - 1;
     });
+    
+    // numbers by rank - output purpose structure
+    this.numbersByRank = [];
 }
 
 HotColdTrendPeriodData.prototype = {
@@ -29,9 +28,9 @@ HotColdTrendPeriodData.prototype = {
     addDraw: function (draw) {
         var self = this;
 
-        // update stats for each hit numbers
+        // update hits for each drawn number
         _.each(draw, function (number) {
-            self.stats[self.getNumberIndex(number)].hits++;
+            self.hits[self.hitsNumberMap[number]].hit();
         });
 
         // update counters
@@ -46,10 +45,6 @@ HotColdTrendPeriodData.prototype = {
     getAverageHit: function () {
         return this.averageHit;
     },
-
-    getNumberIndex: function (number) {
-        return this.statsNumberMap[number];
-    },
     
     getNumbersByRank: function () {
         return this.numbersByRank;
@@ -57,34 +52,38 @@ HotColdTrendPeriodData.prototype = {
 
     finish: function () {
         this.calculateRanks();
-        this.calculateAverageHits();
+        this.calculateAverageHit();
         this.buildNumbersByRank();
     },
 
     calculateRanks: function () {
         var self = this, currentRank = 0, lastHits = 0, hitsWithSameRank = 1;
 
-        // sort ranks by hits in a reverse order
-        this.stats.sort(function (a, b) {
-            return a.hits - b.hits;
+        // sort hits by count and number in a reverse order
+        this.hits.sort(function (a, b) {
+            if (a.getCount() == b.getCount()) {
+                return a.getNumber() - b.getNumber();
+            }
+            
+            return a.getCount() - b.getCount();
         });
-        this.stats.reverse();
+        this.hits.reverse();
 
         // calculate ranks
-        _.each(this.stats, function (data, index) {
-            if (lastHits != data.hits) {
+        _.each(this.hits, function (hit, index) {
+            if (lastHits != hit.getCount()) {
                 currentRank = currentRank + hitsWithSameRank;
                 hitsWithSameRank = 1;
             } else {
                 hitsWithSameRank++;
             }
 
-            lastHits = data.hits;
-            self.stats[index].rank = currentRank;
+            lastHits = hit.getCount();
+            self.hits[index].setRank(currentRank);
         });
     },
 
-    calculateAverageHits: function () {
+    calculateAverageHit: function () {
         this.averageHit = Math.round(
             (this.drawCount * this.drawSize) /
             this.numbers.length
@@ -94,8 +93,8 @@ HotColdTrendPeriodData.prototype = {
     buildNumbersByRank: function () {
         var self = this;
         
-        _.each(this.stats, function (data) {
-            self.numbersByRank.push(data.number);
+        _.each(this.hits, function (hit) {
+            self.numbersByRank.push(hit.getNumber());
         });
     }
 };
