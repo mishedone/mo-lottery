@@ -86,6 +86,7 @@ describe('Hot-cold trend period factory', function() {
         assert(periods[1].hits[24], 5, 1, 12);
         assert(periods[1].hits[25], 4, 1, 12);
         assert(periods[1].hits[26], 34, 0, 27);
+        // ...
     });
 });
 
