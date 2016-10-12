@@ -11,7 +11,7 @@ HotColdTrendSuggestionData.prototype = {
     constructor: HotColdTrendSuggestionData,
 
     initialize: function (number, hits) {
-        if (this.isNumberHot()) {
+        if (this.isNumberHot(hits)) {
             this.risings.push({
                 number: number,
                 lastHits: hits,
@@ -23,15 +23,16 @@ HotColdTrendSuggestionData.prototype = {
     },
     
     update: function (number, hits) {
-        var rising, hitsAreRising, numberIsHot;
+        var rising, hasRising, hitsAreRising, numberIsHot;
         
         // skip if number is not available
-        if (!this.hasRising(number)) {
+        hasRising = this.risingsNumberMap.hasOwnProperty(number);
+        if (!hasRising) {
             return;
         }
 
         // update rising
-        rising = this.getRising(number);
+        rising = this.risings[this.risingsNumberMap[number]];
         numberIsHot = this.isNumberHot(hits);
         hitsAreRising = hits <= rising.lastHits;
         if (!rising.dropped && numberIsHot && hitsAreRising) {
@@ -53,14 +54,6 @@ HotColdTrendSuggestionData.prototype = {
     
     isNumberHot: function (hits) {
         return hits > this.hitThreshold;
-    },
-    
-    hasRising: function (number) {
-        return this.risingsNumberMap.hasOwnProperty(number);
-    },
-    
-    getRising: function (number) {
-        return this.risings[this.risingsNumberMap[number]];
     },
     
     finish: function () {

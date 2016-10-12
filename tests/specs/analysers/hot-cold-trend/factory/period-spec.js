@@ -57,7 +57,7 @@ describe('Hot-cold trend period factory', function() {
         assert(periods[0].hits[23], 1, 1, 11);
         assert(periods[0].hits[24], 35, 0, 25);
         // ...
-        
+
         // second period
         assert(periods[1].hits[0], 30, 3, 1);
         assert(periods[1].hits[1], 21, 3, 1);

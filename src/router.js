@@ -50,7 +50,7 @@ var Router = Backbone.Router.extend({
                     12
                 ),
                 game.get('drawSize')
-            ));
+            ).getNumbers());
         });
     },
     
@@ -83,7 +83,7 @@ var Router = Backbone.Router.extend({
                         12
                     ),
                     game.get('drawSize')
-                );
+                ).getNumbers();
                 
                 _.each(numbers, function (number) {
                     if (lastDraw.indexOf(number) >= 0) {

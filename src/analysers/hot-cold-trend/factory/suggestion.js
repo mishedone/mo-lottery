@@ -15,16 +15,16 @@ HotColdTrendSuggestionFactory.prototype = {
         
         // build suggestions
         _.each(periods, function (period, index) {
-            _.each(period.stats, function (data) {
+            _.each(period.hits, function (hit) {
                 if (index == 0) {
-                    suggestion.initialize(data.number, data.hits);
+                    suggestion.initialize(hit.getNumber(), hit.getCount());
                 } else {
-                    suggestion.update(data.number, data.hits);
+                    suggestion.update(hit.getNumber(), hit.getCount());
                 }
             });
         });
         suggestion.finish();
         
-        return suggestion.getNumbers();
+        return suggestion;
     }
 };
