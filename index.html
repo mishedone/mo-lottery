@@ -94,6 +94,37 @@
             <span class="elapsed-time-trend">Coming soon...</span>
         </script>
 
+        <script type="text/template" id="tests">
+            <h3>Hot-cold Trend</h3>
+            <hr/>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Draw count</th>
+                        <% numberCount = 0 %>
+                        <% while (numberCount <= drawSize) { %>
+                            <th>Hit <%= numberCount %></th>
+                            <% numberCount++ %>
+                        <% }; %>
+                    </tr>
+                </thead>
+                <tbody id="tests-row-slot">
+                    <tr>
+                        <td colspan="<%= drawSize + 2 %>">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </script>
+
+        <script type="text/template" id="tests-row">
+            <tr>
+                <td><%= test.getDrawCount() %></td>
+                <% _.each(test.getNumbersHit(), function (hits) { %>
+                    <td><%= hits %></td>
+                <% }); %>
+            </tr>
+        </script>
+
         <script type="text/template" id="browse">
             <h3>Years</h3>
             <hr/>
@@ -132,6 +163,7 @@
         <script src="src/views/navigation/change-game.js"></script>
         <script src="src/views/navigation/game-menu.js"></script>
         <script src="src/views/suggestions.js"></script>
+        <script src="src/views/tests.js"></script>
         <script src="src/views/browse.js"></script>
         
         <script src="src/storage/base.js"></script>
@@ -142,6 +174,7 @@
         <script src="src/analysers/hot-cold-trend/data/period.js"></script>
         <script src="src/analysers/hot-cold-trend/data/rising.js"></script>
         <script src="src/analysers/hot-cold-trend/data/suggestion.js"></script>
+        <script src="src/analysers/hot-cold-trend/data/test.js"></script>
         <script src="src/analysers/hot-cold-trend/factory/period.js"></script>
         <script src="src/analysers/hot-cold-trend/factory/suggestion.js"></script>
         <script src="src/analysers/hot-cold-trend/analyser.js"></script>

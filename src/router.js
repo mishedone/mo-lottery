@@ -44,50 +44,16 @@ var Router = Backbone.Router.extend({
     tests: function (id) {
         var game = this.findGame(id), view;
         
-        view = new SuggestionsView({
-            el: '#content-slot'
+        view = new TestsView({
+            el: '#content-slot',
+            drawSize: game.get('drawSize')
         });
         view.render();
         
         game.load(function () {
-            var draws, lastDraw, currentStart, periods, suggestions, numbers, limit, hitCount, result = {};
-            
-            draws = game.getAllDraws();
-            draws.reverse();
-            
-            periods = new HotColdTrendPeriodFactory();
-            suggestions = new HotColdTrendSuggestionFactory();
-            
-            limit = 1;
-            currentStart = 1;
-            while (limit < 1000) {
-                hitCount = 0;
-                lastDraw = draws[currentStart - 1];
-                numbers = suggestions.get(
-                    periods.get(
-                        game.get('numbers'),
-                        draws.slice(currentStart, currentStart + 120),
-                        12
-                    ),
-                    game.get('drawSize')
-                ).getNumbers();
-                
-                _.each(numbers, function (number) {
-                    if (lastDraw.indexOf(number) >= 0) {
-                        hitCount++;
-                    }
-                });
-                
-                if (!result.hasOwnProperty(hitCount)) {
-                    result[hitCount] = 0;
-                }
-                result[hitCount]++;
-                
-                limit++;
-                currentStart++;
-            }
-            
-            console.log(result);
+            var analyser = new HotColdTrendAnalyser(game);
+
+            view.renderTests(analyser.test());
         });
     },
 
