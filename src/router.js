@@ -35,22 +35,9 @@ var Router = Backbone.Router.extend({
         view.render();
         
         game.load(function () {
-            var draws, periods, suggestions;
-            
-            draws = game.getAllDraws();
-            draws.reverse();
-            
-            periods = new HotColdTrendPeriodFactory();
-            suggestions = new HotColdTrendSuggestionFactory();
-            
-            view.renderSuggestions(suggestions.get(
-                periods.get(
-                    game.get('numbers'),
-                    draws.slice(0, 96),
-                    12
-                ),
-                game.get('drawSize')
-            ).getNumbers());
+            var analyser = new HotColdTrendAnalyser(game);
+
+            view.renderSuggestions(analyser.suggest());
         });
     },
     
