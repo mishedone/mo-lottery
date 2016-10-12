@@ -12,18 +12,13 @@ HotColdTrendSuggestionData.prototype = {
 
     initialize: function (number, hits) {
         if (this.isNumberHot(hits)) {
-            this.risings.push({
-                number: number,
-                lastHits: hits,
-                count: 1,
-                dropped: false
-            });
+            this.risings.push(new HotColdTrendRisingData(number, hits));
             this.risingsNumberMap[number] = this.risings.length - 1;
         }
     },
     
     update: function (number, hits) {
-        var rising, hasRising, hitsAreRising, numberIsHot;
+        var hasRising, rising, numberIsHot;
         
         // skip if number is not available
         hasRising = this.risingsNumberMap.hasOwnProperty(number);
@@ -34,18 +29,11 @@ HotColdTrendSuggestionData.prototype = {
         // update rising
         rising = this.risings[this.risingsNumberMap[number]];
         numberIsHot = this.isNumberHot(hits);
-        hitsAreRising = hits <= rising.lastHits;
-        if (!rising.dropped && numberIsHot && hitsAreRising) {
-            rising.count++;
+        if (numberIsHot) {
+            rising.addHits(hits);
+        } else {
+            rising.drop();
         }
-
-        // update dropped flag - stops calculations if the number has landed the hit threshold
-        if (!rising.dropped && !numberIsHot) {
-            rising.dropped = true;
-        }
-
-        // move last hits to next period
-        rising.lastHits = hits; 
     },
     
     getNumbers: function () {
@@ -64,7 +52,7 @@ HotColdTrendSuggestionData.prototype = {
     
     sortRisings: function () {
         this.risings.sort(function (a, b) {
-            return a.count - b.count;
+            return a.getCount() - b.getCount();
         });
         this.risings.reverse();
     },
@@ -74,10 +62,10 @@ HotColdTrendSuggestionData.prototype = {
 
         // suggest based on risings
         _.each(this.risings, function (rising) {
-            var isRising = rising.count > 1;
+            var isRising = rising.getCount() > 1;
             
             if (isRising) {
-                self.numbers.push(rising.number);
+                self.numbers.push(rising.getNumber());
             }
         });
 
