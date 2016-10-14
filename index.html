@@ -100,17 +100,18 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th>Draw count</th>
+                        <th>Draws per period</th>
                         <% numberCount = 0 %>
                         <% while (numberCount <= drawSize) { %>
                             <th>Hit <%= numberCount %></th>
                             <% numberCount++ %>
                         <% }; %>
+                        <th>Score</th>
                     </tr>
                 </thead>
                 <tbody id="tests-row-slot">
                     <tr>
-                        <td colspan="<%= drawSize + 2 %>">Loading...</td>
+                        <td colspan="<%= drawSize + 3 %>">Loading...</td>
                     </tr>
                 </tbody>
             </table>
@@ -118,10 +119,11 @@
 
         <script type="text/template" id="tests-row">
             <tr>
-                <td><%= test.getDrawCount() %></td>
+                <td><%= test.getDrawsPerPeriod() %></td>
                 <% _.each(test.getNumbersHit(), function (hits) { %>
                     <td><%= hits %></td>
                 <% }); %>
+                <td><%= test.getScore() %></td>
             </tr>
         </script>
 

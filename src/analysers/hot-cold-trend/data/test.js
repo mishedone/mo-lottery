@@ -1,4 +1,4 @@
-function HotColdTrendTestData(drawSize, drawCount) {
+function HotColdTrendTestData(drawSize, drawCount, periodCount) {
     var numberCount;
 
     // initialize hit numbers
@@ -8,6 +8,8 @@ function HotColdTrendTestData(drawSize, drawCount) {
     }
 
     this.drawCount = drawCount;
+    this.periodCount = periodCount;
+    this.score = 0;
 }
 
 HotColdTrendTestData.prototype = {
@@ -25,11 +27,25 @@ HotColdTrendTestData.prototype = {
         this.numbersHit[numberCount]++;
     },
 
-    getDrawCount: function () {
-        return this.drawCount;
+    calculateScore: function () {
+        var self = this;
+
+        _.each(this.numbersHit, function (hits, numberCount) {
+            if (numberCount > 0) {
+                self.score += hits * Math.pow(10, numberCount - 1);
+            }
+        });
+    },
+
+    getDrawsPerPeriod: function () {
+        return this.drawCount / this.periodCount;
     },
 
     getNumbersHit: function () {
         return this.numbersHit;
+    },
+
+    getScore: function () {
+        return this.score;
     }
 };
