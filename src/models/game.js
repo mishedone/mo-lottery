@@ -5,7 +5,8 @@ var GameModel = Backbone.Model.extend({
         drawSize: null,
         possibleDraws: 0,
         numbers: [],
-        years: []
+        years: [],
+        hotColdTrendDrawsPerPeriod: 8
     },
 
     initialize: function () {

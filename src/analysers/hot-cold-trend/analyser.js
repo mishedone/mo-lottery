@@ -10,9 +10,12 @@ HotColdTrendAnalyser.prototype = {
     constructor: HotColdTrendAnalyser,
 
     suggest: function () {
-        var periods = this.periods.get(
+        var periods, drawCount;
+
+        drawCount = this.game.get('hotColdTrendDrawsPerPeriod') * this.periodCount;
+        periods = this.periods.get(
             this.game.get('numbers'),
-            this.draws.slice(0, 96),
+            this.draws.slice(0, drawCount),
             this.periodCount
         );
 
