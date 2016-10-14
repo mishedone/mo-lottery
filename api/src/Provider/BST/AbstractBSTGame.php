@@ -17,7 +17,7 @@ abstract class AbstractBSTGame extends AbstractGame
     /**
      * @return AbstractParserConfig
      */
-    abstract protected function getParserConfig();
+    abstract public function getParserConfig();
 
     /**
      * @var ArchiveYearParser
