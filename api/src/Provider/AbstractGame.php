@@ -36,6 +36,11 @@ abstract class AbstractGame
     abstract public function getPossibleDraws();
 
     /**
+     * @return int
+     */
+    abstract public function getHotColdTrendDrawsPerPeriod();
+
+    /**
      * @var array
      */
     protected $numbers = [];

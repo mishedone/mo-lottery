@@ -42,6 +42,14 @@ class Game535 extends AbstractBSTGame
     }
 
     /**
+     * @return int
+     */
+    public function getHotColdTrendDrawsPerPeriod()
+    {
+        return 4;
+    }
+
+    /**
      * @return ParserConfig
      */
     public function getParserConfig()

@@ -38,7 +38,8 @@ class Controller
                 'drawSize' => $game->getDrawSize(),
                 'possibleDraws' => $game->getPossibleDraws(),
                 'numbers' => $game->getNumbers(),
-                'years' => $game->getYears()
+                'years' => $game->getYears(),
+                'hotColdTrendDrawsPerPeriod' => $game->getHotColdTrendDrawsPerPeriod()
             ];
         }
         
