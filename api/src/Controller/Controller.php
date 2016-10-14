@@ -32,6 +32,11 @@ class Controller
     {
         $result = [];
         foreach ($this->gameRepository->getGames() as $game) {
+            $drawsUrls = [];
+            foreach ($game->getYears() as $year) {
+                $drawsUrls[$year] = sprintf('/api/draws/%s/%d', $game->getId(), $year);
+            }
+
             $result[] = [
                 'id' => $game->getId(),
                 'name' => $game->getName(),
@@ -39,6 +44,7 @@ class Controller
                 'possibleDraws' => $game->getPossibleDraws(),
                 'numbers' => $game->getNumbers(),
                 'years' => $game->getYears(),
+                'drawsUrls' => $drawsUrls,
                 'hotColdTrendDrawsPerPeriod' => $game->getHotColdTrendDrawsPerPeriod()
             ];
         }

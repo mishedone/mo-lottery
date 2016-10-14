@@ -6,6 +6,7 @@ var GameModel = Backbone.Model.extend({
         possibleDraws: 0,
         numbers: [],
         years: [],
+        drawsUrls: {},
         hotColdTrendDrawsPerPeriod: 8
     },
 
@@ -56,6 +57,6 @@ var GameModel = Backbone.Model.extend({
     },
 
     getDrawsUrl: function (year) {
-        return '/api/draws/' + this.get('id') + '/' + year;
+        return this.get('drawsUrls')[year];
     }
 });
