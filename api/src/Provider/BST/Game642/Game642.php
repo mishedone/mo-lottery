@@ -46,7 +46,7 @@ class Game642 extends AbstractBSTGame
      */
     public function getHotColdTrendDrawsPerPeriod()
     {
-        return 3;
+        return 16;
     }
 
     /**

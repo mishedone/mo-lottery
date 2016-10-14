@@ -26,7 +26,7 @@ HotColdTrendAnalyser.prototype = {
         var tests = [], iterator;
 
         for (iterator = 1; iterator <= 20; iterator++) {
-            tests.push(this.createTest(iterator * 12, 365));
+            tests.push(this.createTest(iterator * 12, 730));
         }
 
         // order tests by their score
