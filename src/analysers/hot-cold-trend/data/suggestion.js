@@ -92,6 +92,7 @@ HotColdTrendSuggestionData.prototype = {
         
         // slice only the interesting part
         this.numbers = this.numbers.slice(0, this.suggestCount);
+        this.risingNumbers = this.risingNumbers.slice(0, this.suggestCount);
     },
     
     sortNumbers: function () {

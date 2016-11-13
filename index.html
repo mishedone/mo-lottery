@@ -107,11 +107,15 @@
                             <% numberCount++ %>
                         <% }; %>
                         <th>Score</th>
+                        <th>Total hits</th>
+                        <th>Total hit %</th>
+                        <th>Rising %</th>
+                        <th>Ranked %</th>
                     </tr>
                 </thead>
                 <tbody id="tests-row-slot">
                     <tr>
-                        <td colspan="<%= drawSize + 3 %>">Loading...</td>
+                        <td colspan="<%= drawSize + 7 %>">Loading...</td>
                     </tr>
                 </tbody>
             </table>
@@ -124,6 +128,10 @@
                     <td><%= hits %></td>
                 <% }); %>
                 <td><%= test.getScore() %></td>
+                <td><%= test.getTotalHitCount() %></td>
+                <td><%= test.getTotalHitPercentage() %></td>
+                <td><%= test.getRisingHitPercentage() %></td>
+                <td><%= test.getRankedHitPercentage() %></td>
             </tr>
         </script>
 

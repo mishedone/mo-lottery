@@ -50,7 +50,7 @@ HotColdTrendAnalyser.prototype = {
                     this.periodCount
                 ),
                 this.game.get('drawSize')
-            ).getNumbers();
+            );
 
             // update test data
             test.check(suggestion, lastDraw);
