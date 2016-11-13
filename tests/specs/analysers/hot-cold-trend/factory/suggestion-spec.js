@@ -36,6 +36,8 @@ describe('Hot-cold trend suggestion factory', function() {
         // check results
         suggestion = factory.get(periods);
         expect(suggestion.getNumbers()).toEqual([14, 25, 29, 31, 32]);
+        expect(suggestion.getRisingNumbers()).toEqual([31, 32]);
+        expect(suggestion.getRankedNumbers()).toEqual([14, 25, 29]);
     });
 });
 

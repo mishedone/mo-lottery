@@ -1,10 +1,13 @@
-function HotColdTrendSuggestionData(suggestCount, hitThreshold, hotNumbers) {
+function HotColdTrendSuggestionData(suggestCount, hitThreshold, numbersByRank) {
     this.suggestCount = suggestCount;
     this.hitThreshold = hitThreshold;
-    this.hotNumbers = hotNumbers;
-    this.numbers = [];
+    this.numbersByRank = numbersByRank;
+    
     this.risings = [];
     this.risingsNumberMap = {};
+    
+    this.numbers = [];
+    this.risingNumbers = [];
 }
 
 HotColdTrendSuggestionData.prototype = {
@@ -40,6 +43,14 @@ HotColdTrendSuggestionData.prototype = {
         return this.numbers;
     },
     
+    getRisingNumbers: function () {
+        return this.risingNumbers;
+    },
+    
+    getRankedNumbers: function () {
+        return _.difference(this.numbers, this.risingNumbers);
+    },
+    
     isNumberHot: function (hits) {
         return hits > this.hitThreshold;
     },
@@ -66,11 +77,12 @@ HotColdTrendSuggestionData.prototype = {
             
             if (isRising) {
                 self.numbers.push(rising.getNumber());
+                self.risingNumbers.push(rising.getNumber());
             }
         });
 
-        // suggest based on passed hot numbers
-        _.each(this.hotNumbers, function (number) {
+        // suggest based on passed numbers by rank
+        _.each(this.numbersByRank, function (number) {
             var alreadySuggested = self.numbers.indexOf(number) != -1;
 
             if (!alreadySuggested) {
@@ -83,8 +95,11 @@ HotColdTrendSuggestionData.prototype = {
     },
     
     sortNumbers: function () {
-        this.numbers.sort(function (a, b) {
+        var sortAscending = function (a, b) {
             return a - b;
-        });
+        };
+        
+        this.numbers.sort(sortAscending);
+        this.risingNumbers.sort(sortAscending);
     }
 };
