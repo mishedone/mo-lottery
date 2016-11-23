@@ -1,7 +1,6 @@
 function ElapseTimeTrendHitData(number) {
     this.number = number;
     this.drawnIn = [];
-    this.rank = 0;
     this.elapseTime = 0;
     this.averageElapseTime = 0;
 }
@@ -9,20 +8,8 @@ function ElapseTimeTrendHitData(number) {
 ElapseTimeTrendHitData.prototype = {
     constructor: ElapseTimeTrendHitData,
 
-    getNumber: function () {
-        return this.number;
-    },
-
     hit: function (index) {
         this.drawnIn.push(index);
-    },
-
-    getRank: function () {
-        return this.rank;
-    },
-
-    setRank: function (rank) {
-        this.rank = rank;
     },
 
     calculateElapseTimes: function (index) {
