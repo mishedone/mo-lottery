@@ -7,13 +7,11 @@ ElapseTimeTrendAnalyser.prototype = {
     constructor: ElapseTimeTrendAnalyser,
 
     suggest: function () {
-        var period = new ElapseTimeTrendPeriodData(this.game.get('numbers'));
+        var periods = new ElapseTimeTrendPeriodFactory();
 
-        _.each(this.draws.slice(-300), function (draw) {
-            period.addDraw(draw);
-        });
-        period.finish();
-
-        return period;
+        return periods.get(
+            this.game.get('numbers'),
+            this.draws.slice(-300)
+        );
     }
 };

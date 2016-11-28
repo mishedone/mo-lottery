@@ -1,19 +1,36 @@
 function ElapseTimeTrendHitData(number) {
     this.number = number;
     this.drawnIn = [];
-    this.elapseTime = 0;
-    this.averageElapseTime = 0;
+    this.elapseTime = null;
+    this.averageElapseTime = null;
 }
 
 ElapseTimeTrendHitData.prototype = {
     constructor: ElapseTimeTrendHitData,
+
+    getNumber: function () {
+        return this.number;
+    },
+
+    getElapseTime: function () {
+        return this.elapseTime;
+    },
+
+    getAverageElapseTime: function () {
+        return this.averageElapseTime;
+    },
 
     hit: function (index) {
         this.drawnIn.push(index);
     },
 
     calculateElapseTimes: function (index) {
-        var drawnIn = this.drawnIn.slice(), elapseTimeSum = 0, iterator;
+        var drawnIn = this.drawnIn.slice(), elapseTimeSum = 0, gaps = (drawnIn.length - 1), iterator;
+
+        // skip if the number has not been drawn
+        if (drawnIn.length == 0) {
+            return;
+        }
 
         // sum all elapse times between each hit index (going from end to beginning)
         iterator = drawnIn.length - 1;
@@ -22,6 +39,10 @@ ElapseTimeTrendHitData.prototype = {
         }
 
         this.elapseTime = index - drawnIn[drawnIn.length - 1];
-        this.averageElapseTime = Math.round(elapseTimeSum / drawnIn.length);
+
+        // we can have average only if there is at least 1 gap
+        if (drawnIn.length > 1) {
+            this.averageElapseTime = Math.round(elapseTimeSum / gaps);
+        }
     }
 };
