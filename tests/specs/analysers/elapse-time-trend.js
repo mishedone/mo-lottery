@@ -1,13 +1,12 @@
-describe('Elapse time trend period factory', function() {
-    var factory = new ElapseTimeTrendPeriodFactory();
+describe('Elapse time trend analyser', function() {
+    var periodFactory;
 
-    it('calculates the gaps between each number draw in a single `period`', function() {
-        var numbers = [], draws, period, iterator, assert;
+    periodFactory = new ElapseTimeTrendPeriodFactory();
 
-        // build available numbers set
-        for (iterator = 1; iterator <= 35; iterator++) {
-            numbers.push(iterator);
-        }
+    it('period factory calculates the gaps between each number draw in a single `period`', function() {
+        var numbers, draws, period, assert;
+
+        numbers = generateNumbers(1, 35);
 
         // create some draws
         draws = [
@@ -26,7 +25,7 @@ describe('Elapse time trend period factory', function() {
         };
 
         // check results
-        period = factory.get(numbers, draws);
+        period = periodFactory.get(numbers, draws);
         expect(period.drawIndex).toEqual(16);
 
         // first period
