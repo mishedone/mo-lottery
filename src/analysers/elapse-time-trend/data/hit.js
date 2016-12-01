@@ -3,6 +3,7 @@ function ElapseTimeTrendHitData(number) {
     this.drawnIn = [];
     this.elapseTime = null;
     this.averageElapseTime = null;
+    this.elapseTimeGap = null;
 }
 
 ElapseTimeTrendHitData.prototype = {
@@ -20,6 +21,10 @@ ElapseTimeTrendHitData.prototype = {
         return this.averageElapseTime;
     },
 
+    getElapseTimeGap: function () {
+        return this.elapseTimeGap;
+    },
+
     hit: function (index) {
         this.drawnIn.push(index);
     },
@@ -27,8 +32,10 @@ ElapseTimeTrendHitData.prototype = {
     calculateElapseTimes: function (index) {
         var drawnIn = this.drawnIn.slice(), elapseTimeSum = 0, gaps = (drawnIn.length - 1), iterator;
 
-        // skip if the number has not been drawn
+        // if the number has not been drawn - assume elapse time equals current draw index
         if (drawnIn.length == 0) {
+            this.elapseTime = index;
+
             return;
         }
 

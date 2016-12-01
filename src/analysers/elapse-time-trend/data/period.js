@@ -16,6 +16,10 @@ function ElapseTimeTrendPeriodData(numbers) {
 ElapseTimeTrendPeriodData.prototype = {
     constructor: ElapseTimeTrendPeriodData,
 
+    getHits: function () {
+        return this.hits.slice();
+    },
+
     addDraw: function (draw) {
         var self = this;
 
