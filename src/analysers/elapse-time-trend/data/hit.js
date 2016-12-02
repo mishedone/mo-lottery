@@ -50,6 +50,7 @@ ElapseTimeTrendHitData.prototype = {
         // we can have average only if there is at least 1 gap
         if (drawnIn.length > 1) {
             this.averageElapseTime = Math.round(elapseTimeSum / gaps);
+            this.elapseTimeGap = this.elapseTime - this.averageElapseTime;
         }
     }
 };
