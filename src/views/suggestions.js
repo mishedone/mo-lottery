@@ -8,9 +8,19 @@ var SuggestionsView = Backbone.View.extend({
         return this;
     },
     
-    renderSuggestions: function (numbers) {
+    renderHotColdTrend: function (numbers) {
         this.$el.find('.hot-cold-trend').html(this.numbersTemplate({
             numbers: numbers
+        }));
+        
+        return this;
+    },
+    
+    renderElapseTimeTrend: function (numbersByElapseTime, numbersByElapseTimeGap) {
+        this.$el.find('.elapse-time-trend').html(this.numbersTemplate({
+            numbers: numbersByElapseTime
+        }) + this.numbersTemplate({
+            numbers: numbersByElapseTimeGap
         }));
         
         return this;

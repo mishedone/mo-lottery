@@ -35,9 +35,16 @@ var Router = Backbone.Router.extend({
         view.render();
         
         game.load(function () {
-            var analyser = new HotColdTrendAnalyser(game);
+            var hotColdTrend, elapseTimeTrend;
+            
+            hotColdTrend = new HotColdTrendAnalyser(game);
+            elapseTimeTrend = new ElapseTimeTrendAnalyser(game).suggest();
 
-            view.renderSuggestions(analyser.suggest());
+            view.renderHotColdTrend(hotColdTrend.suggest());
+            view.renderElapseTimeTrend(
+                elapseTimeTrend.getNumbersByElapseTime().slice(0, game.get('drawSize')),
+                elapseTimeTrend.getNumbersByElapseTimeGap().slice(0, game.get('drawSize'))
+            );
         });
     },
     
