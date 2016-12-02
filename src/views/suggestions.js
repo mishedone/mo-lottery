@@ -17,12 +17,20 @@ var SuggestionsView = Backbone.View.extend({
     },
     
     renderElapseTimeTrend: function (numbersByElapseTime, numbersByElapseTimeGap) {
+        numbersByElapseTime.sort(this.sortAscending);
+        numbersByElapseTimeGap.sort(this.sortAscending);
+        
         this.$el.find('.elapse-time-trend').html(this.numbersTemplate({
             numbers: numbersByElapseTime
-        }) + this.numbersTemplate({
+        }));
+        this.$el.find('.elapse-time-gap-trend').html(this.numbersTemplate({
             numbers: numbersByElapseTimeGap
         }));
         
         return this;
+    },
+    
+    sortAscending: function (a, b) {
+        return a - b;
     }
 });
