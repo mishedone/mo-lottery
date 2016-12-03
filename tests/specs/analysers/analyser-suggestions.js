@@ -21,11 +21,11 @@ describe('Analyser suggestions suggests the best numbers to play by using ', fun
     });
     
     it('elapse time trend numbers ordered by elapse time', function() {
-        expect([1, 2, 3, 11, 22]).toEqual(suggestions.getElapseTimeTrendByElapseTimes());
+        expect([1, 2, 3, 11, 22]).toEqual(suggestions.getElapseTimeTrend());
     });
     
     it('elapse time trend numbers ordered by elapse time gap', function() {
-        expect([4, 5, 16, 28, 31]).toEqual(suggestions.getElapseTimeTrendByElapseTimeGaps());
+        expect([4, 5, 16, 28, 31]).toEqual(suggestions.getElapseTimeTrendGaps());
     });
 
     it('hot-cold trend rising and hot numbers', function() {

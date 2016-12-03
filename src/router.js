@@ -35,30 +35,23 @@ var Router = Backbone.Router.extend({
         view.render();
         
         game.load(function () {
-            var numbers, draws, drawSize, drawsPerPeriod, hotColdTrend, elapseTimeTrend, temp;
-            
-            numbers = game.get('numbers');
-            draws = game.getAllDraws();
-            drawSize = game.get('drawSize');
-            drawsPerPeriod = game.get('hotColdTrendDrawsPerPeriod');
-        
-            hotColdTrend = new HotColdTrendAnalyser().getResult(numbers, draws.slice(), drawsPerPeriod, 12);
-            elapseTimeTrend = new ElapseTimeTrendAnalyser().getResult(numbers, draws.slice());
-            
-            temp = hotColdTrend.getRisingNumbers();
-            _.each(hotColdTrend.getHotNumbers(), function (number) {
-                var alreadySuggested = temp.indexOf(number) != -1;
-
-                if (!alreadySuggested) {
-                    temp.push(number);
+            var suggestions = new AnalyserSuggestions(
+                game.get('numbers'),
+                game.getAllDraws(),
+                game.get('drawSize'),
+                {
+                    hotColdTrend: {
+                        drawsPerPeriod: game.get('hotColdTrendDrawsPerPeriod'),
+                        periodCount: 12
+                    }
                 }
-            });
-
-            view.renderHotColdTrend(temp.slice(0, drawSize));
-            view.renderElapseTimeTrend(
-                elapseTimeTrend.getElapseTimeNumbers().slice(0, drawSize),
-                elapseTimeTrend.getElapseTimeGapNumbers().slice(0, drawSize)
             );
+
+            view.renderElapseTimeTrend(
+                suggestions.getElapseTimeTrend(),
+                suggestions.getElapseTimeTrendGaps()
+            );
+            view.renderHotColdTrend(suggestions.getHotColdTrend());
         });
     },
     

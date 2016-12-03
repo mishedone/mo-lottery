@@ -20,11 +20,11 @@ function AnalyserSuggestions(numbers, draws, drawSize, config) {
 AnalyserSuggestions.prototype = {
     constructor: AnalyserSuggestions,
     
-    getElapseTimeTrendByElapseTimes: function () {
+    getElapseTimeTrend: function () {
         return this.finalize(this.elapseTimeTrendResult.getElapseTimeNumbers());
     },
     
-    getElapseTimeTrendByElapseTimeGaps: function () {
+    getElapseTimeTrendGaps: function () {
         return this.finalize(this.elapseTimeTrendResult.getElapseTimeGapNumbers());
     },
     
