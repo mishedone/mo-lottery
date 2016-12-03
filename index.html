@@ -76,8 +76,8 @@
             <li<%= suggestionsClass %>>
                 <a href="#/suggestions/<%= game.get('id') %>">Suggestions</a>
             </li>
-            <li<%= testsClass %>>
-                <a href="#/tests/<%= game.get('id') %>">Tests</a>
+            <li<%= auditClass %>>
+                <a href="#/audit/<%= game.get('id') %>">Audit</a>
             </li>
             <li<%= browseClass %>>
                 <a href="#/browse/<%= game.get('id') %>">Browse</a>
@@ -98,45 +98,29 @@
             <p class="elapse-time-trend-gaps">Loading...</p>
         </script>
 
-        <script type="text/template" id="tests">
-            <h3>Hot-cold Trend</h3>
-            <hr/>
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Draws per period</th>
-                        <% numberCount = 0 %>
-                        <% while (numberCount <= drawSize) { %>
-                            <th>Hit <%= numberCount %></th>
-                            <% numberCount++ %>
-                        <% }; %>
-                        <th>Score</th>
-                        <th>Total hits</th>
-                        <th>Total hit %</th>
-                        <th>Rising %</th>
-                        <th>Ranked %</th>
-                    </tr>
-                </thead>
-                <tbody id="tests-row-slot">
-                    <tr>
-                        <td colspan="<%= drawSize + 7 %>">Loading...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </script>
-
-        <script type="text/template" id="tests-row">
-            <tr>
-                <td><%= test.getDrawsPerPeriod() %></td>
-                <% _.each(test.getNumbersHit(), function (hits) { %>
-                    <td><%= hits %></td>
-                <% }); %>
-                <td><%= test.getScore() %></td>
-                <td><%= test.getTotalHitCount() %></td>
-                <td><%= test.getTotalHitPercentage() %></td>
-                <td><%= test.getRisingHitPercentage() %></td>
-                <td><%= test.getRankedHitPercentage() %></td>
-            </tr>
+        <script type="text/template" id="audit">
+            <% _.each(tables, function (table) { %>
+                <h3><%= table.getName() %></h3>
+                <hr/>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <% _.each(table.getLabels(), function (label) { %>
+                                <th><%= label %></th>
+                            <% }); %>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <% _.each(table.getRows(), function (rowCells) { %>
+                                <% _.each(rowCells, function (cell) { %>
+                                    <td><%= cell %></td>
+                                <% }); %>
+                            <% }); %>
+                        </tr>
+                    </tbody>
+                </table>
+            <% }); %>
         </script>
 
         <script type="text/template" id="browse">
@@ -176,9 +160,9 @@
         <script src="src/collections/game.js"></script>
         <script src="src/views/navigation/change-game.js"></script>
         <script src="src/views/navigation/game-menu.js"></script>
-        <script src="src/views/suggestions.js"></script>
-        <script src="src/views/tests.js"></script>
+        <script src="src/views/audit.js"></script>
         <script src="src/views/browse.js"></script>
+        <script src="src/views/suggestions.js"></script>
         
         <script src="src/storage/base.js"></script>
         <script src="src/storage/game-draws.js"></script>
@@ -201,6 +185,10 @@
         <script src="src/analysers/hot-cold-trend/analyser.js"></script>
         
         <script src="src/analysers/suggestions.js"></script>
+        
+        <script src="src/audit/data.js"></script>
+        <script src="src/audit/table.js"></script>
+        <script src="src/audit/table-builder.js"></script>
 
         <script src="src/router.js"></script>
         <script src="src/app.js"></script>

@@ -5,7 +5,7 @@ var Router = Backbone.Router.extend({
     routes: {
         '': 'index',
         'suggestions/:id': 'suggestions',
-        'tests/:id': 'tests',
+        'audit/:id': 'audit',
         'browse/:id': 'browse',
         'browse/:id/:year': 'browse'
     },
@@ -55,19 +55,20 @@ var Router = Backbone.Router.extend({
         });
     },
     
-    tests: function (id) {
+    audit: function (id) {
         var game = this.findGame(id), view;
         
-        view = new TestsView({
-            el: '#content-slot',
-            drawSize: game.get('drawSize')
+        view = new AuditView({
+            el: '#content-slot'
         });
         view.render();
         
         game.load(function () {
-            var analyser = new HotColdTrendAnalyser(game);
-
-            view.renderTests(analyser.test());
+            var tableBuilder = new AuditTableBuilder(game);
+            
+            view.renderTables([
+                tableBuilder.getHotColdTrendTable()
+            ]);
         });
     },
 
