@@ -7,9 +7,17 @@ function HotColdTrendRisingData(number, hits) {
 
 HotColdTrendRisingData.prototype = {
     constructor: HotColdTrendRisingData,
+    
+    getNumber: function () {
+        return this.number;
+    },
+
+    getCount: function () {
+        return this.count;
+    },
 
     addHits: function (hits) {
-        var hitsAreRising = hits <= this.lastHits;
+        var hitsAreRising = (hits <= this.lastHits);
 
         if (!this.dropped && hitsAreRising) {
             this.count++;
@@ -20,13 +28,5 @@ HotColdTrendRisingData.prototype = {
 
     drop: function () {
         this.dropped = true;
-    },
-
-    getNumber: function () {
-        return this.number;
-    },
-
-    getCount: function () {
-        return this.count;
     }
 };

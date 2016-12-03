@@ -1,29 +1,27 @@
-function HotColdTrendAnalyser(game) {
-    this.game = game;
-    this.draws = game.getAllDraws().reverse();
-    this.periods = new HotColdTrendPeriodFactory();
-    this.suggestions = new HotColdTrendSuggestionFactory();
-    this.periodCount = 12;
+function HotColdTrendAnalyser() {
+    this.periodFactory = new HotColdTrendPeriodFactory();
+    this.resultFactory = new HotColdTrendResultFactory();
 }
 
 HotColdTrendAnalyser.prototype = {
     constructor: HotColdTrendAnalyser,
 
-    suggest: function () {
+    getResult: function (numbers, draws, drawsPerPeriod, periodCount) {
         var periods, drawCount;
 
-        drawCount = this.game.get('hotColdTrendDrawsPerPeriod') * this.periodCount;
-        periods = this.periods.get(
-            this.game.get('numbers'),
-            this.draws.slice(0, drawCount),
-            this.periodCount
+        draws.reverse();
+        drawCount = drawsPerPeriod * periodCount;
+        periods = this.periodFactory.get(
+            numbers,
+            draws.slice(0, drawCount),
+            periodCount
         );
 
-        return this.suggestions.get(periods, this.game.get('drawSize')).getNumbers();
+        return this.resultFactory.get(periods);
     },
 
     test: function () {
-        var tests = [], iterator;
+        /*var tests = [], iterator;
 
         for (iterator = 1; iterator <= 20; iterator++) {
             tests.push(this.createTest(iterator * 12, 730));
@@ -34,11 +32,13 @@ HotColdTrendAnalyser.prototype = {
             return b.getScore() - a.getScore();
         });
 
-        return tests;
+        return tests;*/
+        
+        return [];
     },
 
     createTest: function (drawCount, iterations) {
-        var currentIteration = 1, drawStart = 1, lastDraw, suggestion, test;
+        /*var currentIteration = 1, drawStart = 1, lastDraw, suggestion, test;
 
         test = new HotColdTrendTestData(this.game.get('drawSize'), drawCount, this.periodCount);
         while (currentIteration <= iterations) {
@@ -61,6 +61,6 @@ HotColdTrendAnalyser.prototype = {
         }
         test.calculateScore();
 
-        return test;
+        return test;*/
     }
 };

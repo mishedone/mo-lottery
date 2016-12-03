@@ -14,7 +14,6 @@ HotColdTrendPeriodFactory.prototype = {
 
         // build
         this.buildPeriods();
-        this.finishPeriods();
         
         return this.periods;
     },
@@ -27,6 +26,7 @@ HotColdTrendPeriodFactory.prototype = {
                 if (currentPeriod.isFull(self.periodSize)) {
                     self.addPeriod(currentPeriod);
                     
+                    // throw done exception to stop the for each loop
                     if (self.periods.length == self.periodCount) {
                         throw done;
                     }
@@ -45,17 +45,12 @@ HotColdTrendPeriodFactory.prototype = {
         }
     },
 
-    finishPeriods: function () {
-        _.each(this.periods, function (period) {
-            period.finish();
-        });
-    },
-
     createPeriod: function () {
         return new HotColdTrendPeriodData(this.numbers);
     },
     
     addPeriod: function (period) {
+        period.finish();
         this.periods.push(period);
     }
 };

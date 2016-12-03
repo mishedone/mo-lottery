@@ -13,13 +13,18 @@ function HotColdTrendPeriodData(numbers) {
         self.hits.push(new HotColdTrendHitData(number));
         self.hitsNumberMap[number] = self.hits.length - 1;
     });
-    
-    // numbers by rank - output purpose structure
-    this.numbersByRank = [];
 }
 
 HotColdTrendPeriodData.prototype = {
     constructor: HotColdTrendPeriodData,
+    
+    getHits: function () {
+        return this.hits.slice();
+    },
+    
+    getAverageHit: function () {
+        return this.averageHit;
+    },
 
     isFull: function (fullDrawCount) {
         return this.drawCount == fullDrawCount;
@@ -37,64 +42,11 @@ HotColdTrendPeriodData.prototype = {
         this.drawCount++;
         this.drawSize = draw.length;
     },
-    
-    getDrawSize: function () {
-        return this.drawSize;
-    },
-    
-    getAverageHit: function () {
-        return this.averageHit;
-    },
-    
-    getNumbersByRank: function () {
-        return this.numbersByRank;
-    },
 
     finish: function () {
-        this.calculateRanks();
-        this.calculateAverageHit();
-        this.buildNumbersByRank();
-    },
-
-    calculateRanks: function () {
-        var self = this, currentRank = 0, lastHits = 0, hitsWithSameRank = 1;
-
-        // sort hits by count and number in a reverse order
-        this.hits.sort(function (a, b) {
-            if (a.getCount() == b.getCount()) {
-                return a.getNumber() - b.getNumber();
-            }
-            
-            return a.getCount() - b.getCount();
-        });
-        this.hits.reverse();
-
-        // calculate ranks
-        _.each(this.hits, function (hit, index) {
-            if (lastHits != hit.getCount()) {
-                currentRank = currentRank + hitsWithSameRank;
-                hitsWithSameRank = 1;
-            } else {
-                hitsWithSameRank++;
-            }
-
-            lastHits = hit.getCount();
-            self.hits[index].setRank(currentRank);
-        });
-    },
-
-    calculateAverageHit: function () {
         this.averageHit = Math.round(
             (this.drawCount * this.drawSize) /
             this.numbers.length
         );
-    },
-    
-    buildNumbersByRank: function () {
-        var self = this;
-        
-        _.each(this.hits, function (hit) {
-            self.numbersByRank.push(hit.getNumber());
-        });
     }
 };
