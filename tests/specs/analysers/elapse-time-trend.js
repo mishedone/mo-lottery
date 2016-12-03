@@ -27,10 +27,10 @@ describe('Elapse time trend analyser builds a result that', function() {
             expect(hit.getElapseTimeGap()).toEqual(elapseTimeGap);
         };
 
-        // check results
+        // check analysed draw count
         expect(period.drawIndex).toEqual(16);
 
-        // first period
+        // check hits
         assert(period.hits[0], 1, [2], 14, null, null);
         assert(period.hits[1], 2, [1], 15, null, null);
         assert(period.hits[2], 3, [], 16, null, null);
