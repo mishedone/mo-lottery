@@ -58,7 +58,7 @@
 
         <script type="text/template" id="navigation-change-game">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="current-game"><%= currentGame.get('name') %></span>
+                <span class="current-game"><%= currentGame.get('name') %> (<%= currentGame.get('possibleDraws').toLocaleString('en-US') %>)</span>
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
