@@ -49,7 +49,7 @@ AuditData.prototype = {
     },
     
     getTotalHitPercentage: function () {
-        return this.getPercentage(this.totalHitCount, this.totalDrawnCount());
+        return this.getPercentage(this.totalHitCount, this.totalDrawnCount);
     },
     
     getPercentage: function (part, whole) {

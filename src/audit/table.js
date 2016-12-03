@@ -38,5 +38,14 @@ AuditTable.prototype = {
     
     endRow: function () {
         this.index++;
+    },
+    
+    sort: function (column) {
+        var index = column - 1;
+        
+        this.rows.sort(function (a, b) {
+            return a[index] - b[index];
+        });
+        this.rows.reverse();
     }
 }

@@ -111,13 +111,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <% _.each(table.getRows(), function (rowCells) { %>
+                        <% _.each(table.getRows(), function (rowCells) { %>
+                            <tr>
                                 <% _.each(rowCells, function (cell) { %>
                                     <td><%= cell %></td>
                                 <% }); %>
-                            <% }); %>
-                        </tr>
+                            </tr>
+                        <% }); %>
                     </tbody>
                 </table>
             <% }); %>
