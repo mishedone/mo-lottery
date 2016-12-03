@@ -56,8 +56,8 @@ var Router = Backbone.Router.extend({
 
             view.renderHotColdTrend(temp.slice(0, drawSize));
             view.renderElapseTimeTrend(
-                elapseTimeTrend.getNumbersByElapseTime().slice(0, drawSize),
-                elapseTimeTrend.getNumbersByElapseTimeGap().slice(0, drawSize)
+                elapseTimeTrend.getElapseTimeNumbers().slice(0, drawSize),
+                elapseTimeTrend.getElapseTimeGapNumbers().slice(0, drawSize)
             );
         });
     },

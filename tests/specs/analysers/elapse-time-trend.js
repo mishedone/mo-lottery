@@ -72,13 +72,13 @@ describe('Elapse time trend analyser builds a result that', function() {
         expect([
             22, 11, 3, 2, 1, 18, 25, 34, 14, 29, 27, 20, 35, 8, 28, 23, 19, 33, 13, 5, 24, 17,
             15, 4, 10, 32, 31, 21, 12, 6, 30, 26, 16, 9, 7
-        ]).toEqual(result.getNumbersByElapseTime());
+        ]).toEqual(result.getElapseTimeNumbers());
     });
     
     it('orders the numbers in the period by elapse time gap', function() {
         expect([
             4, 5, 16, 28, 31, 12, 21, 30, 32, 33, 7, 8, 19, 23, 24, 34, 6, 9, 27, 29, 17, 14, 15,
             26, 25
-        ]).toEqual(result.getNumbersByElapseTimeGap());
+        ]).toEqual(result.getElapseTimeGapNumbers());
     });
 });

@@ -1,11 +1,7 @@
-function ElapseTimeTrendResultData(
-    period,
-    numbersByElapseTime,
-    numbersByElapseTimeGap
-) {
+function ElapseTimeTrendResultData(period, elapseTimeNumbers, elapseTimeGapNumbers) {
     this.period = period;
-    this.numbersByElapseTime = numbersByElapseTime;
-    this.numbersByElapseTimeGap = numbersByElapseTimeGap;
+    this.elapseTimeNumbers = elapseTimeNumbers;
+    this.elapseTimeGapNumbers = elapseTimeGapNumbers;
 }
 
 ElapseTimeTrendResultData.prototype = {
@@ -15,11 +11,11 @@ ElapseTimeTrendResultData.prototype = {
         return this.period;
     },
 
-    getNumbersByElapseTime: function () {
-        return this.numbersByElapseTime;
+    getElapseTimeNumbers: function () {
+        return this.elapseTimeNumbers;
     },
 
-    getNumbersByElapseTimeGap: function () {
-        return this.numbersByElapseTimeGap;
+    getElapseTimeGapNumbers: function () {
+        return this.elapseTimeGapNumbers;
     }
 };

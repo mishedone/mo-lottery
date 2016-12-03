@@ -6,12 +6,12 @@ ElapseTimeTrendResultFactory.prototype = {
     get: function (period) {
         return new ElapseTimeTrendResultData(
             period,
-            this.getNumbersByElapseTime(period.getHits()),
-            this.getNumbersByElapseTimeGap(period.getHits())
+            this.getElapseTimeNumbers(period.getHits()),
+            this.getElapseTimeGapNumbers(period.getHits())
         );
     },
 
-    getNumbersByElapseTime: function (hits) {
+    getElapseTimeNumbers: function (hits) {
         // sort hits by elapse time
         // HINT: there is a known bug here - if the period is not long enough
         // elapse times of 0 and null would be considered equal
@@ -28,7 +28,7 @@ ElapseTimeTrendResultFactory.prototype = {
         return this.getNumbersFromHits(hits);
     },
     
-    getNumbersByElapseTimeGap: function (hits) {
+    getElapseTimeGapNumbers: function (hits) {
         // remove hits that have no elapse time gap
         hits = _.filter(hits, function (hit) {
             return (hit.getElapseTimeGap() != null);
