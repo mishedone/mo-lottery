@@ -8,31 +8,17 @@ var SuggestionsView = Backbone.View.extend({
         return this;
     },
     
-    renderHotColdTrend: function (numbers) {
-        numbers.sort(this.sortAscending);
-        
+    renderNumbers: function (hotColdTrend, elapseTimeTrend, elapseTimeTrendGaps) {
         this.$el.find('.hot-cold-trend').html(this.numbersTemplate({
-            numbers: numbers
+            numbers: hotColdTrend
         }));
-        
-        return this;
-    },
-    
-    renderElapseTimeTrend: function (numbersByElapseTime, numbersByElapseTimeGap) {
-        numbersByElapseTime.sort(this.sortAscending);
-        numbersByElapseTimeGap.sort(this.sortAscending);
-        
         this.$el.find('.elapse-time-trend').html(this.numbersTemplate({
-            numbers: numbersByElapseTime
+            numbers: elapseTimeTrend
         }));
-        this.$el.find('.elapse-time-gap-trend').html(this.numbersTemplate({
-            numbers: numbersByElapseTimeGap
+        this.$el.find('.elapse-time-trend-gaps').html(this.numbersTemplate({
+            numbers: elapseTimeTrendGaps
         }));
         
         return this;
-    },
-    
-    sortAscending: function (a, b) {
-        return a - b;
     }
 });

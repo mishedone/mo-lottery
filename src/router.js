@@ -47,11 +47,11 @@ var Router = Backbone.Router.extend({
                 }
             );
 
-            view.renderElapseTimeTrend(
+            view.renderNumbers(
+                suggestions.getHotColdTrend(),
                 suggestions.getElapseTimeTrend(),
                 suggestions.getElapseTimeTrendGaps()
             );
-            view.renderHotColdTrend(suggestions.getHotColdTrend());
         });
     },
     
