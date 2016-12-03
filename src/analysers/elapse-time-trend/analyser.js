@@ -1,8 +1,4 @@
-function ElapseTimeTrendAnalyser(game) {
-    this.game = game;
-    this.draws = game.getAllDraws();
-    
-    // build factories
+function ElapseTimeTrendAnalyser() {
     this.periodFactory = new ElapseTimeTrendPeriodFactory();
     this.resultFactory = new ElapseTimeTrendResultFactory();
 }
@@ -10,10 +6,10 @@ function ElapseTimeTrendAnalyser(game) {
 ElapseTimeTrendAnalyser.prototype = {
     constructor: ElapseTimeTrendAnalyser,
 
-    suggest: function () {
+    getResult: function (numbers, draws) {
         var period = this.periodFactory.get(
-            this.game.get('numbers'),
-            this.draws.slice(-300)
+            numbers,
+            draws.slice(-300)
         );
         
         return this.resultFactory.get(period);

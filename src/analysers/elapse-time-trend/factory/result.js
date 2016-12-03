@@ -5,6 +5,7 @@ ElapseTimeTrendResultFactory.prototype = {
 
     get: function (period) {
         return new ElapseTimeTrendResultData(
+            period,
             this.getNumbersByElapseTime(period.getHits()),
             this.getNumbersByElapseTimeGap(period.getHits())
         );

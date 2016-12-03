@@ -1,5 +1,5 @@
-describe('Elapse time trend analyser', function() {
-    var numbers, draws, period, result, periodFactory, resultFactory;
+describe('Elapse time trend analyser builds a result that', function() {
+    var numbers, draws, result;
 
     // check the 5/35 game
     numbers = generateNumbers(1, 35);
@@ -12,16 +12,11 @@ describe('Elapse time trend analyser', function() {
         [4,9,15,17,24], [6,7,10,16,32], [6,12,21,31,32], [7,9,16,26,30]
     ];
 
-    // initialize factories
-    periodFactory = new ElapseTimeTrendPeriodFactory();
-    resultFactory = new ElapseTimeTrendResultFactory();
+    // build result
+    result = new ElapseTimeTrendAnalyser().getResult(numbers, draws);
 
-    // build period and result
-    period = periodFactory.get(numbers, draws);
-    result = resultFactory.get(period);
-
-    it('period factory calculates the gaps between each number draw in a single `period`', function() {
-        var assert;
+    it('calculates the gaps between each number draw in a single `period`', function() {
+        var period = result.getPeriod(), assert;
 
         // create assert
         assert = function (hit, number, drawnIn, elapseTime, averageElapseTime, elapseTimeGap) {
@@ -73,11 +68,14 @@ describe('Elapse time trend analyser', function() {
         assert(period.hits[34], 35, [10], 6, null, null);
     });
 
-    it('result factory generates 2 number lists - ordered by elapse time and ordered by elapse time gap', function() {
+    it('orders the numbers in the period by elapse time', function() {
         expect([
             22, 11, 3, 2, 1, 18, 25, 34, 14, 29, 27, 20, 35, 8, 28, 23, 19, 33, 13, 5, 24, 17,
             15, 4, 10, 32, 31, 21, 12, 6, 30, 26, 16, 9, 7
         ]).toEqual(result.getNumbersByElapseTime());
+    });
+    
+    it('orders the numbers in the period by elapse time gap', function() {
         expect([
             4, 5, 16, 28, 31, 12, 21, 30, 32, 33, 7, 8, 19, 23, 24, 34, 6, 9, 27, 29, 17, 14, 15,
             26, 25

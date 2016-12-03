@@ -35,10 +35,13 @@ var Router = Backbone.Router.extend({
         view.render();
         
         game.load(function () {
-            var hotColdTrend, elapseTimeTrend;
+            var numbers, draws, hotColdTrend, elapseTimeTrend;
             
+            numbers = game.get('numbers');
+            draws = game.getAllDraws();
+        
             hotColdTrend = new HotColdTrendAnalyser(game);
-            elapseTimeTrend = new ElapseTimeTrendAnalyser(game).suggest();
+            elapseTimeTrend = new ElapseTimeTrendAnalyser().getResult(numbers, draws.slice());
 
             view.renderHotColdTrend(hotColdTrend.suggest());
             view.renderElapseTimeTrend(
