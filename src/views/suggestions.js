@@ -9,6 +9,8 @@ var SuggestionsView = Backbone.View.extend({
     },
     
     renderHotColdTrend: function (numbers) {
+        numbers.sort(this.sortAscending);
+        
         this.$el.find('.hot-cold-trend').html(this.numbersTemplate({
             numbers: numbers
         }));
