@@ -41,7 +41,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     
-                    <a class="navbar-brand logo" href="#">mo|lottery</a>
+                    <a class="navbar-brand logo" href="/">mo|lottery</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="navigation">
@@ -58,18 +58,22 @@
 
         <script type="text/template" id="navigation-change-game">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="current-game"><%= currentGame.get('name') %> (<%= currentGame.get('possibleDraws').toLocaleString('en-US') %>)</span>
+                <span class="current-game"><%= gameNameTemplate({game: currentGame}) %></span>
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
                 <% games.forEach(function (game) { %>
                     <li>
                         <a href="#/suggestions/<%= game.get('id') %>" class="game">
-                            <%= game.get('name') %> (<%= game.get('possibleDraws').toLocaleString('en-US') %>)
+                            <%= gameNameTemplate({game: game}) %>
                         </a>
                     </li>
                 <% }); %>
             </ul>
+        </script>
+        
+        <script type="text/template" id="game-name">
+            <%= game.get('name') %> (<%= game.get('possibleDraws').toLocaleString('en-US') %>)
         </script>
         
         <script type="text/template" id="navigation-game-menu">
