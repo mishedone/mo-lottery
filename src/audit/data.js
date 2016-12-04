@@ -10,7 +10,6 @@ function AuditData(drawSize) {
     // initialize totals
     this.totalHitCount = 0;
     this.totalDrawnCount = 0;
-
     this.score = 0;
 }
 
