@@ -25,7 +25,7 @@ ElapseTimeTrendResultFactory.prototype = {
         });
         hits.reverse();
 
-        return this.getNumbersFromHits(hits);
+        return extractNumbers(hits);
     },
     
     getElapseTimeGapNumbers: function (hits) {
@@ -50,16 +50,6 @@ ElapseTimeTrendResultFactory.prototype = {
             return aDistance - bDistance;
         });
         
-        return this.getNumbersFromHits(hits);
-    },
-    
-    getNumbersFromHits: function (hits) {
-        var numbers = [];
-        
-        _.each(hits, function (hit) {
-            numbers.push(hit.getNumber());
-        });
-        
-        return numbers;
-    } 
+        return extractNumbers(hits);
+    }
 };

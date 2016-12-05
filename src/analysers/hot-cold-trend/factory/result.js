@@ -56,7 +56,7 @@ HotColdTrendResultFactory.prototype = {
     },
     
     getRisingNumbers: function () {
-        var numbers = [], risings = this.risings.extract();
+        risings = this.risings.extract();
         
         // remove not rising numbers from risings
         risings = _.filter(risings, function (rising) {
@@ -69,16 +69,11 @@ HotColdTrendResultFactory.prototype = {
         });
         risings.reverse();
         
-        // collect rising numbers
-        _.each(risings, function (rising) {
-            numbers.push(rising.getNumber());
-        });
-        
-        return numbers;
+        return extractNumbers(risings);
     },
     
     getHotNumbers: function (lastPeriod) {
-        var numbers = [], hits = lastPeriod.getHits();
+        hits = lastPeriod.getHits();
         
         // sort hits by count
         hits.sort(function (a, b) {
@@ -90,11 +85,6 @@ HotColdTrendResultFactory.prototype = {
         });
         hits.reverse();
         
-        // extract numbers from hits
-        _.each(hits, function (hit) {
-            numbers.push(hit.getNumber());
-        });
-        
-        return numbers;
+        return extractNumbers(hits);
     }
 };
