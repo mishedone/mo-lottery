@@ -30,27 +30,36 @@ ElapseTimeTrendHitData.prototype = {
     },
 
     calculateElapseTimes: function (index) {
-        var drawnIn = this.drawnIn.slice(), elapseTimeSum = 0, gaps = (drawnIn.length - 1), iterator;
+        var elapseTimeSum = 0, lastDrawnIndex, iterator;
 
         // if the number has not been drawn - assume elapse time equals current draw index
-        if (drawnIn.length == 0) {
+        if (!this.isDrawn()) {
             this.elapseTime = index;
 
             return;
         }
 
         // sum all elapse times between each hit index (going from end to beginning)
-        iterator = drawnIn.length - 1;
+        iterator = this.drawnIn.length - 1;
         for (iterator; iterator > 0; iterator--) {
-            elapseTimeSum += drawnIn[iterator] - drawnIn[iterator - 1];
+            elapseTimeSum += this.drawnIn[iterator] - this.drawnIn[iterator - 1];
         }
 
-        this.elapseTime = index - drawnIn[drawnIn.length - 1];
+        lastDrawnIndex = this.drawnIn[this.drawnIn.length - 1];
+        this.elapseTime = index - lastDrawnIndex;
 
         // we can have average only if there is at least 1 gap
-        if (drawnIn.length > 1) {
-            this.averageElapseTime = Math.round(elapseTimeSum / gaps);
+        if (this.getGapCount()) {
+            this.averageElapseTime = Math.round(elapseTimeSum / this.getGapCount());
             this.elapseTimeGap = this.elapseTime - this.averageElapseTime;
         }
+    },
+
+    isDrawn: function () {
+        return (this.drawnIn.length != 0);
+    },
+
+    getGapCount: function () {
+        return this.drawnIn.length - 1;
     }
 };
