@@ -6,6 +6,10 @@ function NumberCollection() {
 NumberCollection.prototype = {
     constructor: NumberCollection,
 
+    has: function (number) {
+        return this.indexes.hasOwnProperty(number);
+    },
+
     get: function (number) {
         if (typeof number == 'undefined') {
             return this.numbers;

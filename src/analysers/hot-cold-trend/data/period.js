@@ -6,12 +6,10 @@ function HotColdTrendPeriodData(numbers) {
     this.drawCount = 0;
     this.averageHit = 0;
 
-    // create hits for each available number and cache number index map
-    this.hits = [];
-    this.hitsNumberMap = {};
+    // create hits for each available number
+    this.hits = new NumberCollection();
     _.each(this.numbers, function (number) {
-        self.hits.push(new HotColdTrendHitData(number));
-        self.hitsNumberMap[number] = self.hits.length - 1;
+        self.hits.add(number, new HotColdTrendHitData(number));
     });
 }
 
@@ -19,7 +17,7 @@ HotColdTrendPeriodData.prototype = {
     constructor: HotColdTrendPeriodData,
     
     getHits: function () {
-        return this.hits.slice();
+        return this.hits.extract();
     },
     
     getAverageHit: function () {
@@ -35,7 +33,7 @@ HotColdTrendPeriodData.prototype = {
 
         // update hits for each drawn number
         _.each(draw, function (number) {
-            self.hits[self.hitsNumberMap[number]].hit();
+            self.hits.get(number).hit();
         });
 
         // update counters
