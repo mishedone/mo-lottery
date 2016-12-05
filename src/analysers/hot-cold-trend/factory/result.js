@@ -7,12 +7,12 @@ HotColdTrendResultFactory.prototype = {
         var lastPeriod = periods[0];
 
         this.hitThreshold = lastPeriod.getAverageHit();
-        this.risings = new NumberCollection();
+        this.risingCollection = new NumberCollection();
         this.buildRisings(periods);
         
         return new HotColdTrendResultData(
             periods,
-            this.risings.extract(),
+            this.risingCollection.extract(),
             this.getRisingNumbers(),
             this.getHotNumbers(lastPeriod)
         );
@@ -38,25 +38,28 @@ HotColdTrendResultFactory.prototype = {
     
     initializeRising: function (number, hits) {
         if (this.isNumberHot(hits)) {
-            this.risings.add(number, new HotColdTrendRisingData(number, hits));
+            this.risingCollection.add(
+                number,
+                new HotColdTrendRisingData(number, hits)
+            );
         }
     },
     
     updateRising: function (number, hits) {
-        if (!this.risings.has(number)) {
+        if (!this.risingCollection.has(number)) {
             return;
         }
 
         // update rising
         if (this.isNumberHot(hits)) {
-            this.risings.get(number).addHits(hits);
+            this.risingCollection.get(number).addHits(hits);
         } else {
-            this.risings.get(number).drop();
+            this.risingCollection.get(number).drop();
         }
     },
     
     getRisingNumbers: function () {
-        risings = this.risings.extract();
+        risings = this.risingCollection.extract();
         
         // remove not rising numbers from risings
         risings = _.filter(risings, function (rising) {

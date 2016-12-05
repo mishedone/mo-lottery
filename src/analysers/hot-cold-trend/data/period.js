@@ -7,9 +7,9 @@ function HotColdTrendPeriodData(numbers) {
     this.averageHit = 0;
 
     // create hits for each available number
-    this.hits = new NumberCollection();
+    this.hitCollection = new NumberCollection();
     _.each(this.numbers, function (number) {
-        self.hits.add(number, new HotColdTrendHitData(number));
+        self.hitCollection.add(number, new HotColdTrendHitData(number));
     });
 }
 
@@ -17,7 +17,7 @@ HotColdTrendPeriodData.prototype = {
     constructor: HotColdTrendPeriodData,
     
     getHits: function () {
-        return this.hits.extract();
+        return this.hitCollection.extract();
     },
     
     getAverageHit: function () {
@@ -33,7 +33,7 @@ HotColdTrendPeriodData.prototype = {
 
         // update hits for each drawn number
         _.each(draw, function (number) {
-            self.hits.get(number).hit();
+            self.hitCollection.get(number).hit();
         });
 
         // update counters
