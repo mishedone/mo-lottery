@@ -4,12 +4,10 @@ function ElapseTimeTrendPeriodData(numbers) {
     this.numbers = numbers;
     this.drawIndex = 0;
 
-    // create hits for each available number and cache number index map
-    this.hits = [];
-    this.hitsNumberMap = {};
+    // create hits for each available number
+    this.hits = new NumberCollection();
     _.each(this.numbers, function (number) {
-        self.hits.push(new ElapseTimeTrendHitData(number));
-        self.hitsNumberMap[number] = self.hits.length - 1;
+        self.hits.add(number, new ElapseTimeTrendHitData(number));
     });
 }
 
@@ -17,7 +15,7 @@ ElapseTimeTrendPeriodData.prototype = {
     constructor: ElapseTimeTrendPeriodData,
 
     getHits: function () {
-        return this.hits.slice();
+        return this.hits.extract();
     },
 
     addDraw: function (draw) {
@@ -28,14 +26,14 @@ ElapseTimeTrendPeriodData.prototype = {
 
         // update hits for each drawn number
         _.each(draw, function (number) {
-            self.hits[self.hitsNumberMap[number]].hit(self.drawIndex);
+            self.hits.get(number).hit(self.drawIndex);
         });
     },
 
     finish: function () {
         var self = this;
 
-        _.each(this.hits, function (hit) {
+        _.each(this.hits.get(), function (hit) {
             hit.calculateElapseTimes(self.drawIndex);
         });
     }
