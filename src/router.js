@@ -23,7 +23,7 @@ var Router = Backbone.Router.extend({
     },
 
     index: function () {
-        this.navigate('suggestions/' + this.lastGame.get('id'), {trigger: true});
+        this.navigate('#/suggestions/' + this.lastGame.get('id'), {trigger: true});
     },
     
     suggestions: function (id) {
