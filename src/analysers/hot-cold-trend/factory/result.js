@@ -3,63 +3,19 @@ function HotColdTrendResultFactory() {}
 HotColdTrendResultFactory.prototype = {
     constructor: HotColdTrendResultFactory,
     
-    get: function (periods) {
+    get: function (periods, risings) {
         var lastPeriod = periods[0];
-
-        this.hitThreshold = lastPeriod.getAverageHit();
-        this.risingCollection = new NumberCollection();
-        this.buildRisings(periods);
         
         return new HotColdTrendResultData(
             periods,
-            this.risingCollection.extract(),
-            this.getRisingNumbers(),
+            risings,
+            this.getRisingNumbers(risings),
             this.getHotNumbers(lastPeriod)
         );
     },
     
-    isNumberHot: function (hits) {
-        return hits > this.hitThreshold;
-    },
-    
-    buildRisings: function (periods) {
-        var self = this;
-        
-        _.each(periods, function (period, index) {
-            _.each(period.getHits(), function (hit) {
-                if (index == 0) {
-                    self.initializeRising(hit.getNumber(), hit.getCount());
-                } else {
-                    self.updateRising(hit.getNumber(), hit.getCount());
-                }
-            });
-        });
-    },
-    
-    initializeRising: function (number, hits) {
-        if (this.isNumberHot(hits)) {
-            this.risingCollection.add(
-                number,
-                new HotColdTrendRisingData(number, hits)
-            );
-        }
-    },
-    
-    updateRising: function (number, hits) {
-        if (!this.risingCollection.has(number)) {
-            return;
-        }
-
-        // update rising
-        if (this.isNumberHot(hits)) {
-            this.risingCollection.get(number).addHits(hits);
-        } else {
-            this.risingCollection.get(number).drop();
-        }
-    },
-    
-    getRisingNumbers: function () {
-        risings = this.risingCollection.extract();
+    getRisingNumbers: function (risings) {
+        risings = risings.slice();
         
         // remove not rising numbers from risings
         risings = _.filter(risings, function (rising) {
