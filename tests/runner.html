@@ -11,20 +11,6 @@
         <script src="../vendor/jasmine/jasmine-html.js"></script>
         <script src="../vendor/jasmine/boot.js"></script>
         <script src="../vendor/underscore/underscore-min.js"></script>
-        
-        <!-- helper functions -->
-        <script type="text/javascript">
-            function generateNumbers(start, stop) {
-                var numbers = [], iterator;
-            
-                // build available number set
-                for (iterator = start; iterator <= stop; iterator++) {
-                    numbers.push(iterator);
-                }
-            
-                return numbers;
-            }
-        </script>
 
         <!-- source files -->
         <script src="../src/collections/number.js"></script>
@@ -44,6 +30,20 @@
         <script src="../src/analysers/hot-cold-trend/analyser.js"></script>
         <script src="../src/analysers/helper.js"></script>
         <script src="../src/analysers/suggestions.js"></script>
+        
+        <!-- helper functions -->
+        <script type="text/javascript">
+            function generateNumbers(start, stop) {
+                var numbers = [], iterator;
+            
+                // build available number set
+                for (iterator = start; iterator <= stop; iterator++) {
+                    numbers.push(iterator);
+                }
+            
+                return numbers;
+            }
+        </script>
 
         <!-- spec files -->
         <script src="specs/analysers/analyser-suggestions.js"></script>
