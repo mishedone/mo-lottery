@@ -1,4 +1,6 @@
-function ElapseTimeTrendResultFactory() {}
+function ElapseTimeTrendResultFactory() {
+    this.numberExtractor = new AnalyserNumberExtractor();
+}
 
 ElapseTimeTrendResultFactory.prototype = {
     constructor: ElapseTimeTrendResultFactory,
@@ -25,7 +27,7 @@ ElapseTimeTrendResultFactory.prototype = {
         });
         hits.reverse();
 
-        return extractNumbers(hits);
+        return this.numberExtractor.extract(hits);
     },
     
     getElapseTimeGapNumbers: function (hits) {
@@ -50,6 +52,6 @@ ElapseTimeTrendResultFactory.prototype = {
             return aDistance - bDistance;
         });
         
-        return extractNumbers(hits);
+        return this.numberExtractor.extract(hits);
     }
 };

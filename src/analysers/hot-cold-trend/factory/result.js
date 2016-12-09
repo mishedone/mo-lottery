@@ -1,4 +1,6 @@
-function HotColdTrendResultFactory() {}
+function HotColdTrendResultFactory() {
+    this.numberExtractor = new AnalyserNumberExtractor();
+}
 
 HotColdTrendResultFactory.prototype = {
     constructor: HotColdTrendResultFactory,
@@ -28,7 +30,7 @@ HotColdTrendResultFactory.prototype = {
         });
         risings.reverse();
         
-        return extractNumbers(risings);
+        return this.numberExtractor.extract(risings);
     },
     
     getHotNumbers: function (lastPeriod) {
@@ -44,6 +46,6 @@ HotColdTrendResultFactory.prototype = {
         });
         hits.reverse();
         
-        return extractNumbers(hits);
+        return this.numberExtractor.extract(hits);
     }
 };
