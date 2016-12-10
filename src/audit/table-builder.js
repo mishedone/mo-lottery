@@ -15,33 +15,55 @@ AuditTableBuilder.prototype = {
     constructor: AuditTableBuilder,
     
     get: function () {
-        var table = new AuditTable('Audit'), iterator;
+        var table = new AuditTable('Audit'), i, j;
         
         // add labels
         this.addAuditDataLabels(table);
         
         // add elapse time trend data
-        for (iterator = 150; iterator <= 250; iterator++) {
-            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrend', 1, iterator,
+        for (i= 150; i <= 250; i++) {
+            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrend', 1, i,
                 this.getSuggestionsConfig({
-                    drawsPerPeriod: iterator
+                    drawsPerPeriod: i
                 }, {})
             ));
-            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrendGaps', 1, iterator,
+            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrendGaps', 1, i,
                 this.getSuggestionsConfig({
-                    drawsPerPeriod: iterator
+                    drawsPerPeriod: i
                 }, {})
             ));
         }
     
         // add hot-cold trend data
-        for (iterator = 5; iterator <= 20; iterator++) {
-            this.addAuditDataRow(table, this.getAuditData('HotColdTrend', 12, iterator,
+        for (i = 5; i <= 20; i++) {
+            this.addAuditDataRow(table, this.getAuditData('HotColdTrend', 12, i,
                 this.getSuggestionsConfig({}, {
                     periodCount: 12,
-                    drawsPerPeriod: iterator
+                    drawsPerPeriod: i
                 })
             ));
+        }
+        
+        // add mixed data
+        for (i= 5; i <= 20; i++) {
+            for (j = 15; j <= 25; j++) {
+                this.addAuditDataRow(table, this.getAuditData('MixedRisingElapseTime', '12/1', i + '/' + (j * 10),
+                    this.getSuggestionsConfig({
+                        drawsPerPeriod: j * 10
+                    }, {
+                        periodCount: 12,
+                        drawsPerPeriod: i
+                    })
+                ));
+                this.addAuditDataRow(table, this.getAuditData('MixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10),
+                    this.getSuggestionsConfig({
+                        drawsPerPeriod: j * 10
+                    }, {
+                        periodCount: 12,
+                        drawsPerPeriod: i
+                    })
+                ));
+            }
         }
         
         // sort data by score
