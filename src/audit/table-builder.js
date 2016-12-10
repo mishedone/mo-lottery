@@ -1,106 +1,50 @@
 function AuditTableBuilder(game) {
+    var weeksPerYear = 52;
+    
     this.game = game;
+    this.numbers = game.get('numbers');
     this.drawSize = game.get('drawSize');
+    this.drawsPerWeek = game.get('drawsPerWeek');
     this.draws = game.getAllDraws();
-    this.iterations = 730;
+    
+    // use 6 months for now
+    this.iterations = (weeksPerYear * this.drawsPerWeek) / 2;
 }
 
 AuditTableBuilder.prototype = {
     constructor: AuditTableBuilder,
     
-    getElapseTimeTrendTable: function () {
-        var table = new AuditTable('Elapse Time Trend'), currentIteration = 1, lastDraw, suggestion, auditData;
+    get: function () {
+        var table = new AuditTable('Audit'), iterator;
         
         // add labels
         this.addAuditDataLabels(table);
         
-        // build audit data
-        auditData = new AuditData(this.drawSize);
-        while (currentIteration <= this.iterations) {
-            lastDraw = this.draws[this.draws.length - currentIteration];
-            suggestion = new AnalyserSuggestions(
-                this.game.get('numbers'),
-                this.draws.slice(0, currentIteration * -1),
-                this.game.get('drawSize'),
-                this.getSuggestionsConfig(1, 1)
-            ).getElapseTimeTrend();
-
-            // update audit data
-            auditData.check(suggestion, lastDraw);
-
-            // increase iteration counters
-            currentIteration++;
+        // add data
+        this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrend', 1, 300));
+        this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrendGaps', 1, 300));
+        for (iterator = 10; iterator <= 20; iterator++) {
+            this.addAuditDataRow(table, this.getAuditData('HotColdTrend', 12, iterator));
         }
-        auditData.calculateScore();
         
-        // add rows
-        this.addAuditDataRows(table, auditData);
+        // sort data by score
+        table.sort(5 + this.drawSize);
         
         return table;
     },
     
-    getElapseTimeTrendGapsTable: function () {
-        var table = new AuditTable('Elapse Time Trend - Gaps'), currentIteration = 1, lastDraw, suggestion, auditData;
-        
-        // add labels
-        this.addAuditDataLabels(table);
-        
-        // build audit data
-        auditData = new AuditData(this.drawSize);
-        while (currentIteration <= this.iterations) {
-            lastDraw = this.draws[this.draws.length - currentIteration];
-            suggestion = new AnalyserSuggestions(
-                this.game.get('numbers'),
-                this.draws.slice(0, currentIteration * -1),
-                this.game.get('drawSize'),
-                this.getSuggestionsConfig(1, 1)
-            ).getElapseTimeTrendGaps();
-
-            // update audit data
-            auditData.check(suggestion, lastDraw);
-
-            // increase iteration counters
-            currentIteration++;
-        }
-        auditData.calculateScore();
-        
-        // add rows
-        this.addAuditDataRows(table, auditData);
-        
-        return table;
-    },
-    
-    getHotColdTrendTable: function () {
-        var table = new AuditTable('Hot-cold Trend'), drawsPerPeriod, auditData;
-        
-        // add labels
-        table.addLabel('Draws per period');
-        this.addAuditDataLabels(table);
-        
-        // add rows
-        for (drawsPerPeriod = 1; drawsPerPeriod <= 20; drawsPerPeriod++) {
-            table.addData(drawsPerPeriod);
-            auditData = this.getHotColdTrendAuditData(drawsPerPeriod);
-            this.addAuditDataRows(table, auditData);
-            table.endRow();
-        }
-        table.sort(3 + this.drawSize);
-
-        return table;
-    },
-    
-    getHotColdTrendAuditData: function (drawsPerPeriod) {
+    getAuditData: function (algorithm, periodCount, drawsPerPeriod) {
         var currentIteration = 1, lastDraw, suggestion, auditData;
         
-        auditData = new AuditData(this.game.get('drawSize'));
+        auditData = new AuditData(this.drawSize, algorithm, periodCount, drawsPerPeriod);
         while (currentIteration <= this.iterations) {
             lastDraw = this.draws[this.draws.length - currentIteration];
             suggestion = new AnalyserSuggestions(
-                this.game.get('numbers'),
+                this.numbers,
                 this.draws.slice(0, currentIteration * -1),
-                this.game.get('drawSize'),
-                this.getSuggestionsConfig(drawsPerPeriod, 12)
-            ).getHotColdTrend();
+                this.drawSize,
+                this.getSuggestionsConfig(periodCount, drawsPerPeriod)
+            )['get' + algorithm]();
 
             // update audit data
             auditData.check(suggestion, lastDraw);
@@ -116,6 +60,10 @@ AuditTableBuilder.prototype = {
     addAuditDataLabels: function (table) {
         var numberCount = 0;
         
+        table.addLabel('Algorithm');
+        table.addLabel('Period count');
+        table.addLabel('Draws per period');
+        
         while (numberCount <= this.drawSize) {
             table.addLabel('Hit ' + numberCount);
             numberCount++;
@@ -126,20 +74,27 @@ AuditTableBuilder.prototype = {
         table.addLabel('Total hit %');
     },
     
-    addAuditDataRows: function (table, auditData) {
+    addAuditDataRow: function (table, auditData) {
+        table.addData(auditData.getAlgorithm());
+        table.addData(auditData.getPeriodCount());
+        table.addData(auditData.getDrawsPerPeriod());
+        
         _.each(auditData.getNumbersHit(), function (hits, numberCount) {
             table.addData(hits);
         });
+        
         table.addData(auditData.getScore());
         table.addData(auditData.getTotalHitCount());
         table.addData(auditData.getTotalHitPercentage());
+        
+        table.endRow();
     },
     
-    getSuggestionsConfig: function (drawsPerPeriod, periodCount) {
+    getSuggestionsConfig: function (periodCount, drawsPerPeriod) {
         return {
             hotColdTrend: {
-                drawsPerPeriod: drawsPerPeriod,
-                periodCount: periodCount
+                periodCount: periodCount,
+                drawsPerPeriod: drawsPerPeriod
             }
         };
     }

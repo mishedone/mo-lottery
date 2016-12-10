@@ -67,9 +67,7 @@ var Router = Backbone.Router.extend({
             var tableBuilder = new AuditTableBuilder(game);
             
             view.renderTables([
-                tableBuilder.getHotColdTrendTable(),
-                tableBuilder.getElapseTimeTrendTable(),
-                tableBuilder.getElapseTimeTrendGapsTable()
+                tableBuilder.get()
             ]);
         });
     },

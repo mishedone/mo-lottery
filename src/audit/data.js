@@ -1,5 +1,10 @@
-function AuditData(drawSize) {
+function AuditData(drawSize, algorithm, periodCount, drawsPerPeriod) {
     var numberCount;
+    
+    // initialize audit characteristics
+    this.algorithm = algorithm;
+    this.periodCount = periodCount;
+    this.drawsPerPeriod = drawsPerPeriod;
 
     // initialize hit numbers
     this.numbersHit = {};
@@ -8,9 +13,9 @@ function AuditData(drawSize) {
     }
     
     // initialize totals
+    this.score = 0;
     this.totalHitCount = 0;
     this.totalDrawnCount = 0;
-    this.score = 0;
 }
 
 AuditData.prototype = {
@@ -33,6 +38,18 @@ AuditData.prototype = {
                 self.score += hits * Math.pow(10, numberCount - 1);
             }
         });
+    },
+    
+    getAlgorithm: function () {
+        return this.algorithm;
+    },
+    
+    getPeriodCount: function () {
+        return this.periodCount;
+    },
+    
+    getDrawsPerPeriod: function () {
+        return this.drawsPerPeriod;
     },
 
     getNumbersHit: function () {
