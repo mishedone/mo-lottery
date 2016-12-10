@@ -40,9 +40,12 @@ var Router = Backbone.Router.extend({
                 game.getAllDraws(),
                 game.get('drawSize'),
                 {
+                    elapseTimeTrend: {
+                        drawsPerPeriod: 300
+                    },
                     hotColdTrend: {
-                        drawsPerPeriod: game.get('hotColdTrendDrawsPerPeriod'),
-                        periodCount: 12
+                        periodCount: 12,
+                        drawsPerPeriod: game.get('hotColdTrendDrawsPerPeriod')
                     }
                 }
             );

@@ -6,10 +6,10 @@ function ElapseTimeTrendAnalyser() {
 ElapseTimeTrendAnalyser.prototype = {
     constructor: ElapseTimeTrendAnalyser,
 
-    getResult: function (numbers, draws) {
+    getResult: function (numbers, draws, drawsPerPeriod) {
         var period = this.periodFactory.get(
             numbers,
-            draws.slice(-300)
+            draws.slice(drawsPerPeriod * -1)
         );
         
         return this.resultFactory.get(period);

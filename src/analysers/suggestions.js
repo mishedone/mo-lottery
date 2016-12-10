@@ -7,7 +7,8 @@ function AnalyserSuggestions(numbers, draws, drawSize, config) {
     // create results
     this.elapseTimeTrendResult = new ElapseTimeTrendAnalyser().getResult(
         this.numbers,
-        this.draws
+        this.draws,
+        this.config.elapseTimeTrend.drawsPerPeriod
     );
     this.hotColdTrendResult = new HotColdTrendAnalyser().getResult(
         this.numbers,
