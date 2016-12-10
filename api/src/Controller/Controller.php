@@ -45,7 +45,8 @@ class Controller
                 'numbers' => $game->getNumbers(),
                 'years' => $game->getYears(),
                 'drawsUrls' => $drawsUrls,
-                'hotColdTrendDrawsPerPeriod' => $game->getHotColdTrendDrawsPerPeriod()
+                'hotColdTrendDrawsPerPeriod' => $game->getHotColdTrendDrawsPerPeriod(),
+                'drawsPerWeek' => $game->getDrawsPerWeek()
             ];
         }
         

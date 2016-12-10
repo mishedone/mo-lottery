@@ -48,6 +48,14 @@ class Game535 extends AbstractBSTGame
     {
         return 16;
     }
+    
+    /**
+     * @return int
+     */
+    public function getDrawsPerWeek()
+    {
+        return 4;
+    }
 
     /**
      * @return ParserConfig

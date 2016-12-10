@@ -39,6 +39,11 @@ abstract class AbstractGame
      * @return int
      */
     abstract public function getHotColdTrendDrawsPerPeriod();
+    
+    /**
+     * @return int
+     */
+    abstract public function getDrawsPerWeek();
 
     /**
      * @var array
