@@ -20,17 +20,21 @@ AuditTableBuilder.prototype = {
         // add labels
         this.addAuditDataLabels(table);
         
-        // add data
-        this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrend', 1, 300,
-            this.getSuggestionsConfig({
-                drawsPerPeriod: 300
-            }, {})
-        ));
-        this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrendGaps', 1, 300,
-            this.getSuggestionsConfig({
-                drawsPerPeriod: 300
-            }, {})
-        ));
+        // add elapse time trend data
+        for (iterator = 150; iterator <= 250; iterator++) {
+            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrend', 1, iterator,
+                this.getSuggestionsConfig({
+                    drawsPerPeriod: iterator
+                }, {})
+            ));
+            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrendGaps', 1, iterator,
+                this.getSuggestionsConfig({
+                    drawsPerPeriod: iterator
+                }, {})
+            ));
+        }
+    
+        // add hot-cold trend data
         for (iterator = 5; iterator <= 20; iterator++) {
             this.addAuditDataRow(table, this.getAuditData('HotColdTrend', 12, iterator,
                 this.getSuggestionsConfig({}, {
