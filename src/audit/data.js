@@ -1,4 +1,4 @@
-function AuditData(drawSize, algorithm, periodCount, drawsPerPeriod) {
+function AuditData(drawSize, algorithm, periodCount, drawsPerPeriod, suggestionsConfig) {
     var numberCount;
     
     // initialize audit characteristics
@@ -16,6 +16,9 @@ function AuditData(drawSize, algorithm, periodCount, drawsPerPeriod) {
     this.score = 0;
     this.totalHitCount = 0;
     this.totalDrawnCount = 0;
+    
+    // the configuration passed to the analyser suggestions
+    this.suggestionsConfig = suggestionsConfig;
 }
 
 AuditData.prototype = {
@@ -70,5 +73,9 @@ AuditData.prototype = {
     
     getPercentage: function (part, whole) {
         return ((100 * part) / whole).toFixed(2);
+    },
+    
+    getSuggestionsConfig: function () {
+        return this.suggestionsConfig;
     }
 };

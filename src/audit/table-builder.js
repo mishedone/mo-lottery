@@ -15,53 +15,43 @@ AuditTableBuilder.prototype = {
     constructor: AuditTableBuilder,
     
     get: function () {
-        var table = new AuditTable('Audit'), i, j;
+        var table = new AuditTable('Audit'), config, i, j;
         
         // add labels
         this.addAuditDataLabels(table);
         
         // add elapse time trend data
         for (i= 150; i <= 250; i++) {
-            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrend', 1, i,
-                this.getSuggestionsConfig({
-                    drawsPerPeriod: i
-                }, {})
-            ));
-            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrendGaps', 1, i,
-                this.getSuggestionsConfig({
-                    drawsPerPeriod: i
-                }, {})
-            ));
+            config = this.getSuggestionsConfig({
+                drawsPerPeriod: i
+            }, {});
+            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrend', 1, i, config));
+            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrendGaps', 1, i, config));
         }
     
         // add hot-cold trend data
         for (i = 5; i <= 20; i++) {
-            this.addAuditDataRow(table, this.getAuditData('HotColdTrend', 12, i,
-                this.getSuggestionsConfig({}, {
-                    periodCount: 12,
-                    drawsPerPeriod: i
-                })
-            ));
+            config = this.getSuggestionsConfig({}, {
+                periodCount: 12,
+                drawsPerPeriod: i
+            });
+            this.addAuditDataRow(table, this.getAuditData('HotColdTrend', 12, i, config));
         }
         
         // add mixed data
         for (i= 5; i <= 20; i++) {
             for (j = 15; j <= 25; j++) {
-                this.addAuditDataRow(table, this.getAuditData('MixedRisingElapseTime', '12/1', i + '/' + (j * 10),
-                    this.getSuggestionsConfig({
-                        drawsPerPeriod: j * 10
-                    }, {
-                        periodCount: 12,
-                        drawsPerPeriod: i
-                    })
+                config = this.getSuggestionsConfig({
+                    drawsPerPeriod: j * 10
+                }, {
+                    periodCount: 12,
+                    drawsPerPeriod: i
+                });
+                this.addAuditDataRow(table, this.getAuditData(
+                    'MixedRisingElapseTime', '12/1', i + '/' + (j * 10), config
                 ));
-                this.addAuditDataRow(table, this.getAuditData('MixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10),
-                    this.getSuggestionsConfig({
-                        drawsPerPeriod: j * 10
-                    }, {
-                        periodCount: 12,
-                        drawsPerPeriod: i
-                    })
+                this.addAuditDataRow(table, this.getAuditData(
+                    'MixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10), config
                 ));
             }
         }
@@ -75,7 +65,13 @@ AuditTableBuilder.prototype = {
     getAuditData: function (algorithm, periodCount, drawsPerPeriod, suggestionsConfig) {
         var currentIteration = 1, lastDraw, suggestion, auditData;
         
-        auditData = new AuditData(this.drawSize, algorithm, periodCount, drawsPerPeriod);
+        auditData = new AuditData(
+            this.drawSize,
+            algorithm,
+            periodCount,
+            drawsPerPeriod,
+            suggestionsConfig
+        );
         while (currentIteration <= this.iterations) {
             lastDraw = this.draws[this.draws.length - currentIteration];
             suggestion = new AnalyserSuggestions(
@@ -113,7 +109,9 @@ AuditTableBuilder.prototype = {
         table.addLabel('Total hit %');
     },
     
-    addAuditDataRow: function (table, auditData) {
+    addAuditDataRow: function (table, auditData, config) {
+        table.startRow(auditData.getSuggestionsConfig());
+        
         table.addData(auditData.getAlgorithm());
         table.addData(auditData.getPeriodCount());
         table.addData(auditData.getDrawsPerPeriod());
@@ -125,8 +123,6 @@ AuditTableBuilder.prototype = {
         table.addData(auditData.getScore());
         table.addData(auditData.getTotalHitCount());
         table.addData(auditData.getTotalHitPercentage());
-        
-        table.endRow();
     },
     
     getSuggestionsConfig: function (elapseTimeTrend, hotColdTrend) {

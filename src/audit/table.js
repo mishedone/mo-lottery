@@ -2,7 +2,7 @@ function AuditTable(name) {
     this.name = name;
     this.labels = [];
     this.rows = [];
-    this.index = 0;
+    this.index = -1;
 }
 
 AuditTable.prototype = {
@@ -25,18 +25,11 @@ AuditTable.prototype = {
     },
     
     addData: function (data) {
-        this.getRow(this.index).push(data);
+        this.rows[this.index].addData(data);
     },
     
-    getRow: function (index) {
-        if (typeof this.rows[index] == 'undefined') {
-            this.rows[index] = [];
-        }
-        
-        return this.rows[index];
-    },
-    
-    endRow: function () {
+    startRow: function (config) {
+        this.rows.push(new AuditTableRow(config));
         this.index++;
     },
     
@@ -44,8 +37,9 @@ AuditTable.prototype = {
         var index = column - 1;
         
         this.rows.sort(function (a, b) {
-            return a[index] - b[index];
+            return a.getData(index) - b.getData(index);
         });
+        
         this.rows.reverse();
     }
 }

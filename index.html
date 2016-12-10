@@ -115,10 +115,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% _.each(table.getRows(), function (rowCells) { %>
+                        <% _.each(table.getRows(), function (row) { %>
                             <tr>
-                                <% _.each(rowCells, function (cell) { %>
-                                    <td><%= cell %></td>
+                                <% _.each(row.getData(), function (data) { %>
+                                    <td><%= data %></td>
                                 <% }); %>
                             </tr>
                         <% }); %>
@@ -193,6 +193,7 @@
         <script src="src/analysers/suggestions.js"></script>
         
         <script src="src/audit/data.js"></script>
+        <script src="src/audit/table-row.js"></script>
         <script src="src/audit/table.js"></script>
         <script src="src/audit/table-builder.js"></script>
 
