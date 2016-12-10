@@ -21,10 +21,23 @@ AuditTableBuilder.prototype = {
         this.addAuditDataLabels(table);
         
         // add data
-        this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrend', 1, 300));
-        this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrendGaps', 1, 300));
-        for (iterator = 10; iterator <= 20; iterator++) {
-            this.addAuditDataRow(table, this.getAuditData('HotColdTrend', 12, iterator));
+        this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrend', 1, 300,
+            this.getSuggestionsConfig({
+                drawsPerPeriod: 300
+            }, {})
+        ));
+        this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrendGaps', 1, 300,
+            this.getSuggestionsConfig({
+                drawsPerPeriod: 300
+            }, {})
+        ));
+        for (iterator = 5; iterator <= 20; iterator++) {
+            this.addAuditDataRow(table, this.getAuditData('HotColdTrend', 12, iterator,
+                this.getSuggestionsConfig({}, {
+                    periodCount: 12,
+                    drawsPerPeriod: iterator
+                })
+            ));
         }
         
         // sort data by score
@@ -33,7 +46,7 @@ AuditTableBuilder.prototype = {
         return table;
     },
     
-    getAuditData: function (algorithm, periodCount, drawsPerPeriod) {
+    getAuditData: function (algorithm, periodCount, drawsPerPeriod, suggestionsConfig) {
         var currentIteration = 1, lastDraw, suggestion, auditData;
         
         auditData = new AuditData(this.drawSize, algorithm, periodCount, drawsPerPeriod);
@@ -43,7 +56,7 @@ AuditTableBuilder.prototype = {
                 this.numbers,
                 this.draws.slice(0, currentIteration * -1),
                 this.drawSize,
-                this.getSuggestionsConfig(periodCount, drawsPerPeriod)
+                suggestionsConfig
             )['get' + algorithm]();
 
             // update audit data
@@ -90,12 +103,15 @@ AuditTableBuilder.prototype = {
         table.endRow();
     },
     
-    getSuggestionsConfig: function (periodCount, drawsPerPeriod) {
+    getSuggestionsConfig: function (elapseTimeTrend, hotColdTrend) {
         return {
-            hotColdTrend: {
-                periodCount: periodCount,
-                drawsPerPeriod: drawsPerPeriod
-            }
+            elapseTimeTrend: _.extend({
+                drawsPerPeriod: 1
+            }, elapseTimeTrend),
+            hotColdTrend: _.extend({
+                periodCount: 1,
+                drawsPerPeriod: 1
+            }, hotColdTrend)
         };
     }
 }
