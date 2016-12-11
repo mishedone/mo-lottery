@@ -62,10 +62,13 @@ AuditTable.prototype = {
     },
     
     getWinner: function () {
-        var winner, maxScore = 0;
+        var winner = undefined;
         
         _.each(this.rows, function (auditData) {
-            if (auditData.getScore() >= maxScore) {
+            if (typeof winner == 'undefined') {
+                winner = auditData;
+            }
+            if (auditData.getScore() >= winner.getScore()) {
                 winner = auditData;
             }
         });
