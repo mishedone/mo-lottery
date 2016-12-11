@@ -29,23 +29,27 @@ var Router = Backbone.Router.extend({
     },
     
     suggestions: function (id) {
-        var game = this.findGame(id), view, auditWinners, lastAuditWinner, auditTable;
+        var game = this.findGame(id), view, 
+            auditWinners, lastAuditWinner, hasLastAuditWinner,
+            winningAlgorithm, auditTable;
         
         auditWinners = this.auditWinnersStorage.get(game);
         lastAuditWinner = this.auditWinnersStorage.getLast(game);
         auditTable = this.auditTableBuilder.restore(game, auditWinners);
         
+        hasLastAuditWinner = (typeof lastAuditWinner != 'undefined');
+        winningAlgorithm = (hasLastAuditWinner) ? lastAuditWinner.getAlgorithm() : 'getHotColdTrend';
+        
         view = new SuggestionsView({
             el: '#content-slot',
+            algorithm: winningAlgorithm,
             auditTable: auditTable
         });
         view.render();
         
         game.load(function () {
-            var suggestions, hasLastAuditWinner, suggestionsConfig, winningAlgorithm;
-            
-            hasLastAuditWinner = (typeof lastAuditWinner != 'undefined');
-            
+            var suggestions, suggestionsConfig;
+
             suggestionsConfig = _.extend({
                 elapseTimeTrend: {
                     drawsPerPeriod: 100
@@ -63,8 +67,6 @@ var Router = Backbone.Router.extend({
                 suggestionsConfig
             );
             
-            winningAlgorithm = (hasLastAuditWinner) ? lastAuditWinner.getAlgorithm() : 'getHotColdTrend';
-
             view.renderSuggestions(suggestions[winningAlgorithm]());
         });
     },

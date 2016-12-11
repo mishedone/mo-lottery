@@ -19,7 +19,6 @@ function AuditTable(name, drawSize) {
     }
     
     this.addLabel('Score');
-    this.addLabel('Total hits');
     this.addLabel('Total hit %');
 }
 
@@ -44,7 +43,7 @@ AuditTable.prototype = {
         _.each(this.rows, function (auditData) {
             var rowData = [], date;
             
-            rowData.push(auditData.getDate().toDateString());
+            rowData.push(auditData.getDate().toISOString().slice(0,10));
             rowData.push(auditData.getAlgorithm());
             rowData.push(auditData.getPeriodCount());
             rowData.push(auditData.getDrawsPerPeriod());
@@ -54,7 +53,6 @@ AuditTable.prototype = {
             });
             
             rowData.push(auditData.getScore());
-            rowData.push(auditData.getTotalHitCount());
             rowData.push(auditData.getTotalHitPercentage());
             
             data.push(rowData);
