@@ -61,6 +61,10 @@ AuditTable.prototype = {
         return data;
     },
     
+    getWinner: function () {
+        return _.first(this.rows);
+    },
+    
     addLabel: function (label) {
         this.labels.push(label);
     },

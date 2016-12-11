@@ -71,7 +71,7 @@ var Router = Backbone.Router.extend({
         game.load(function () {
             var table = new AuditTableBuilder(game).get();
 
-            self.auditWinnersStorage.set(game, table.getRows()[0]);
+            self.auditWinnersStorage.set(game, table.getWinner());
             
             view.render(table);
         });
