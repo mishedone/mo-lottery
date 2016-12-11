@@ -1,17 +1,9 @@
 var AuditView = Backbone.View.extend({
-    template: _.template($('#audit').html()),
+    template: _.template($('#audit-table').html()),
 
-    render: function () {
+    render: function (table) {
         this.$el.html(this.template({
-            tables: []
-        }));
-
-        return this;
-    },
-
-    renderTables: function (tables) {
-        this.$el.html(this.template({
-            tables: tables
+            table: table
         }));
 
         return this;

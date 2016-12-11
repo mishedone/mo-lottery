@@ -102,29 +102,27 @@
             <p class="elapse-time-trend-gaps">Loading...</p>
         </script>
 
-        <script type="text/template" id="audit">
-            <% _.each(tables, function (table) { %>
-                <h3><%= table.getName() %></h3>
-                <hr/>
-                <table class="table table-bordered table-hover">
-                    <thead>
+        <script type="text/template" id="audit-table">
+            <h3><%= table.getName() %></h3>
+            <hr/>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <% _.each(table.getLabels(), function (label) { %>
+                            <th><%= label %></th>
+                        <% }); %>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% _.each(table.getRowsData(), function (row) { %>
                         <tr>
-                            <% _.each(table.getLabels(), function (label) { %>
-                                <th><%= label %></th>
+                            <% _.each(row, function (data) { %>
+                                <td><%= data %></td>
                             <% }); %>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <% _.each(table.getRowsData(), function (row) { %>
-                            <tr>
-                                <% _.each(row, function (data) { %>
-                                    <td><%= data %></td>
-                                <% }); %>
-                            </tr>
-                        <% }); %>
-                    </tbody>
-                </table>
-            <% }); %>
+                    <% }); %>
+                </tbody>
+            </table>
         </script>
 
         <script type="text/template" id="browse">
