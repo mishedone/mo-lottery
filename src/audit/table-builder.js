@@ -1,24 +1,19 @@
-function AuditTableBuilder(game) {
-    var weeksPerYear = 52;
-    
-    this.game = game;
-    this.numbers = game.get('numbers');
-    this.drawSize = game.get('drawSize');
-    this.drawsPerWeek = game.get('drawsPerWeek');
-    this.draws = game.getAllDraws();
-    
-    // use 6 months for now
-    this.iterations = (weeksPerYear * this.drawsPerWeek) / 2;
-}
+function AuditTableBuilder() {}
 
 AuditTableBuilder.prototype = {
     constructor: AuditTableBuilder,
     
-    get: function () {
-        var table = new AuditTable('Audit', this.drawSize), config, i, j;
+    get: function (game) {
+        var table, config, weeksPerYear = 52, i, j;
+        
+        this.setGame(game);
+        table = new AuditTable('Audit', this.drawSize);
+        
+        // use 6 months for now
+        this.iterations = (weeksPerYear * this.drawsPerWeek) / 2;
         
         // add elapse time trend data
-        for (i= 150; i <= 250; i++) {
+        for (i = 150; i <= 250; i++) {
             config = this.getSuggestionsConfig({
                 drawsPerPeriod: i
             }, {});
@@ -36,7 +31,7 @@ AuditTableBuilder.prototype = {
         }
         
         // add mixed data
-        for (i= 5; i <= 20; i++) {
+        for (i = 5; i <= 20; i++) {
             for (j = 15; j <= 25; j++) {
                 config = this.getSuggestionsConfig({
                     drawsPerPeriod: j * 10
@@ -57,6 +52,27 @@ AuditTableBuilder.prototype = {
         table.sort(5 + this.drawSize);
         
         return table;
+    },
+    
+    restore: function (game, rows) {
+        var table;
+        
+        this.setGame(game);
+        table = new AuditTable('Audit Winners', this.drawSize);
+        
+        _.each(rows, function (row) {
+            table.addRow(row);
+        });
+        
+        return table;
+    },
+    
+    setGame: function (game) {
+        this.game = game;
+        this.numbers = game.get('numbers');
+        this.drawSize = game.get('drawSize');
+        this.drawsPerWeek = game.get('drawsPerWeek');
+        this.draws = game.getAllDraws();
     },
     
     getAuditData: function (algorithm, periodCount, drawsPerPeriod, suggestionsConfig) {

@@ -1,22 +1,25 @@
 var SuggestionsView = Backbone.View.extend({
     template: _.template($('#suggestions').html()),
+    auditTableTemplate: _.template($('#audit-table').html()),
     numbersTemplate: _.template($('#numbers').html()),
+    auditTable: null,
 
+    initialize: function (options) {
+        this.auditTable = options.auditTable;
+    },
+    
     render: function () {
-        this.$el.html(this.template());
+        this.$el.html(this.template({
+            auditTable: this.auditTable,
+            auditTableTemplate: this.auditTableTemplate
+        }));
 
         return this;
     },
     
-    renderNumbers: function (hotColdTrend, elapseTimeTrend, elapseTimeTrendGaps) {
-        this.$el.find('.hot-cold-trend').html(this.numbersTemplate({
-            numbers: hotColdTrend
-        }));
-        this.$el.find('.elapse-time-trend').html(this.numbersTemplate({
-            numbers: elapseTimeTrend
-        }));
-        this.$el.find('.elapse-time-trend-gaps').html(this.numbersTemplate({
-            numbers: elapseTimeTrendGaps
+    renderSuggestions: function (suggestions) {
+        this.$el.find('.suggestions').html(this.numbersTemplate({
+            numbers: suggestions
         }));
         
         return this;

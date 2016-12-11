@@ -13,8 +13,7 @@ var Router = Backbone.Router.extend({
     initialize: function (options) {
         this.games = options.games;
         this.lastGame = options.lastGame;
-        
-        // create audit winners storage
+        this.auditTableBuilder = new AuditTableBuilder();
         this.auditWinnersStorage = new AuditWinnersStorage();
     },
 
@@ -30,34 +29,43 @@ var Router = Backbone.Router.extend({
     },
     
     suggestions: function (id) {
-        var game = this.findGame(id), view;
+        var game = this.findGame(id), view, auditWinners, lastAuditWinner, auditTable;
+        
+        auditWinners = this.auditWinnersStorage.get(game);
+        lastAuditWinner = this.auditWinnersStorage.getLast(game);
+        auditTable = this.auditTableBuilder.restore(game, auditWinners);
         
         view = new SuggestionsView({
-            el: '#content-slot'
+            el: '#content-slot',
+            auditTable: auditTable
         });
         view.render();
         
         game.load(function () {
-            var suggestions = new AnalyserSuggestions(
+            var suggestions, hasLastAuditWinner, suggestionsConfig, winningAlgorithm;
+            
+            hasLastAuditWinner = (typeof lastAuditWinner != 'undefined');
+            
+            suggestionsConfig = _.extend({
+                elapseTimeTrend: {
+                    drawsPerPeriod: 100
+                },
+                hotColdTrend: {
+                    periodCount: 12,
+                    drawsPerPeriod: 10
+                }
+            }, (hasLastAuditWinner) ? lastAuditWinner.getSuggestionsConfig() : {});
+            
+            suggestions = new AnalyserSuggestions(
                 game.get('numbers'),
                 game.getAllDraws(),
                 game.get('drawSize'),
-                {
-                    elapseTimeTrend: {
-                        drawsPerPeriod: 300
-                    },
-                    hotColdTrend: {
-                        periodCount: 12,
-                        drawsPerPeriod: game.get('hotColdTrendDrawsPerPeriod')
-                    }
-                }
+                suggestionsConfig
             );
+            
+            winningAlgorithm = (hasLastAuditWinner) ? lastAuditWinner.getAlgorithm() : 'getHotColdTrend';
 
-            view.renderNumbers(
-                suggestions.getHotColdTrend(),
-                suggestions.getElapseTimeTrend(),
-                suggestions.getElapseTimeTrendGaps()
-            );
+            view.renderSuggestions(suggestions[winningAlgorithm]());
         });
     },
     
@@ -69,7 +77,7 @@ var Router = Backbone.Router.extend({
         });
         
         game.load(function () {
-            var table = new AuditTableBuilder(game).get();
+            var table = self.auditTableBuilder.get(game);
 
             self.auditWinnersStorage.set(game, table.getWinner());
             

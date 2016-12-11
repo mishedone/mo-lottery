@@ -89,17 +89,11 @@
         </script>
         
         <script type="text/template" id="suggestions">
-            <h3>Hot-cold Trend</h3>
+            <h3>Suggestions</h3>
             <hr/>
-            <p class="hot-cold-trend">Loading...</p>
-
-            <h3>Elapse Time Trend</h3>
-            <hr/>
-            <p class="elapse-time-trend">Loading...</p>
+            <p class="suggestions">Loading...</p>
             
-            <h3>Elapse Time Trend - Gaps</h3>
-            <hr/>
-            <p class="elapse-time-trend-gaps">Loading...</p>
+            <%= auditTableTemplate({table: auditTable}) %>
         </script>
 
         <script type="text/template" id="audit-table">
@@ -114,13 +108,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% _.each(table.getRowsData(), function (row) { %>
+                    <% if (table.getRows().length) { %>
+                        <% _.each(table.getRowsData(), function (row) { %>
+                            <tr>
+                                <% _.each(row, function (data) { %>
+                                    <td><%= data %></td>
+                                <% }); %>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
                         <tr>
-                            <% _.each(row, function (data) { %>
-                                <td><%= data %></td>
-                            <% }); %>
+                            <td colspan="<%= table.getLabels().length %>">No audit data.</td>
                         </tr>
-                    <% }); %>
+                    <% } %>
                 </tbody>
             </table>
         </script>
