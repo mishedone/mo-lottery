@@ -74,18 +74,16 @@ class CurrentYearParser
      */
     private function parseDrawNames()
     {
-        $html = $this->curlPost($this->config->getDrawPageUrl(), array(
-            'tir' => date('YEAR') . '/1'
-        ));
+        $html = file_get_contents($this->config->getDrawPageUrl());
 
-        $selectOptions = array();
-        preg_match('/<select id="tir".*?>(?<options>.*)<\/select>/s', $html, $selectOptions);
+        $selectOptions = [];
+        preg_match('/<select name="drawing".*?>(?<options>.*)<\/select>/s', $html, $selectOptions);
 
-        $drawNames = array();
+        $drawNames = [];
         preg_match_all('/value="(?<names>.*?)"/s', $selectOptions['options'], $drawNames);
 
         // reorder matched draw names in ascending order
-        $drawNames = $drawNames['names'];
+        $drawNames = array_slice($drawNames['names'], 2);
         krsort($drawNames);
         $drawNames = array_values($drawNames);
 
@@ -104,11 +102,14 @@ class CurrentYearParser
     private function parseDraws($name)
     {
         $html = $this->curlPost($this->config->getDrawPageUrl(), array(
-            'tir' => $name
+            'drawing' => $name
         ));
+        
+        $form = [];
+        preg_match('/<form(.*)<\/form>/s', $html, $form);
 
-        $numbers = array();
-        preg_match_all('/images\/balls\/_(?<numbers>\d*)\./s', $html, $numbers);
+        $numbers = [];
+        preg_match_all('/images\/classic\/balls\/(?<numbers>\d*)\./s', $form[0], $numbers);
 
         $numbers = $this->cleanNumbers($numbers['numbers']);
         $drawSize = $this->game->getDrawSize();
