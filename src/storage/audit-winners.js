@@ -26,6 +26,11 @@ AuditWinnersStorage.prototype = _.extend({}, BaseStorage.prototype, {
     set: function (game, auditData) {
         var data = this.get(game);
         
+        // check if we're receiving audit data
+        if (typeof auditData == 'undefined') {
+            return;
+        }
+        
         // check if audit data is already stored
         if (data.length) {
             if (_.last(data).equals(auditData)) {
