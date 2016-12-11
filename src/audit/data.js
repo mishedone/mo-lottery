@@ -28,12 +28,12 @@ AuditData.prototype = {
     constructor: AuditData,
     
     equals: function (auditData) {
-        var me = JSON.stringify(this), other = JSON.stringify(this);
+        var me = JSON.parse(JSON.stringify(this)), other = JSON.parse(JSON.stringify(auditData));
         
-        delete me.date;
-        delete other.date;
+        me.date = null;
+        other.date = null;
         
-        return (me === other);
+        return (JSON.stringify(me) === JSON.stringify(other));
     },
 
     check: function (suggestion, draw) {
@@ -103,7 +103,7 @@ AuditData.prototype = {
         this.algorithm = json.algorithm;
         this.periodCount = json.periodCount;
         this.drawsPerPeriod = json.drawsPerPeriod;
-        this.numbersHit = Object.values(json.numbersHit);
+        this.numbersHit = json.numbersHit;
         this.drawSize = json.drawSize;
         this.score = json.score;
         this.totalHitCount = json.totalHitCount;
