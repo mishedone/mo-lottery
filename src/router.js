@@ -13,6 +13,9 @@ var Router = Backbone.Router.extend({
     initialize: function (options) {
         this.games = options.games;
         this.lastGame = options.lastGame;
+        
+        // create audit winners storage
+        this.auditWinnersStorage = new AuditWinnersStorage();
     },
 
     findGame: function (id) {
@@ -59,7 +62,7 @@ var Router = Backbone.Router.extend({
     },
     
     audit: function (id) {
-        var game = this.findGame(id), view;
+        var game = this.findGame(id), view, self = this;
         
         view = new AuditView({
             el: '#content-slot'
@@ -67,11 +70,12 @@ var Router = Backbone.Router.extend({
         view.render();
         
         game.load(function () {
-            var tableBuilder = new AuditTableBuilder(game);
+            var table = new AuditTableBuilder(game).get();
+
+            // save audit winner
+            self.auditWinnersStorage.set(game, table.getRows()[0]);
             
-            view.renderTables([
-                tableBuilder.get()
-            ]);
+            view.renderTables([table]);
         });
     },
 
