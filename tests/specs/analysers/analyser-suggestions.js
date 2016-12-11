@@ -14,6 +14,9 @@ describe('Analyser suggestions suggests the best numbers to play by using ', fun
 
     // build suggestions
     suggestions = new AnalyserSuggestions(numbers, draws, 5, {
+        elapseTimeTrend: {
+            drawsPerPeriod: 16
+        },
         hotColdTrend: {
             drawsPerPeriod: 8,
             periodCount: 2
