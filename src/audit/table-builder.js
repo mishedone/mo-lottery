@@ -63,6 +63,7 @@ AuditTableBuilder.prototype = {
         var currentIteration = 1, lastDraw, suggestion, auditData;
         
         auditData = new AuditData(
+            new Date(),
             this.drawSize,
             algorithm,
             periodCount,

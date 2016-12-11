@@ -1,5 +1,7 @@
-function AuditData(drawSize, algorithm, periodCount, drawsPerPeriod, suggestionsConfig) {
+function AuditData(date, drawSize, algorithm, periodCount, drawsPerPeriod, suggestionsConfig) {
     var numberCount;
+    
+    this.date = date;
     
     // initialize audit characteristics
     this.algorithm = algorithm;
@@ -8,6 +10,7 @@ function AuditData(drawSize, algorithm, periodCount, drawsPerPeriod, suggestions
 
     // initialize hit numbers
     this.numbersHit = {};
+    this.drawSize = drawSize;
     for (numberCount = 0; numberCount <= drawSize; numberCount++) {
         this.numbersHit[numberCount] = 0;
     }
@@ -23,6 +26,15 @@ function AuditData(drawSize, algorithm, periodCount, drawsPerPeriod, suggestions
 
 AuditData.prototype = {
     constructor: AuditData,
+    
+    equals: function (auditData) {
+        var me = JSON.stringify(this), other = JSON.stringify(this);
+        
+        delete me.date;
+        delete other.date;
+        
+        return (me === other);
+    },
 
     check: function (suggestion, draw) {
         var numberCount = _.intersection(draw, suggestion).length;
@@ -77,5 +89,23 @@ AuditData.prototype = {
     
     getSuggestionsConfig: function () {
         return this.suggestionsConfig;
+    },
+    
+    createFromJson: function (json) {
+        var date = new Date();
+        
+        date.setTime(Date.parse(json.date));
+        this.date = date;
+        this.algorithm = json.algorithm;
+        this.periodCount = json.periodCount;
+        this.drawsPerPeriod = json.drawsPerPeriod;
+        this.numbersHit = Object.values(json.numbersHit);
+        this.drawSize = json.drawSize;
+        this.score = json.score;
+        this.totalHitCount = json.totalHitCount;
+        this.totalDrawnCount = json.totalDrawnCount;
+        this.suggestionsConfig = json.suggestionsConfig;
+        
+        return this;
     }
 };
