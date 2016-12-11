@@ -55,6 +55,10 @@ AuditData.prototype = {
         });
     },
     
+    getDate: function () {
+        return this.date;
+    },
+    
     getAlgorithm: function () {
         return this.algorithm;
     },

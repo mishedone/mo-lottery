@@ -8,6 +8,7 @@ function AuditTable(name, drawSize) {
     // build labels
     this.labels = [];
     
+    this.addLabel('Date');
     this.addLabel('Algorithm');
     this.addLabel('Period count');
     this.addLabel('Draws per period');
@@ -41,8 +42,9 @@ AuditTable.prototype = {
         var data = [];
         
         _.each(this.rows, function (auditData) {
-            var rowData = [];
+            var rowData = [], date;
             
+            rowData.push(auditData.getDate().toDateString());
             rowData.push(auditData.getAlgorithm());
             rowData.push(auditData.getPeriodCount());
             rowData.push(auditData.getDrawsPerPeriod());
