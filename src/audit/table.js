@@ -62,7 +62,15 @@ AuditTable.prototype = {
     },
     
     getWinner: function () {
-        return _.first(this.rows);
+        var winner, maxScore = 0;
+        
+        _.each(this.rows, function (auditData) {
+            if (auditData.getScore() >= maxScore) {
+                winner = auditData;
+            }
+        });
+        
+        return winner;
     },
     
     addLabel: function (label) {
