@@ -1,8 +1,25 @@
-function AuditTable(name) {
+function AuditTable(name, drawSize) {
+    var numberCount = 0;
+    
     this.name = name;
-    this.labels = [];
     this.rows = [];
-    this.index = -1;
+    this.drawSize = drawSize;
+    
+    // build labels
+    this.labels = [];
+    
+    this.addLabel('Algorithm');
+    this.addLabel('Period count');
+    this.addLabel('Draws per period');
+    
+    while (numberCount <= this.drawSize) {
+        this.addLabel('Hit ' + numberCount);
+        numberCount++;
+    }
+    
+    this.addLabel('Score');
+    this.addLabel('Total hits');
+    this.addLabel('Total hit %');
 }
 
 AuditTable.prototype = {
@@ -20,24 +37,41 @@ AuditTable.prototype = {
         return this.rows;
     },
     
+    getRowsData: function () {
+        var data = [];
+        
+        _.each(this.rows, function (auditData) {
+            var rowData = [];
+            
+            rowData.push(auditData.getAlgorithm());
+            rowData.push(auditData.getPeriodCount());
+            rowData.push(auditData.getDrawsPerPeriod());
+            
+            _.each(auditData.getNumbersHit(), function (hits, numberCount) {
+                rowData.push(hits);
+            });
+            
+            rowData.push(auditData.getScore());
+            rowData.push(auditData.getTotalHitCount());
+            rowData.push(auditData.getTotalHitPercentage());
+            
+            data.push(rowData);
+        });
+        
+        return data;
+    },
+    
     addLabel: function (label) {
         this.labels.push(label);
     },
     
-    addData: function (data) {
-        this.rows[this.index].addData(data);
+    addRow: function (auditData) {
+        this.rows.push(auditData);
     },
     
-    startRow: function (config) {
-        this.rows.push(new AuditTableRow(config));
-        this.index++;
-    },
-    
-    sort: function (column) {
-        var index = column - 1;
-        
+    sort: function () {
         this.rows.sort(function (a, b) {
-            return a.getData(index) - b.getData(index);
+            return a.getScore() - b.getScore();
         });
         
         this.rows.reverse();

@@ -15,18 +15,15 @@ AuditTableBuilder.prototype = {
     constructor: AuditTableBuilder,
     
     get: function () {
-        var table = new AuditTable('Audit'), config, i, j;
-        
-        // add labels
-        this.addAuditDataLabels(table);
+        var table = new AuditTable('Audit', this.drawSize), config, i, j;
         
         // add elapse time trend data
         for (i= 150; i <= 250; i++) {
             config = this.getSuggestionsConfig({
                 drawsPerPeriod: i
             }, {});
-            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrend', 1, i, config));
-            this.addAuditDataRow(table, this.getAuditData('ElapseTimeTrendGaps', 1, i, config));
+            table.addRow(this.getAuditData('getElapseTimeTrend', 1, i, config));
+            table.addRow(this.getAuditData('getElapseTimeTrendGaps', 1, i, config));
         }
     
         // add hot-cold trend data
@@ -35,7 +32,7 @@ AuditTableBuilder.prototype = {
                 periodCount: 12,
                 drawsPerPeriod: i
             });
-            this.addAuditDataRow(table, this.getAuditData('HotColdTrend', 12, i, config));
+            table.addRow(this.getAuditData('getHotColdTrend', 12, i, config));
         }
         
         // add mixed data
@@ -47,11 +44,11 @@ AuditTableBuilder.prototype = {
                     periodCount: 12,
                     drawsPerPeriod: i
                 });
-                this.addAuditDataRow(table, this.getAuditData(
-                    'MixedRisingElapseTime', '12/1', i + '/' + (j * 10), config
+                table.addRow(this.getAuditData(
+                    'getMixedRisingElapseTime', '12/1', i + '/' + (j * 10), config
                 ));
-                this.addAuditDataRow(table, this.getAuditData(
-                    'MixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10), config
+                table.addRow(this.getAuditData(
+                    'getMixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10), config
                 ));
             }
         }
@@ -79,7 +76,7 @@ AuditTableBuilder.prototype = {
                 this.draws.slice(0, currentIteration * -1),
                 this.drawSize,
                 suggestionsConfig
-            )['get' + algorithm]();
+            )[algorithm]();
 
             // update audit data
             auditData.check(suggestion, lastDraw);
@@ -90,39 +87,6 @@ AuditTableBuilder.prototype = {
         auditData.calculateScore();
 
         return auditData;
-    },
-    
-    addAuditDataLabels: function (table) {
-        var numberCount = 0;
-        
-        table.addLabel('Algorithm');
-        table.addLabel('Period count');
-        table.addLabel('Draws per period');
-        
-        while (numberCount <= this.drawSize) {
-            table.addLabel('Hit ' + numberCount);
-            numberCount++;
-        }
-        
-        table.addLabel('Score');
-        table.addLabel('Total hits');
-        table.addLabel('Total hit %');
-    },
-    
-    addAuditDataRow: function (table, auditData, config) {
-        table.startRow(auditData.getSuggestionsConfig());
-        
-        table.addData(auditData.getAlgorithm());
-        table.addData(auditData.getPeriodCount());
-        table.addData(auditData.getDrawsPerPeriod());
-        
-        _.each(auditData.getNumbersHit(), function (hits, numberCount) {
-            table.addData(hits);
-        });
-        
-        table.addData(auditData.getScore());
-        table.addData(auditData.getTotalHitCount());
-        table.addData(auditData.getTotalHitPercentage());
     },
     
     getSuggestionsConfig: function (elapseTimeTrend, hotColdTrend) {
