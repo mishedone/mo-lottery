@@ -1,9 +1,10 @@
 function AuditTable(name, drawSize) {
     var numberCount = 0;
-    
+
     this.name = name;
     this.rows = [];
     this.drawSize = drawSize;
+    this.sortBy = 'getScore';
     
     // build labels
     this.labels = [];
@@ -62,13 +63,13 @@ AuditTable.prototype = {
     },
     
     getWinner: function () {
-        var winner = undefined;
+        var winner = undefined, self = this;
         
         _.each(this.rows, function (auditData) {
             if (typeof winner == 'undefined') {
                 winner = auditData;
             }
-            if (auditData.getTotalHitPercentage() >= winner.getTotalHitPercentage()) {
+            if (auditData[self.sortBy]() >= winner[self.sortBy]()) {
                 winner = auditData;
             }
         });
@@ -85,10 +86,12 @@ AuditTable.prototype = {
     },
     
     sort: function () {
+        var self = this;
+
         this.rows.sort(function (a, b) {
-            return a.getTotalHitPercentage() - b.getTotalHitPercentage();
+            return a[self.sortBy]() - b[self.sortBy]();
         });
         
         this.rows.reverse();
     }
-}
+};
