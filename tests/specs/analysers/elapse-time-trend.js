@@ -1,4 +1,4 @@
-describe('Elapse time trend analyser builds a result that', function() {
+describe('Elapse time trend analyser builds a result that', function () {
     var numbers, draws, result;
 
     // check the 5/35 game
@@ -15,7 +15,7 @@ describe('Elapse time trend analyser builds a result that', function() {
     // build result
     result = new ElapseTimeTrendAnalyser().getResult(numbers, draws);
 
-    it('calculates the gaps between each number draw in a single `period`', function() {
+    it('calculates the gaps between each number draw in a single `period`', function () {
         var period = result.getPeriod(), assert;
 
         // create assert
@@ -68,14 +68,14 @@ describe('Elapse time trend analyser builds a result that', function() {
         assert(period.hitCollection.get(35), 35, [10], 6, null, null);
     });
 
-    it('orders the numbers in the period by elapse time', function() {
+    it('orders the numbers in the period by elapse time', function () {
         expect([
             22, 11, 3, 2, 1, 18, 25, 34, 14, 29, 27, 20, 35, 8, 28, 23, 19, 33, 13, 5, 24, 17,
             15, 4, 10, 32, 31, 21, 12, 6, 30, 26, 16, 9, 7
         ]).toEqual(result.getElapseTimeNumbers());
     });
     
-    it('orders the numbers in the period by elapse time gap', function() {
+    it('orders the numbers in the period by elapse time gap', function () {
         expect([
             4, 5, 16, 28, 31, 12, 21, 30, 32, 33, 7, 8, 19, 23, 24, 34, 6, 9, 27, 29, 17, 14, 15,
             26, 25

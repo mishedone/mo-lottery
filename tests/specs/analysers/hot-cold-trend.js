@@ -1,4 +1,4 @@
-describe('Hot-cold trend analyser builds a result that', function() {
+describe('Hot-cold trend analyser builds a result that', function () {
     var numbers, draws, result;
     
     // check the 5/35 game
@@ -17,7 +17,7 @@ describe('Hot-cold trend analyser builds a result that', function() {
     // build result
     result = new HotColdTrendAnalyser().getResult(numbers, draws, 8, 2);
 
-    it('slices the set of draws into analysable chunks called `periods`', function() {
+    it('slices the set of draws into analysable chunks called `periods`', function () {
         var periods = result.getPeriods(), assert;
 
         // create assert
@@ -104,11 +104,11 @@ describe('Hot-cold trend analyser builds a result that', function() {
         assert(periods[1].hitCollection.get(35), 35, 0);
     });
     
-    it('collects the hot numbers that are currently rising', function() {
+    it('collects the hot numbers that are currently rising', function () {
         expect([32]).toEqual(result.getRisingNumbers());
     });
     
-    it('orders the numbers in the last period by their hit count - hot numbers', function() {
+    it('orders the numbers in the last period by their hit count - hot numbers', function () {
         expect([
             30, 21, 7, 33, 32, 31, 23, 16, 12, 9, 6, 35, 29,
             28, 27, 26, 24, 20, 19, 17, 15, 13, 10, 8, 5, 4,

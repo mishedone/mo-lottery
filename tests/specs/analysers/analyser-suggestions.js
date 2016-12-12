@@ -1,4 +1,4 @@
-describe('Analyser suggestions suggests the best numbers to play by using ', function() {
+describe('Analyser suggestions suggests the best numbers to play by using ', function () {
     var numbers, draws, suggestions;
 
     // check the 5/35 game
@@ -23,15 +23,15 @@ describe('Analyser suggestions suggests the best numbers to play by using ', fun
         }
     });
     
-    it('elapse time trend numbers ordered by elapse time', function() {
+    it('elapse time trend numbers ordered by elapse time', function () {
         expect([1, 2, 3, 11, 22]).toEqual(suggestions.getElapseTimeTrend());
     });
     
-    it('elapse time trend numbers ordered by elapse time gap', function() {
+    it('elapse time trend numbers ordered by elapse time gap', function () {
         expect([4, 5, 16, 28, 31]).toEqual(suggestions.getElapseTimeTrendGaps());
     });
 
-    it('hot-cold trend rising and hot numbers', function() {
+    it('hot-cold trend rising and hot numbers', function () {
         expect([7, 21, 30, 32, 33]).toEqual(suggestions.getHotColdTrend());
     });
 });
