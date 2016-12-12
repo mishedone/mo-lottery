@@ -68,7 +68,7 @@ AuditTable.prototype = {
             if (typeof winner == 'undefined') {
                 winner = auditData;
             }
-            if (auditData.getScore() >= winner.getScore()) {
+            if (auditData.getTotalHitPercentage() >= winner.getTotalHitPercentage()) {
                 winner = auditData;
             }
         });
@@ -86,7 +86,7 @@ AuditTable.prototype = {
     
     sort: function () {
         this.rows.sort(function (a, b) {
-            return a.getScore() - b.getScore();
+            return a.getTotalHitPercentage() - b.getTotalHitPercentage();
         });
         
         this.rows.reverse();

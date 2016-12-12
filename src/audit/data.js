@@ -88,7 +88,7 @@ AuditData.prototype = {
     },
     
     getPercentage: function (part, whole) {
-        return ((100 * part) / whole).toFixed(2);
+        return ((100 * part) / whole).toFixed(2) * 1;
     },
     
     getSuggestionsConfig: function () {
