@@ -26,6 +26,10 @@ HotColdTrendResultFactory.prototype = {
         
         // sort risings by count
         risings.sort(function (a, b) {
+            if (a.getCount() == b.getCount()) {
+                return a.getNumber() - b.getNumber();
+            }
+
             return a.getCount() - b.getCount();
         });
         risings.reverse();
