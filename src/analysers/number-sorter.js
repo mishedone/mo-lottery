@@ -20,4 +20,4 @@ AnalyserNumberSorter.prototype = {
             return a[primary]() - b[primary]();
         });
     }
-}
+};

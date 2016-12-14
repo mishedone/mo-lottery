@@ -14,7 +14,8 @@ function AnalyserSuggestions(numbers, draws, drawSize, config) {
         this.numbers,
         this.draws,
         this.config.hotColdTrend.drawsPerPeriod,
-        this.config.hotColdTrend.periodCount
+        this.config.hotColdTrend.periodCount,
+        new AnalyserNumberSorter('asc')
     );
 }
 
@@ -74,4 +75,4 @@ AnalyserSuggestions.prototype = {
             }
         });
     }
-}
+};

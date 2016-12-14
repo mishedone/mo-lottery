@@ -7,7 +7,7 @@ function HotColdTrendAnalyser() {
 HotColdTrendAnalyser.prototype = {
     constructor: HotColdTrendAnalyser,
 
-    getResult: function (numbers, draws, drawsPerPeriod, periodCount) {
+    getResult: function (numbers, draws, drawsPerPeriod, periodCount, numberSorter) {
         var periods, lastPeriod, risings, drawCount;
 
         draws.reverse();
@@ -25,6 +25,6 @@ HotColdTrendAnalyser.prototype = {
             lastPeriod.getAverageHit()
         );
 
-        return this.resultFactory.get(periods, risings);
+        return this.resultFactory.get(periods, risings, numberSorter);
     }
 };
