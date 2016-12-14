@@ -15,7 +15,7 @@ describe('Hot-cold trend analyser builds a result that', function () {
     ];
     
     // build result
-    result = new HotColdTrendAnalyser().getResult(numbers, draws, 8, 2, new AnalyserNumberSorter());
+    result = new HotColdTrendAnalyser().getResult(numbers, draws, 8, 2, new AnalyserNumberSorter('asc'));
 
     it('slices the set of draws into analysable chunks called `periods`', function () {
         var periods = result.getPeriods(), assert;

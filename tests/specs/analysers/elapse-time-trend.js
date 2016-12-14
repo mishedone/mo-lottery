@@ -13,7 +13,7 @@ describe('Elapse time trend analyser builds a result that', function () {
     ];
 
     // build result
-    result = new ElapseTimeTrendAnalyser().getResult(numbers, draws);
+    result = new ElapseTimeTrendAnalyser().getResult(numbers, draws, 16, new AnalyserNumberSorter('asc'));
 
     it('calculates the gaps between each number draw in a single `period`', function () {
         var period = result.getPeriod(), assert;
