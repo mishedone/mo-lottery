@@ -25,6 +25,10 @@ ElapseTimeTrendHitData.prototype = {
         return this.elapseTimeGap;
     },
 
+    getElapseTimeGapDistance: function () {
+        return Math.abs(this.getElapseTimeGap() + 1);
+    },
+
     hit: function (index) {
         this.drawnIn.push(index);
     },

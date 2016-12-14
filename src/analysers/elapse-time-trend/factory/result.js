@@ -42,8 +42,8 @@ ElapseTimeTrendResultFactory.prototype = {
         hits.sort(function (a, b) {
             var aDistance, bDistance;
             
-            aDistance = Math.abs(a.getElapseTimeGap() + 1);
-            bDistance = Math.abs(b.getElapseTimeGap() + 1);
+            aDistance = a.getElapseTimeGapDistance();
+            bDistance = b.getElapseTimeGapDistance();
             
             if (aDistance == bDistance) {
                 return a.getNumber() - b.getNumber();
