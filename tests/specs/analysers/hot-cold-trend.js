@@ -1,5 +1,5 @@
 describe('Hot-cold trend analyser builds a result that', function () {
-    var numbers, draws, result;
+    var numbers, draws, analyser, resultAsc, resultDesc;
     
     // check the 5/35 game
     numbers = generateNumbers(1, 35);
@@ -14,11 +14,13 @@ describe('Hot-cold trend analyser builds a result that', function () {
         [4,9,15,17,24], [6,7,10,16,32], [6,12,21,31,32], [7,9,16,26,30]
     ];
     
-    // build result
-    result = new HotColdTrendAnalyser().getResult(numbers, draws, 8, 2, new AnalyserNumberSorter('asc'));
+    // build results for both ascending and descending order
+    analyser = new HotColdTrendAnalyser();
+    resultAsc = analyser.getResult(numbers, draws, 8, 2, new AnalyserNumberSorter('asc'));
+    resultDesc = analyser.getResult(numbers, draws, 8, 2, new AnalyserNumberSorter('desc'));
 
     it('slices the set of draws into analysable chunks called `periods`', function () {
-        var periods = result.getPeriods(), assert;
+        var assert;
 
         // create assert
         assert = function (hit, number, count) {
@@ -26,86 +28,92 @@ describe('Hot-cold trend analyser builds a result that', function () {
             expect(hit.getCount()).toEqual(count);
         };
         
-        // check period count
-        expect(periods.length).toEqual(2);
-    
-        // check period 2
-        assert(periods[0].hitCollection.get(1), 1, 0);
-        assert(periods[0].hitCollection.get(2), 2, 0);
-        assert(periods[0].hitCollection.get(3), 3, 0);
-        assert(periods[0].hitCollection.get(4), 4, 1);
-        assert(periods[0].hitCollection.get(5), 5, 1);
-        assert(periods[0].hitCollection.get(6), 6, 2);
-        assert(periods[0].hitCollection.get(7), 7, 3);
-        assert(periods[0].hitCollection.get(8), 8, 1);
-        assert(periods[0].hitCollection.get(9), 9, 2);
-        assert(periods[0].hitCollection.get(10), 10, 1);
-        assert(periods[0].hitCollection.get(11), 11, 0);
-        assert(periods[0].hitCollection.get(12), 12, 2);
-        assert(periods[0].hitCollection.get(13), 13, 1);
-        assert(periods[0].hitCollection.get(14), 14, 0);
-        assert(periods[0].hitCollection.get(15), 15, 1);
-        assert(periods[0].hitCollection.get(16), 16, 2);
-        assert(periods[0].hitCollection.get(17), 17, 1);
-        assert(periods[0].hitCollection.get(18), 18, 0);
-        assert(periods[0].hitCollection.get(19), 19, 1);
-        assert(periods[0].hitCollection.get(20), 20, 1);
-        assert(periods[0].hitCollection.get(21), 21, 3);
-        assert(periods[0].hitCollection.get(22), 22, 0);
-        assert(periods[0].hitCollection.get(23), 23, 2);
-        assert(periods[0].hitCollection.get(24), 24, 1);
-        assert(periods[0].hitCollection.get(25), 25, 0);
-        assert(periods[0].hitCollection.get(26), 26, 1);
-        assert(periods[0].hitCollection.get(27), 27, 1);
-        assert(periods[0].hitCollection.get(28), 28, 1);
-        assert(periods[0].hitCollection.get(29), 29, 1);
-        assert(periods[0].hitCollection.get(30), 30, 3);
-        assert(periods[0].hitCollection.get(31), 31, 2);
-        assert(periods[0].hitCollection.get(32), 32, 2);
-        assert(periods[0].hitCollection.get(33), 33, 2);
-        assert(periods[0].hitCollection.get(34), 34, 0);
-        assert(periods[0].hitCollection.get(35), 35, 1);
-    
-        // check period 1
-        assert(periods[1].hitCollection.get(1), 1, 1);
-        assert(periods[1].hitCollection.get(2), 2, 1);
-        assert(periods[1].hitCollection.get(3), 3, 0);
-        assert(periods[1].hitCollection.get(4), 4, 2);
-        assert(periods[1].hitCollection.get(5), 5, 1);
-        assert(periods[1].hitCollection.get(6), 6, 1);
-        assert(periods[1].hitCollection.get(7), 7, 1);
-        assert(periods[1].hitCollection.get(8), 8, 3);
-        assert(periods[1].hitCollection.get(9), 9, 1);
-        assert(periods[1].hitCollection.get(10), 10, 0);
-        assert(periods[1].hitCollection.get(11), 11, 0);
-        assert(periods[1].hitCollection.get(12), 12, 0);
-        assert(periods[1].hitCollection.get(13), 13, 0);
-        assert(periods[1].hitCollection.get(14), 14, 3);
-        assert(periods[1].hitCollection.get(15), 15, 1);
-        assert(periods[1].hitCollection.get(16), 16, 0);
-        assert(periods[1].hitCollection.get(17), 17, 1);
-        assert(periods[1].hitCollection.get(18), 18, 1);
-        assert(periods[1].hitCollection.get(19), 19, 2);
-        assert(periods[1].hitCollection.get(20), 20, 0);
-        assert(periods[1].hitCollection.get(21), 21, 1);
-        assert(periods[1].hitCollection.get(22), 22, 0);
-        assert(periods[1].hitCollection.get(23), 23, 1);
-        assert(periods[1].hitCollection.get(24), 24, 1);
-        assert(periods[1].hitCollection.get(25), 25, 3);
-        assert(periods[1].hitCollection.get(26), 26, 1);
-        assert(periods[1].hitCollection.get(27), 27, 2);
-        assert(periods[1].hitCollection.get(28), 28, 1);
-        assert(periods[1].hitCollection.get(29), 29, 3);
-        assert(periods[1].hitCollection.get(30), 30, 0);
-        assert(periods[1].hitCollection.get(31), 31, 4);
-        assert(periods[1].hitCollection.get(32), 32, 2);
-        assert(periods[1].hitCollection.get(33), 33, 0);
-        assert(periods[1].hitCollection.get(34), 34, 2);
-        assert(periods[1].hitCollection.get(35), 35, 0);
+        // check both results - they should produce the same periods
+        _.each([resultAsc, resultDesc], function (result) {
+            var periods = result.getPeriods();
+            
+            // check period count
+            expect(periods.length).toEqual(2);
+        
+            // check period 2
+            assert(periods[0].hitCollection.get(1), 1, 0);
+            assert(periods[0].hitCollection.get(2), 2, 0);
+            assert(periods[0].hitCollection.get(3), 3, 0);
+            assert(periods[0].hitCollection.get(4), 4, 1);
+            assert(periods[0].hitCollection.get(5), 5, 1);
+            assert(periods[0].hitCollection.get(6), 6, 2);
+            assert(periods[0].hitCollection.get(7), 7, 3);
+            assert(periods[0].hitCollection.get(8), 8, 1);
+            assert(periods[0].hitCollection.get(9), 9, 2);
+            assert(periods[0].hitCollection.get(10), 10, 1);
+            assert(periods[0].hitCollection.get(11), 11, 0);
+            assert(periods[0].hitCollection.get(12), 12, 2);
+            assert(periods[0].hitCollection.get(13), 13, 1);
+            assert(periods[0].hitCollection.get(14), 14, 0);
+            assert(periods[0].hitCollection.get(15), 15, 1);
+            assert(periods[0].hitCollection.get(16), 16, 2);
+            assert(periods[0].hitCollection.get(17), 17, 1);
+            assert(periods[0].hitCollection.get(18), 18, 0);
+            assert(periods[0].hitCollection.get(19), 19, 1);
+            assert(periods[0].hitCollection.get(20), 20, 1);
+            assert(periods[0].hitCollection.get(21), 21, 3);
+            assert(periods[0].hitCollection.get(22), 22, 0);
+            assert(periods[0].hitCollection.get(23), 23, 2);
+            assert(periods[0].hitCollection.get(24), 24, 1);
+            assert(periods[0].hitCollection.get(25), 25, 0);
+            assert(periods[0].hitCollection.get(26), 26, 1);
+            assert(periods[0].hitCollection.get(27), 27, 1);
+            assert(periods[0].hitCollection.get(28), 28, 1);
+            assert(periods[0].hitCollection.get(29), 29, 1);
+            assert(periods[0].hitCollection.get(30), 30, 3);
+            assert(periods[0].hitCollection.get(31), 31, 2);
+            assert(periods[0].hitCollection.get(32), 32, 2);
+            assert(periods[0].hitCollection.get(33), 33, 2);
+            assert(periods[0].hitCollection.get(34), 34, 0);
+            assert(periods[0].hitCollection.get(35), 35, 1);
+        
+            // check period 1
+            assert(periods[1].hitCollection.get(1), 1, 1);
+            assert(periods[1].hitCollection.get(2), 2, 1);
+            assert(periods[1].hitCollection.get(3), 3, 0);
+            assert(periods[1].hitCollection.get(4), 4, 2);
+            assert(periods[1].hitCollection.get(5), 5, 1);
+            assert(periods[1].hitCollection.get(6), 6, 1);
+            assert(periods[1].hitCollection.get(7), 7, 1);
+            assert(periods[1].hitCollection.get(8), 8, 3);
+            assert(periods[1].hitCollection.get(9), 9, 1);
+            assert(periods[1].hitCollection.get(10), 10, 0);
+            assert(periods[1].hitCollection.get(11), 11, 0);
+            assert(periods[1].hitCollection.get(12), 12, 0);
+            assert(periods[1].hitCollection.get(13), 13, 0);
+            assert(periods[1].hitCollection.get(14), 14, 3);
+            assert(periods[1].hitCollection.get(15), 15, 1);
+            assert(periods[1].hitCollection.get(16), 16, 0);
+            assert(periods[1].hitCollection.get(17), 17, 1);
+            assert(periods[1].hitCollection.get(18), 18, 1);
+            assert(periods[1].hitCollection.get(19), 19, 2);
+            assert(periods[1].hitCollection.get(20), 20, 0);
+            assert(periods[1].hitCollection.get(21), 21, 1);
+            assert(periods[1].hitCollection.get(22), 22, 0);
+            assert(periods[1].hitCollection.get(23), 23, 1);
+            assert(periods[1].hitCollection.get(24), 24, 1);
+            assert(periods[1].hitCollection.get(25), 25, 3);
+            assert(periods[1].hitCollection.get(26), 26, 1);
+            assert(periods[1].hitCollection.get(27), 27, 2);
+            assert(periods[1].hitCollection.get(28), 28, 1);
+            assert(periods[1].hitCollection.get(29), 29, 3);
+            assert(periods[1].hitCollection.get(30), 30, 0);
+            assert(periods[1].hitCollection.get(31), 31, 4);
+            assert(periods[1].hitCollection.get(32), 32, 2);
+            assert(periods[1].hitCollection.get(33), 33, 0);
+            assert(periods[1].hitCollection.get(34), 34, 2);
+            assert(periods[1].hitCollection.get(35), 35, 0);
+        });
     });
     
     it('collects the hot numbers that are currently rising', function () {
-        expect([32]).toEqual(result.getRisingNumbers());
+        expect([32]).toEqual(resultAsc.getRisingNumbers());
+        expect([32]).toEqual(resultDesc.getRisingNumbers());
     });
     
     it('orders the numbers in the last period by their hit count - hot numbers', function () {
