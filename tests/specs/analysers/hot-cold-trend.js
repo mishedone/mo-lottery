@@ -16,8 +16,8 @@ describe('Hot-cold trend analyser builds a result that', function () {
     
     // build results for both ascending and descending order
     analyser = new HotColdTrendAnalyser();
-    resultAsc = analyser.getResult(numbers, draws, 8, 2, new AnalyserNumberSorter('asc'));
-    resultDesc = analyser.getResult(numbers, draws, 8, 2, new AnalyserNumberSorter('desc'));
+    resultAsc = analyser.getResult(numbers, draws.slice(), 8, 2, new AnalyserNumberSorter('asc'));
+    resultDesc = analyser.getResult(numbers, draws.slice(), 8, 2, new AnalyserNumberSorter('desc'));
 
     it('slices the set of draws into analysable chunks called `periods`', function () {
         var assert;
@@ -121,7 +121,12 @@ describe('Hot-cold trend analyser builds a result that', function () {
             30, 21, 7, 33, 32, 31, 23, 16, 12, 9, 6, 35, 29,
             28, 27, 26, 24, 20, 19, 17, 15, 13, 10, 8, 5, 4,
             34, 25, 22, 18, 14, 11, 3, 2, 1
-        ]).toEqual(result.getHotNumbers());
+        ]).toEqual(resultAsc.getHotNumbers());
+        expect([
+            7, 21, 30, 6, 9, 12, 16, 23, 31, 32, 33, 4, 5, 8,
+            10, 13, 15, 17, 19, 20, 24, 26, 27, 28, 29, 35, 1,
+            2, 3, 11, 14, 18, 22, 25, 34
+        ]).toEqual(resultDesc.getHotNumbers());
     });
 });
 
