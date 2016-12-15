@@ -1,5 +1,5 @@
 describe('Hot-cold trend analyser builds a result that', function () {
-    var numbers, draws, analyser, resultAsc, resultDesc;
+    var numbers, draws, analyser, resultAsc, resultDesc, sorterAsc, sorterDesc;
     
     // check the 5/35 game
     numbers = generateNumbers(1, 35);
@@ -7,17 +7,21 @@ describe('Hot-cold trend analyser builds a result that', function () {
     // create some draws
     draws = [
         // period 1
-        [2,6,15,29,34], [1,8,17,21,31], [14,18,25,27,29], [4,7,25,27,32],
-        [4,9,24,25,31], [8,14,28,29,32], [14,19,26,31,34], [5,8,19,23,31],
+        [2,6,15,29,34], [1,8,17,21,35], [14,18,25,27,29], [4,7,25,27,32],
+        [4,9,24,25,33], [8,14,28,29,32], [14,19,26,31,34], [5,8,19,23,31],
         // period 2
         [20,27,29,31,33], [7,8,21,23,35], [12,19,23,28,30], [5,13,21,30,33],
         [4,9,15,17,24], [6,7,10,16,32], [6,12,21,31,32], [7,9,16,26,30]
     ];
+
+    // build sorters
+    sorterAsc = new AnalyserNumberSorter('asc');
+    sorterDesc = new AnalyserNumberSorter('desc');
     
     // build results for both ascending and descending order
     analyser = new HotColdTrendAnalyser();
-    resultAsc = analyser.getResult(numbers, draws.slice(), 8, 2, new AnalyserNumberSorter('asc'));
-    resultDesc = analyser.getResult(numbers, draws.slice(), 8, 2, new AnalyserNumberSorter('desc'));
+    resultAsc = analyser.getResult(numbers, draws.slice(), 8, 2, sorterAsc, sorterAsc);
+    resultDesc = analyser.getResult(numbers, draws.slice(), 8, 2, sorterDesc, sorterDesc);
 
     it('slices the set of draws into analysable chunks called `periods`', function () {
         var assert;
@@ -103,17 +107,17 @@ describe('Hot-cold trend analyser builds a result that', function () {
             assert(periods[1].hitCollection.get(28), 28, 1);
             assert(periods[1].hitCollection.get(29), 29, 3);
             assert(periods[1].hitCollection.get(30), 30, 0);
-            assert(periods[1].hitCollection.get(31), 31, 4);
+            assert(periods[1].hitCollection.get(31), 31, 2);
             assert(periods[1].hitCollection.get(32), 32, 2);
-            assert(periods[1].hitCollection.get(33), 33, 0);
+            assert(periods[1].hitCollection.get(33), 33, 1);
             assert(periods[1].hitCollection.get(34), 34, 2);
-            assert(periods[1].hitCollection.get(35), 35, 0);
+            assert(periods[1].hitCollection.get(35), 35, 1);
         });
     });
     
     it('collects the hot numbers that are currently rising', function () {
-        expect([32]).toEqual(resultAsc.getRisingNumbers());
-        expect([32]).toEqual(resultDesc.getRisingNumbers());
+        expect([32, 31]).toEqual(resultAsc.getRisingNumbers());
+        expect([31, 32]).toEqual(resultDesc.getRisingNumbers());
     });
     
     it('orders the numbers in the last period by their hit count - hot numbers', function () {
