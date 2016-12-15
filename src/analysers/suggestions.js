@@ -16,6 +16,7 @@ function AnalyserSuggestions(numbers, draws, drawSize, config) {
         this.draws,
         this.config.hotColdTrend.drawsPerPeriod,
         this.config.hotColdTrend.periodCount,
+        new AnalyserNumberSorter('asc'),
         new AnalyserNumberSorter('asc')
     );
 }

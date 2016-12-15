@@ -5,10 +5,11 @@ function HotColdTrendResultFactory() {
 HotColdTrendResultFactory.prototype = {
     constructor: HotColdTrendResultFactory,
     
-    get: function (periods, risings, numberSorter) {
+    get: function (periods, risings, risingSorter, hotSorter) {
         var lastPeriod = periods[0];
 
-        this.numberSorter = numberSorter;
+        this.risingSorter = risingSorter;
+        this.hotSorter = hotSorter;
         
         return new HotColdTrendResultData(
             periods,
@@ -27,7 +28,7 @@ HotColdTrendResultFactory.prototype = {
         });        
         
         // sort risings by count
-        this.numberSorter.sort(risings, 'getCount', 'getNumber');
+        this.risingSorter.sort(risings, 'getCount', 'getNumber');
         risings.reverse();
         
         return this.numberExtractor.extract(risings);
@@ -37,7 +38,7 @@ HotColdTrendResultFactory.prototype = {
         hits = lastPeriod.getHits();
         
         // sort hits by count
-        this.numberSorter.sort(hits, 'getCount', 'getNumber');
+        this.hotSorter.sort(hits, 'getCount', 'getNumber');
         hits.reverse();
         
         return this.numberExtractor.extract(hits);
