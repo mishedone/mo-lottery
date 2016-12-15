@@ -6,12 +6,12 @@ function ElapseTimeTrendAnalyser() {
 ElapseTimeTrendAnalyser.prototype = {
     constructor: ElapseTimeTrendAnalyser,
 
-    getResult: function (numbers, draws, drawsPerPeriod, numberSorter) {
+    getResult: function (numbers, draws, drawsPerPeriod, elapseTimeSorter, gapDistanceSorter) {
         var period = this.periodFactory.get(
             numbers,
             draws.slice(drawsPerPeriod * -1)
         );
         
-        return this.resultFactory.get(period, numberSorter);
+        return this.resultFactory.get(period, elapseTimeSorter, gapDistanceSorter);
     }
 };

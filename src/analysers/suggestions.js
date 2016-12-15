@@ -9,6 +9,7 @@ function AnalyserSuggestions(numbers, draws, drawSize, config) {
         this.numbers,
         this.draws,
         this.config.elapseTimeTrend.drawsPerPeriod,
+        new AnalyserNumberSorter('asc'),
         new AnalyserNumberSorter('asc')
     );
     this.hotColdTrendResult = new HotColdTrendAnalyser().getResult(
