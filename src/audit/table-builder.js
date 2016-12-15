@@ -17,8 +17,8 @@ AuditTableBuilder.prototype = {
             config = this.getSuggestionsConfig({
                 drawsPerPeriod: i
             }, {});
-            table.addRow(this.getAuditData('getElapseTimeTrend', 1, i, config));
-            table.addRow(this.getAuditData('getElapseTimeTrendGaps', 1, i, config));
+            table.addRow(this.getAuditData('getElapseTimeTrend', 1, i, 'asc', config));
+            table.addRow(this.getAuditData('getElapseTimeTrendGaps', 1, i, 'asc', config));
         }
     
         // add hot-cold trend data
@@ -27,7 +27,7 @@ AuditTableBuilder.prototype = {
                 periodCount: 12,
                 drawsPerPeriod: i
             });
-            table.addRow(this.getAuditData('getHotColdTrend', 12, i, config));
+            table.addRow(this.getAuditData('getHotColdTrend', 12, i, 'asc', config));
         }
         
         // add mixed data
@@ -40,10 +40,10 @@ AuditTableBuilder.prototype = {
                     drawsPerPeriod: i
                 });
                 table.addRow(this.getAuditData(
-                    'getMixedRisingElapseTime', '12/1', i + '/' + (j * 10), config
+                    'getMixedRisingElapseTime', '12/1', i + '/' + (j * 10), 'asc', config
                 ));
                 table.addRow(this.getAuditData(
-                    'getMixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10), config
+                    'getMixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10), 'asc', config
                 ));
             }
         }
@@ -75,7 +75,7 @@ AuditTableBuilder.prototype = {
         this.draws = game.getAllDraws();
     },
     
-    getAuditData: function (algorithm, periodCount, drawsPerPeriod, suggestionsConfig) {
+    getAuditData: function (algorithm, periodCount, drawsPerPeriod, order, suggestionsConfig) {
         var currentIteration = 1, lastDraw, suggestion, auditData;
         
         auditData = new AuditData(
@@ -84,6 +84,7 @@ AuditTableBuilder.prototype = {
             algorithm,
             periodCount,
             drawsPerPeriod,
+            order,
             suggestionsConfig
         );
         while (currentIteration <= this.iterations) {

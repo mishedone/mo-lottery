@@ -1,4 +1,4 @@
-function AuditData(date, drawSize, algorithm, periodCount, drawsPerPeriod, suggestionsConfig) {
+function AuditData(date, drawSize, algorithm, periodCount, drawsPerPeriod, order, suggestionsConfig) {
     var numberCount;
     
     this.date = date;
@@ -7,6 +7,7 @@ function AuditData(date, drawSize, algorithm, periodCount, drawsPerPeriod, sugge
     this.algorithm = algorithm;
     this.periodCount = periodCount;
     this.drawsPerPeriod = drawsPerPeriod;
+    this.order = order;
 
     // initialize hit numbers
     this.numbersHit = {};
@@ -70,6 +71,10 @@ AuditData.prototype = {
     getDrawsPerPeriod: function () {
         return this.drawsPerPeriod;
     },
+    
+    getOrder: function () {
+        return this.order;
+    },
 
     getNumbersHit: function () {
         return this.numbersHit;
@@ -103,6 +108,7 @@ AuditData.prototype = {
         this.algorithm = json.algorithm;
         this.periodCount = json.periodCount;
         this.drawsPerPeriod = json.drawsPerPeriod;
+        this.order = json.order;
         this.numbersHit = json.numbersHit;
         this.drawSize = json.drawSize;
         this.score = json.score;

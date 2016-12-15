@@ -13,6 +13,7 @@ function AuditTable(name, drawSize) {
     this.addLabel('Algorithm');
     this.addLabel('Period count');
     this.addLabel('Draws per period');
+    this.addLabel('Order');
     
     while (numberCount <= this.drawSize) {
         this.addLabel('Hit ' + numberCount);
@@ -48,6 +49,7 @@ AuditTable.prototype = {
             rowData.push(auditData.getAlgorithm());
             rowData.push(auditData.getPeriodCount());
             rowData.push(auditData.getDrawsPerPeriod());
+            rowData.push(auditData.getOrder());
             
             _.each(auditData.getNumbersHit(), function (hits, numberCount) {
                 rowData.push(hits);
