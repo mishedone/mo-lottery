@@ -1,29 +1,58 @@
 function AnalyserSuggestions(numbers, draws, drawSize, config) {
+    var sorters = {
+        asc: new AnalyserNumberSorter('asc'),
+        desc: new AnalyserNumberSorter('desc')
+    };
+    
     this.numbers = numbers;
     this.draws = draws;
     this.drawSize = drawSize;
-    this.config = config;
+    this.config = this.enrichConfig(config);
     
     // create results
     this.elapseTimeTrendResult = new ElapseTimeTrendAnalyser().getResult(
         this.numbers,
         this.draws,
         this.config.elapseTimeTrend.drawsPerPeriod,
-        new AnalyserNumberSorter('asc'),
-        new AnalyserNumberSorter('asc')
+        sorters[this.config.elapseTimeTrend.elapseTimeOrder],
+        sorters[this.config.elapseTimeTrend.gapDistanceOrder]
     );
     this.hotColdTrendResult = new HotColdTrendAnalyser().getResult(
         this.numbers,
         this.draws,
         this.config.hotColdTrend.drawsPerPeriod,
         this.config.hotColdTrend.periodCount,
-        new AnalyserNumberSorter('asc'),
-        new AnalyserNumberSorter('asc')
+        sorters[this.config.hotColdTrend.risingOrder],
+        sorters[this.config.hotColdTrend.hotOrder]
     );
 }
 
 AnalyserSuggestions.prototype = {
     constructor: AnalyserSuggestions,
+    
+    enrichConfig: function (config) {
+        if (!config.hasOwnProperty('elapseTimeTrend')) {
+            config.elapseTimeTrend = {};
+        }
+        
+        if (!config.hasOwnProperty('hotColdTrend')) {
+            config.hotColdTrend = {};
+        }
+        
+        return {
+            elapseTimeTrend: _.extend({
+                drawsPerPeriod: 100,
+                elapseTimeOrder: 'asc',
+                gapDistanceOrder: 'asc'
+            }, config.elapseTimeTrend),
+            hotColdTrend: _.extend({
+                periodCount: 12,
+                drawsPerPeriod: 10,
+                risingOrder: 'asc',
+                hotOrder: 'asc'
+            }, config.hotColdTrend)
+        };
+    },
     
     getElapseTimeTrend: function () {
         return this.finalize(this.elapseTimeTrendResult.getElapseTimeNumbers());

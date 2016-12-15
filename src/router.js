@@ -48,23 +48,13 @@ var Router = Backbone.Router.extend({
         view.render();
         
         game.load(function () {
-            var suggestions, suggestionsConfig;
-
-            suggestionsConfig = _.extend({
-                elapseTimeTrend: {
-                    drawsPerPeriod: 100
-                },
-                hotColdTrend: {
-                    periodCount: 12,
-                    drawsPerPeriod: 10
-                }
-            }, (hasLastAuditWinner) ? lastAuditWinner.getSuggestionsConfig() : {});
+            var suggestions;
             
             suggestions = new AnalyserSuggestions(
                 game.get('numbers'),
                 game.getAllDraws(),
                 game.get('drawSize'),
-                suggestionsConfig
+                (hasLastAuditWinner) ? lastAuditWinner.getSuggestionsConfig() : {}
             );
             
             view.renderSuggestions(suggestions[winningAlgorithm]());
