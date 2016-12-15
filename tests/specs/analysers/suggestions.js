@@ -20,6 +20,7 @@ describe('Analyser suggestions suggests the best numbers to play by using ', fun
                 elapseTimeOrder: 'asc'
             }
         }).getElapseTimeTrend());
+        
         // check elapse time order desc
         expect([1, 2, 3, 11, 22]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
             elapseTimeTrend: {
@@ -37,6 +38,7 @@ describe('Analyser suggestions suggests the best numbers to play by using ', fun
                 gapDistanceOrder: 'asc'
             }
         }).getElapseTimeTrendGaps());
+        
         // check gap distance order desc
         expect([16, 28, 31, 33, 35]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
             elapseTimeTrend: {
@@ -56,6 +58,7 @@ describe('Analyser suggestions suggests the best numbers to play by using ', fun
                 hotOrder: 'asc'
             }
         }).getHotColdTrend());
+        
         // check rising order asc, hot order desc
         expect([7, 21, 30, 31, 32]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
             hotColdTrend: {
@@ -65,6 +68,7 @@ describe('Analyser suggestions suggests the best numbers to play by using ', fun
                 hotOrder: 'desc'
             }
         }).getHotColdTrend());
+        
         // check rising order desc, hot order asc
         expect([7, 21, 30, 31, 32]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
             hotColdTrend: {
@@ -74,6 +78,7 @@ describe('Analyser suggestions suggests the best numbers to play by using ', fun
                 hotOrder: 'asc'
             }
         }).getHotColdTrend());
+        
         // check rising order desc, hot order desc
         expect([7, 21, 30, 31, 32]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
             hotColdTrend: {
@@ -83,5 +88,113 @@ describe('Analyser suggestions suggests the best numbers to play by using ', fun
                 hotOrder: 'desc'
             }
         }).getHotColdTrend());
+    });
+    
+    it('hot-cold trend rising numbers mixed with elapse time numbers', function () {
+        // check rising order asc, elapse time order asc
+        expect([3, 11, 22, 31, 32]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
+            elapseTimeTrend: {
+                drawsPerPeriod: 16,
+                elapseTimeOrder: 'asc'
+            },
+            hotColdTrend: {
+                periodCount: 2,
+                drawsPerPeriod: 8,
+                risingOrder: 'asc'
+            }
+        }).getMixedRisingElapseTime());
+        
+        // check rising order asc, elapse time order desc
+        expect([3, 11, 22, 31, 32]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
+            elapseTimeTrend: {
+                drawsPerPeriod: 16,
+                elapseTimeOrder: 'desc'
+            },
+            hotColdTrend: {
+                periodCount: 2,
+                drawsPerPeriod: 8,
+                risingOrder: 'asc'
+            }
+        }).getMixedRisingElapseTime());
+        
+        // check rising order desc, elapse time order asc
+        expect([3, 11, 22, 31, 32]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
+            elapseTimeTrend: {
+                drawsPerPeriod: 16,
+                elapseTimeOrder: 'asc'
+            },
+            hotColdTrend: {
+                periodCount: 2,
+                drawsPerPeriod: 8,
+                risingOrder: 'desc'
+            }
+        }).getMixedRisingElapseTime());
+        
+        // check rising order desc, elapse time order desc
+        expect([3, 11, 22, 31, 32]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
+            elapseTimeTrend: {
+                drawsPerPeriod: 16,
+                elapseTimeOrder: 'desc'
+            },
+            hotColdTrend: {
+                periodCount: 2,
+                drawsPerPeriod: 8,
+                risingOrder: 'desc'
+            }
+        }).getMixedRisingElapseTime());
+    });
+    
+    it('hot-cold trend rising numbers mixed with elapse time gap distance numbers', function () {
+        // check rising order asc, elapse time gap distance order asc
+        expect([4, 5, 16, 31, 32]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
+            elapseTimeTrend: {
+                drawsPerPeriod: 16,
+                gapDistanceOrder: 'asc'
+            },
+            hotColdTrend: {
+                periodCount: 2,
+                drawsPerPeriod: 8,
+                risingOrder: 'asc'
+            }
+        }).getMixedRisingElapseTimeGaps());
+        
+        // check rising order asc, elapse time gap distance order desc
+        expect([28, 31, 32, 33, 35]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
+            elapseTimeTrend: {
+                drawsPerPeriod: 16,
+                gapDistanceOrder: 'desc'
+            },
+            hotColdTrend: {
+                periodCount: 2,
+                drawsPerPeriod: 8,
+                risingOrder: 'asc'
+            }
+        }).getMixedRisingElapseTimeGaps());
+        
+        // check rising order desc, elapse time gap distance order asc
+        expect([4, 5, 16, 31, 32]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
+            elapseTimeTrend: {
+                drawsPerPeriod: 16,
+                gapDistanceOrder: 'asc'
+            },
+            hotColdTrend: {
+                periodCount: 2,
+                drawsPerPeriod: 8,
+                risingOrder: 'desc'
+            }
+        }).getMixedRisingElapseTimeGaps());
+        
+        // check rising order desc, elapse time gap distance order desc
+        expect([28, 31, 32, 33, 35]).toEqual(new AnalyserSuggestions(numbers, draws.slice(), 5, {
+            elapseTimeTrend: {
+                drawsPerPeriod: 16,
+                gapDistanceOrder: 'desc'
+            },
+            hotColdTrend: {
+                periodCount: 2,
+                drawsPerPeriod: 8,
+                risingOrder: 'desc'
+            }
+        }).getMixedRisingElapseTimeGaps());
     });
 });
