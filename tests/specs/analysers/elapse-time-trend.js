@@ -6,8 +6,8 @@ describe('Elapse time trend analyser builds a result that', function () {
 
     // create some draws
     draws = [
-        [2,6,15,29,34], [1,8,17,21,31], [14,18,25,27,29], [4,7,25,27,32],
-        [4,9,24,25,31], [8,14,28,29,32], [14,19,26,31,34], [5,8,19,23,31],
+        [2,6,15,29,34], [1,8,17,21,35], [14,18,25,27,29], [4,7,25,27,32],
+        [4,9,24,25,33], [8,14,28,29,32], [14,19,26,31,34], [5,8,19,23,31],
         [20,27,29,31,33], [7,8,21,23,35], [12,19,23,28,30], [5,13,21,30,33],
         [4,9,15,17,24], [6,7,10,16,32], [6,12,21,31,32], [7,9,16,26,30]
     ];
@@ -71,11 +71,11 @@ describe('Elapse time trend analyser builds a result that', function () {
             assert(period.hitCollection.get(28), 28, [6, 11], 5, 5, 0);
             assert(period.hitCollection.get(29), 29, [1, 3, 6, 9], 7, 3, 4);
             assert(period.hitCollection.get(30), 30, [11, 12, 16], 0, 3, -3);
-            assert(period.hitCollection.get(31), 31, [2, 5, 7, 8, 9, 15], 1, 3, -2);
+            assert(period.hitCollection.get(31), 31, [7, 8, 9, 15], 1, 3, -2);
             assert(period.hitCollection.get(32), 32, [4, 6, 14, 15], 1, 4, -3);
-            assert(period.hitCollection.get(33), 33, [9, 12], 4, 3, 1);
+            assert(period.hitCollection.get(33), 33, [5, 9, 12], 4, 4, 0);
             assert(period.hitCollection.get(34), 34, [1, 7], 9, 6, 3);
-            assert(period.hitCollection.get(35), 35, [10], 6, null, null);
+            assert(period.hitCollection.get(35), 35, [2, 10], 6, 8, -2);
         });
     });
 
@@ -92,12 +92,12 @@ describe('Elapse time trend analyser builds a result that', function () {
     
     it('orders the numbers in the period by elapse time gap', function () {
         expect([
-            4, 5, 16, 28, 31, 12, 21, 30, 32, 33, 7, 8, 19, 23, 24, 34, 6, 9, 27, 29, 17, 14, 15,
-            26, 25
+            4, 5, 16, 28, 31, 33, 35, 12, 21, 30, 32, 7, 8, 19, 23, 24, 34, 6, 9, 27, 29, 17,
+            14, 15, 26, 25
         ]).toEqual(resultAsc.getElapseTimeGapNumbers());
         expect([
-            31, 28, 16, 5, 4, 33, 32, 30, 21, 12, 7, 34, 24, 23, 19, 8, 29, 27, 9, 6, 17, 26, 15,
-            14, 25
+            35, 33, 31, 28, 16, 5, 4, 32, 30, 21, 12, 7, 34, 24, 23, 19, 8, 29, 27, 9, 6,
+            17, 26, 15, 14, 25
         ]).toEqual(resultDesc.getElapseTimeGapNumbers());
     });
 });
