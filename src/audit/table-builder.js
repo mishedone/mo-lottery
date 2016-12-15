@@ -1,10 +1,17 @@
-function AuditTableBuilder() {}
+function AuditTableBuilder() {
+    this.orderList = [
+        ['asc', 'asc'],
+        ['asc', 'desc'],
+        ['desc', 'asc'],
+        ['desc', 'desc']
+    ];
+}
 
 AuditTableBuilder.prototype = {
     constructor: AuditTableBuilder,
     
     get: function (game) {
-        var table, config, weeksPerYear = 52, i, j;
+        var self = this, table, weeksPerYear = 52;
         
         this.setGame(game);
         table = new AuditTable('Audit', this.drawSize);
@@ -13,40 +20,90 @@ AuditTableBuilder.prototype = {
         this.iterations = (weeksPerYear * this.drawsPerWeek) / 2;
         
         // add elapse time trend data
-        for (i = 150; i <= 250; i++) {
-            config = this.getSuggestionsConfig({
-                drawsPerPeriod: i
-            }, {});
-            table.addRow(this.getAuditData('getElapseTimeTrend', 1, i, 'asc', config));
-            table.addRow(this.getAuditData('getElapseTimeTrendGaps', 1, i, 'asc', config));
-        }
+        _.each(this.orderList, function (orders) {
+            var config, order, i;
+            
+            for (i = 150; i <= 250; i++) {
+                config = {
+                    elapseTimeTrend: {
+                        drawsPerPeriod: i,
+                        elapseTimeOrder: orders[0],
+                        gapDistanceOrder: orders[1]
+                    }  
+                };
+                order = self.getOrderString(orders);
+                table.addRow(self.getAuditData('getElapseTimeTrend', 1, i, order, config));
+                table.addRow(self.getAuditData('getElapseTimeTrendGaps', 1, i, order, config));
+            }
+        });
     
         // add hot-cold trend data
-        for (i = 5; i <= 20; i++) {
-            config = this.getSuggestionsConfig({}, {
-                periodCount: 12,
-                drawsPerPeriod: i
-            });
-            table.addRow(this.getAuditData('getHotColdTrend', 12, i, 'asc', config));
-        }
-        
-        // add mixed data
-        for (i = 5; i <= 20; i++) {
-            for (j = 15; j <= 25; j++) {
-                config = this.getSuggestionsConfig({
-                    drawsPerPeriod: j * 10
-                }, {
-                    periodCount: 12,
-                    drawsPerPeriod: i
-                });
-                table.addRow(this.getAuditData(
-                    'getMixedRisingElapseTime', '12/1', i + '/' + (j * 10), 'asc', config
-                ));
-                table.addRow(this.getAuditData(
-                    'getMixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10), 'asc', config
-                ));
+        _.each(this.orderList, function (orders) {
+            var config, order, i;
+            
+            for (i = 5; i <= 20; i++) {
+                config = {
+                    hotColdTrend: {
+                        periodCount: 12,
+                        drawsPerPeriod: i,
+                        risingOrder: orders[0],
+                        hotOrder: orders[1]
+                    }
+                };
+                order = self.getOrderString(orders);
+                table.addRow(self.getAuditData('getHotColdTrend', 12, i, order, config));
             }
-        }
+        });
+        
+        // add mixed rising elapse time
+        _.each(this.orderList, function (orders) {
+            var config, order, i, j;
+            
+            for (i = 5; i <= 20; i++) {
+                for (j = 15; j <= 25; j++) {
+                    config = {
+                        elapseTimeTrend: {
+                            drawsPerPeriod: j * 10,
+                            elapseTimeOrder: orders[0]
+                        },
+                        hotColdTrend: {
+                            periodCount: 12,
+                            drawsPerPeriod: i,
+                            risingOrder: orders[1]
+                        }
+                    };
+                    order = self.getOrderString(orders);
+                    table.addRow(self.getAuditData(
+                        'getMixedRisingElapseTime', '12/1', i + '/' + (j * 10), order, config
+                    ));
+                }
+            }
+        });
+        
+        // add mixed rising elapse time
+        _.each(this.orderList, function (orders) {
+            var config, order, i, j;
+            
+            for (i = 5; i <= 20; i++) {
+                for (j = 15; j <= 25; j++) {
+                    config = {
+                        elapseTimeTrend: {
+                            drawsPerPeriod: j * 10,
+                            gapDistanceOrder: orders[0]
+                        },
+                        hotColdTrend: {
+                            periodCount: 12,
+                            drawsPerPeriod: i,
+                            risingOrder: orders[1]
+                        }
+                    };
+                    order = self.getOrderString(orders);
+                    table.addRow(self.getAuditData(
+                        'getMixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10), order, config
+                    ));
+                }
+            }
+        });
         
         // sort data by score
         table.sort(5 + this.drawSize);
@@ -107,15 +164,7 @@ AuditTableBuilder.prototype = {
         return auditData;
     },
     
-    getSuggestionsConfig: function (elapseTimeTrend, hotColdTrend) {
-        return {
-            elapseTimeTrend: _.extend({
-                drawsPerPeriod: 1
-            }, elapseTimeTrend),
-            hotColdTrend: _.extend({
-                periodCount: 1,
-                drawsPerPeriod: 1
-            }, hotColdTrend)
-        };
+    getOrderString: function (orders) {
+        return orders[0] + '/' + orders[1];
     }
 };
