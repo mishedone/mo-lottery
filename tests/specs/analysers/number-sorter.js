@@ -1,4 +1,4 @@
-describe('Analyser number sorter can sort arrays of objects ', function () {
+describe('Analyser number sorter sorts arrays of objects ', function () {
     var objects, Data;
     
     Data = function (number, count) {
