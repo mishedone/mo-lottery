@@ -33,6 +33,13 @@ AnalyserSequenceAggregator.prototype = {
         if (numbers.length == 0) {
             return null;
         }
+
+        // copy numbers to prevent accidental modification
+        numbers = numbers.slice();
+
+        numbers.sort(function (a, b) {
+            return a - b;
+        });
         
         if (numbers.length % 2 == 0) {
             middleIndex = (numbers.length / 2) - 1;

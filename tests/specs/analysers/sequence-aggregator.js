@@ -6,7 +6,7 @@ describe('Analyser sequence aggregator combines a row of numbers into a single v
         
         expect(3).toEqual(aggregator.aggregate([3]));
         
-        expect(17).toEqual(aggregator.aggregate([3, 5, 12, 27, 38]));
+        expect(17).toEqual(aggregator.aggregate([27, 3, 5, 12, 38]));
     });
     
     it('by calculating the median', function () {
@@ -16,8 +16,8 @@ describe('Analyser sequence aggregator combines a row of numbers into a single v
         
         expect(7).toEqual(aggregator.aggregate([7]));
         
-        expect(8).toEqual(aggregator.aggregate([3, 4, 12, 27]));
+        expect(8).toEqual(aggregator.aggregate([12, 3, 4, 27]));
         
-        expect(12).toEqual(aggregator.aggregate([3, 5, 12, 27, 38]));
+        expect(12).toEqual(aggregator.aggregate([27, 3, 5, 12, 38]));
     });
 });
