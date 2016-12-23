@@ -1,8 +1,9 @@
-function ElapseTimeTrendHitData(number) {
+function ElapseTimeTrendHitData(number, aggregator) {
     this.number = number;
+    this.aggregator = aggregator;
     this.drawnIn = [];
     this.elapseTime = null;
-    this.averageElapseTime = null;
+    this.aggregateElapseTime = null;
     this.elapseTimeGap = null;
 }
 
@@ -17,8 +18,8 @@ ElapseTimeTrendHitData.prototype = {
         return this.elapseTime;
     },
 
-    getAverageElapseTime: function () {
-        return this.averageElapseTime;
+    getAggregateElapseTime: function () {
+        return this.aggregateElapseTime;
     },
 
     getElapseTimeGap: function () {
@@ -26,7 +27,7 @@ ElapseTimeTrendHitData.prototype = {
     },
 
     getElapseTimeGapDistance: function () {
-        return Math.abs(this.getElapseTimeGap() + 1);
+        return Math.abs(this.elapseTimeGap + 1);
     },
 
     hit: function (index) {
@@ -34,7 +35,7 @@ ElapseTimeTrendHitData.prototype = {
     },
 
     calculateElapseTimes: function (index) {
-        var elapseTimeSum = 0, lastDrawnIndex, iterator;
+        var lastDrawnIndex;
 
         // if the number has not been drawn - assume elapse time equals current draw index
         if (!this.isDrawn()) {
@@ -43,19 +44,13 @@ ElapseTimeTrendHitData.prototype = {
             return;
         }
 
-        // sum all elapse times between each hit index (going from end to beginning)
-        iterator = this.drawnIn.length - 1;
-        for (iterator; iterator > 0; iterator--) {
-            elapseTimeSum += this.drawnIn[iterator] - this.drawnIn[iterator - 1];
-        }
-
         lastDrawnIndex = this.drawnIn[this.drawnIn.length - 1];
         this.elapseTime = index - lastDrawnIndex;
 
-        // we can have average only if there is at least 1 gap
+        // we can have aggregate only if there is at least 1 gap
         if (this.getGapCount()) {
-            this.averageElapseTime = Math.round(elapseTimeSum / this.getGapCount());
-            this.elapseTimeGap = this.elapseTime - this.averageElapseTime;
+            this.aggregateElapseTime = Math.round(this.aggregator.aggregate(this.getGaps()));
+            this.elapseTimeGap = this.elapseTime - this.aggregateElapseTime;
         }
     },
 
@@ -65,5 +60,17 @@ ElapseTimeTrendHitData.prototype = {
 
     getGapCount: function () {
         return this.drawnIn.length - 1;
+    },
+
+    getGaps: function () {
+        var gaps = [], iterator;
+
+        // accumulate draw index gaps
+        iterator = this.drawnIn.length - 1;
+        for (iterator; iterator > 0; iterator--) {
+            gaps.push(this.drawnIn[iterator] - this.drawnIn[iterator - 1]);
+        }
+
+        return gaps;
     }
 };

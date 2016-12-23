@@ -1,4 +1,4 @@
-function ElapseTimeTrendPeriodData(numbers) {
+function ElapseTimeTrendPeriodData(numbers, hitAggregator) {
     var self = this;
 
     this.numbers = numbers;
@@ -7,7 +7,7 @@ function ElapseTimeTrendPeriodData(numbers) {
     // create hits for each available number
     this.hitCollection = new NumberCollection();
     _.each(this.numbers, function (number) {
-        self.hitCollection.add(number, new ElapseTimeTrendHitData(number));
+        self.hitCollection.add(number, new ElapseTimeTrendHitData(number, hitAggregator));
     });
 }
 

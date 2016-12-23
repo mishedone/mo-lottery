@@ -1,7 +1,14 @@
 function AnalyserSuggestions(numbers, draws, drawSize, config) {
-    var sorters = {
+    var sorters, aggregators;
+
+    sorters = {
         asc: new AnalyserNumberSorter('asc'),
         desc: new AnalyserNumberSorter('desc')
+    };
+
+    aggregators = {
+        average: new AnalyserNumberAggregator('average'),
+        median: new AnalyserNumberAggregator('median')
     };
     
     this.numbers = numbers;
@@ -14,6 +21,7 @@ function AnalyserSuggestions(numbers, draws, drawSize, config) {
         this.numbers,
         this.draws,
         this.config.elapseTimeTrend.drawsPerPeriod,
+        aggregators[this.config.elapseTimeTrend.hitAggregation],
         sorters[this.config.elapseTimeTrend.elapseTimeOrder],
         sorters[this.config.elapseTimeTrend.gapDistanceOrder]
     );
@@ -42,6 +50,7 @@ AnalyserSuggestions.prototype = {
         return {
             elapseTimeTrend: _.extend({
                 drawsPerPeriod: 100,
+                hitAggregation: 'average',
                 elapseTimeOrder: 'asc',
                 gapDistanceOrder: 'asc'
             }, config.elapseTimeTrend),
