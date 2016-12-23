@@ -1,4 +1,4 @@
-function AuditData(date, drawSize, algorithm, periodCount, drawsPerPeriod, order, suggestionsConfig) {
+function AuditData(date, drawSize, algorithm, periodCount, drawsPerPeriod, options, suggestionsConfig) {
     var numberCount;
     
     this.date = date;
@@ -7,7 +7,7 @@ function AuditData(date, drawSize, algorithm, periodCount, drawsPerPeriod, order
     this.algorithm = algorithm;
     this.periodCount = periodCount;
     this.drawsPerPeriod = drawsPerPeriod;
-    this.order = order;
+    this.options = options;
 
     // initialize hit numbers
     this.numbersHit = {};
@@ -72,8 +72,8 @@ AuditData.prototype = {
         return this.drawsPerPeriod;
     },
     
-    getOrder: function () {
-        return this.order;
+    getOptions: function () {
+        return this.options;
     },
 
     getNumbersHit: function () {
@@ -82,10 +82,6 @@ AuditData.prototype = {
 
     getScore: function () {
         return this.score;
-    },
-    
-    getTotalHitCount: function () {
-        return this.totalHitCount;
     },
     
     getTotalHitPercentage: function () {
@@ -108,13 +104,19 @@ AuditData.prototype = {
         this.algorithm = json.algorithm;
         this.periodCount = json.periodCount;
         this.drawsPerPeriod = json.drawsPerPeriod;
-        this.order = json.order;
         this.numbersHit = json.numbersHit;
         this.drawSize = json.drawSize;
         this.score = json.score;
         this.totalHitCount = json.totalHitCount;
         this.totalDrawnCount = json.totalDrawnCount;
         this.suggestionsConfig = json.suggestionsConfig;
+
+        // support both new and old style of options
+        if (json.hasOwnProperty('order')) {
+            this.options = json.order;
+        } else {
+            this.options = json.options;
+        }
         
         return this;
     }

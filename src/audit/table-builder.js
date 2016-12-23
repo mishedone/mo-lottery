@@ -21,7 +21,7 @@ AuditTableBuilder.prototype = {
         
         // add elapse time trend data
         _.each(this.orderList, function (orders) {
-            var config, order, i;
+            var config, i;
             
             for (i = 150; i <= 250; i++) {
                 config = {
@@ -31,15 +31,14 @@ AuditTableBuilder.prototype = {
                         gapDistanceOrder: orders[1]
                     }  
                 };
-                order = self.getOrderString(orders);
-                table.addRow(self.getAuditData('getElapseTimeTrend', 1, i, order, config));
-                table.addRow(self.getAuditData('getElapseTimeTrendGaps', 1, i, order, config));
+                table.addRow(self.getAuditData('getElapseTimeTrend', 1, i, orders, config));
+                table.addRow(self.getAuditData('getElapseTimeTrendGaps', 1, i, orders, config));
             }
         });
     
         // add hot-cold trend data
         _.each(this.orderList, function (orders) {
-            var config, order, i;
+            var config, i;
             
             for (i = 5; i <= 20; i++) {
                 config = {
@@ -50,14 +49,13 @@ AuditTableBuilder.prototype = {
                         hotOrder: orders[1]
                     }
                 };
-                order = self.getOrderString(orders);
-                table.addRow(self.getAuditData('getHotColdTrend', 12, i, order, config));
+                table.addRow(self.getAuditData('getHotColdTrend', 12, i, orders, config));
             }
         });
         
         // add mixed rising elapse time
         _.each(this.orderList, function (orders) {
-            var config, order, i, j;
+            var config, i, j;
             
             for (i = 5; i <= 20; i++) {
                 for (j = 15; j <= 25; j++) {
@@ -72,9 +70,8 @@ AuditTableBuilder.prototype = {
                             risingOrder: orders[1]
                         }
                     };
-                    order = self.getOrderString(orders);
                     table.addRow(self.getAuditData(
-                        'getMixedRisingElapseTime', '12/1', i + '/' + (j * 10), order, config
+                        'getMixedRisingElapseTime', '12/1', i + '/' + (j * 10), orders, config
                     ));
                 }
             }
@@ -82,7 +79,7 @@ AuditTableBuilder.prototype = {
         
         // add mixed rising elapse time
         _.each(this.orderList, function (orders) {
-            var config, order, i, j;
+            var config, i, j;
             
             for (i = 5; i <= 20; i++) {
                 for (j = 15; j <= 25; j++) {
@@ -97,9 +94,8 @@ AuditTableBuilder.prototype = {
                             risingOrder: orders[1]
                         }
                     };
-                    order = self.getOrderString(orders);
                     table.addRow(self.getAuditData(
-                        'getMixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10), order, config
+                        'getMixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10), orders, config
                     ));
                 }
             }
@@ -132,7 +128,7 @@ AuditTableBuilder.prototype = {
         this.draws = game.getAllDraws();
     },
     
-    getAuditData: function (algorithm, periodCount, drawsPerPeriod, order, suggestionsConfig) {
+    getAuditData: function (algorithm, periodCount, drawsPerPeriod, options, suggestionsConfig) {
         var currentIteration = 1, lastDraw, suggestion, auditData;
         
         auditData = new AuditData(
@@ -141,7 +137,7 @@ AuditTableBuilder.prototype = {
             algorithm,
             periodCount,
             drawsPerPeriod,
-            order,
+            options.join('/'),
             suggestionsConfig
         );
         while (currentIteration <= this.iterations) {
@@ -162,9 +158,5 @@ AuditTableBuilder.prototype = {
         auditData.calculateScore();
 
         return auditData;
-    },
-    
-    getOrderString: function (orders) {
-        return orders[0] + '/' + orders[1];
     }
 };
