@@ -1,12 +1,12 @@
 function AnalyserSuggestions(numbers, draws, drawSize, config) {
-    var sorters, aggregators;
+    var sorterList, aggregatorList;
 
-    sorters = {
+    sorterList = {
         asc: new AnalyserNumberSorter('asc'),
         desc: new AnalyserNumberSorter('desc')
     };
 
-    aggregators = {
+    aggregatorList = {
         average: new AnalyserNumberAggregator('average'),
         median: new AnalyserNumberAggregator('median')
     };
@@ -21,17 +21,17 @@ function AnalyserSuggestions(numbers, draws, drawSize, config) {
         this.numbers,
         this.draws,
         this.config.elapseTimeTrend.drawsPerPeriod,
-        aggregators[this.config.elapseTimeTrend.hitAggregation],
-        sorters[this.config.elapseTimeTrend.elapseTimeOrder],
-        sorters[this.config.elapseTimeTrend.gapDistanceOrder]
+        aggregatorList[this.config.elapseTimeTrend.hitAggregation],
+        sorterList[this.config.elapseTimeTrend.elapseTimeOrder],
+        sorterList[this.config.elapseTimeTrend.gapDistanceOrder]
     );
     this.hotColdTrendResult = new HotColdTrendAnalyser().getResult(
         this.numbers,
         this.draws,
         this.config.hotColdTrend.drawsPerPeriod,
         this.config.hotColdTrend.periodCount,
-        sorters[this.config.hotColdTrend.risingOrder],
-        sorters[this.config.hotColdTrend.hotOrder]
+        sorterList[this.config.hotColdTrend.risingOrder],
+        sorterList[this.config.hotColdTrend.hotOrder]
     );
 }
 

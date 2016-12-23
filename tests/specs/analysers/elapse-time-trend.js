@@ -1,5 +1,5 @@
 describe('Elapse time trend analyser builds a result that', function () {
-    var numbers, draws, analyser, results, sorters, aggregators;
+    var numbers, draws, analyser, results, sorterList, aggregatorList;
 
     // check the 5/35 game
     numbers = generateNumbers(1, 35);
@@ -12,14 +12,14 @@ describe('Elapse time trend analyser builds a result that', function () {
         [4,9,15,17,24], [6,7,10,16,32], [6,12,21,31,32], [7,9,16,26,30]
     ];
 
-    // build sorters
-    sorters = {
+    // build sorter list
+    sorterList = {
         asc: new AnalyserNumberSorter('asc'),
         desc: new AnalyserNumberSorter('desc')
     };
 
-    // build aggregators
-    aggregators = {
+    // build aggregator list
+    aggregatorList = {
         average: new AnalyserNumberAggregator('average'),
         median: new AnalyserNumberAggregator('median')
     };
@@ -27,9 +27,9 @@ describe('Elapse time trend analyser builds a result that', function () {
     // build results for both ascending and descending order
     analyser = new ElapseTimeTrendAnalyser();
     results = {
-        asc: analyser.getResult(numbers, draws, 16, aggregators.average, sorters.asc, sorters.asc),
-        desc: analyser.getResult(numbers, draws, 16, aggregators.average, sorters.desc, sorters.desc),
-        median: analyser.getResult(numbers, draws, 16, aggregators.median, sorters.asc, sorters.asc)
+        asc: analyser.getResult(numbers, draws, 16, aggregatorList.average, sorterList.asc, sorterList.asc),
+        desc: analyser.getResult(numbers, draws, 16, aggregatorList.average, sorterList.desc, sorterList.desc),
+        median: analyser.getResult(numbers, draws, 16, aggregatorList.median, sorterList.asc, sorterList.asc)
     };
 
     it('calculates the gaps between each number draw in a single `period`', function () {
