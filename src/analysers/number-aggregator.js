@@ -1,19 +1,19 @@
-function AnalyserNumberAggregator(calculation) {
-    this.calculation = calculation;
+function AnalyserNumberAggregator(aggregation) {
+    this.aggregation = aggregation;
 }
 
 AnalyserNumberAggregator.prototype = {
     constructor: AnalyserNumberAggregator,
     
     aggregate: function (numbers) {
-        if (this.calculation == 'median') {
-            return this.calculateMedian(numbers);
+        if (this.aggregation == 'median') {
+            return this.aggregateMedian(numbers);
         } else {
-            return this.calculateAverage(numbers);
+            return this.aggregateAverage(numbers);
         }
     },
-    
-    calculateAverage: function (numbers) {
+
+    aggregateAverage: function (numbers) {
         var sum = 0;
         
         if (numbers.length == 0) {
@@ -26,8 +26,8 @@ AnalyserNumberAggregator.prototype = {
         
         return sum / numbers.length;
     },
-    
-    calculateMedian: function (numbers) {
+
+    aggregateMedian: function (numbers) {
         var middleIndex;
         
         if (numbers.length == 0) {
