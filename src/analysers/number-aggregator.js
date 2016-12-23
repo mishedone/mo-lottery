@@ -1,15 +1,15 @@
-function AnalyserSequenceAggregator(calculation) {
+function AnalyserNumberAggregator(calculation) {
     this.calculation = calculation;
 }
 
-AnalyserSequenceAggregator.prototype = {
-    constructor: AnalyserSequenceAggregator,
+AnalyserNumberAggregator.prototype = {
+    constructor: AnalyserNumberAggregator,
     
-    aggregate: function (sequence) {
+    aggregate: function (numbers) {
         if (this.calculation == 'median') {
-            return this.calculateMedian(sequence);
+            return this.calculateMedian(numbers);
         } else {
-            return this.calculateAverage(sequence);
+            return this.calculateAverage(numbers);
         }
     },
     

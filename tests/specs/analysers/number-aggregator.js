@@ -1,6 +1,6 @@
-describe('Analyser sequence aggregator combines a row of numbers into a single value ', function () {
+describe('Analyser number aggregator combines a row of numbers into a single value ', function () {
     it('by calculating the average', function () {
-        var aggregator = new AnalyserSequenceAggregator();
+        var aggregator = new AnalyserNumberAggregator();
         
         expect(null).toEqual(aggregator.aggregate([]));
         
@@ -10,7 +10,7 @@ describe('Analyser sequence aggregator combines a row of numbers into a single v
     });
     
     it('by calculating the median', function () {
-        var aggregator = new AnalyserSequenceAggregator('median');
+        var aggregator = new AnalyserNumberAggregator('median');
         
         expect(null).toEqual(aggregator.aggregate([]));
         
