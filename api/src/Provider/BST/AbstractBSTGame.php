@@ -45,9 +45,9 @@ abstract class AbstractBSTGame extends AbstractGame
         $lastParseManager = ManagerRepository::get()->getLastParseManager();
         
         // handle current year vs archive year
-        if (date('Y') == $year) {
+        if (in_array($year, [2016, 2017])) {
             if (!$lastParseManager->has($this->getId())) {
-                $drawManager->set($this->currentYearParser->parse());
+                $drawManager->set($this->currentYearParser->parse($year));
                 $lastParseManager->set($this->getId(), new \DateTime());
             }
         } else {

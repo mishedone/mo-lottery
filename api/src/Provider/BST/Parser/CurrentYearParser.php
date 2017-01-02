@@ -39,20 +39,21 @@ class CurrentYearParser
     }
 
     /**
+     * @param int $year
      * @return array
      */
-    public function parse()
+    public function parse($year)
     {
         // load manager
         $parseManager = ManagerRepository::get()->getParseManager(
             $this->game->getId(),
-            date('Y')
+            $year
         );
         $parses = $parseManager->get();
         
         // parse
         $draws = [];
-        foreach ($this->parseDrawNames() as $name) {
+        foreach ($this->parseDrawNames($year) as $name) {
             if (!isset($parses[$name])) {
                 $parses[$name] = $this->parseDraws($name);
             }
@@ -70,9 +71,10 @@ class CurrentYearParser
     /**
      * Extracts all available draw names for the current year.
      *
+     * @param int $year
      * @return array
      */
-    private function parseDrawNames()
+    private function parseDrawNames($year)
     {
         $html = file_get_contents($this->config->getDrawPageUrl());
 
@@ -87,8 +89,8 @@ class CurrentYearParser
         krsort($drawNames);
         $drawNames = array_values($drawNames);
 
-        return array_filter($drawNames, function ($name) {
-            return (substr($name, 0, 4) == date('Y'));
+        return array_filter($drawNames, function ($name) use ($year) {
+            return (substr($name, 0, 4) == $year);
         });
     }
 
