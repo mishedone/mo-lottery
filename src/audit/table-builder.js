@@ -35,7 +35,6 @@ AuditTableBuilder.prototype = {
                         }
                     };
                     options = [orders[0], orders[1], aggregation];
-                    table.addRow(self.getAuditData('getElapseTimeTrend', 1, i, options, config));
                     table.addRow(self.getAuditData('getElapseTimeTrendGaps', 1, i, options, config));
                 }
             });
@@ -57,8 +56,8 @@ AuditTableBuilder.prototype = {
                 table.addRow(self.getAuditData('getHotColdTrend', 12, i, orders, config));
             }
         });
-        
-        // add mixed rising elapse time
+
+        // add mixed rising elapse time gaps
         _.each(this.orderList, function (orders) {
             _.each(self.aggregatorList, function (aggregation) {
                 var config, options, i, j;
@@ -68,33 +67,7 @@ AuditTableBuilder.prototype = {
                         config = {
                             elapseTimeTrend: {
                                 drawsPerPeriod: j * 10,
-                                elapseTimeOrder: orders[0]
-                            },
-                            hotColdTrend: {
-                                periodCount: 12,
-                                drawsPerPeriod: i,
-                                risingOrder: orders[1]
-                            }
-                        };
-                        options = [orders[0], orders[1], aggregation];
-                        table.addRow(self.getAuditData(
-                            'getMixedRisingElapseTime', '12/1', i + '/' + (j * 10), options, config
-                        ));
-                    }
-                }
-            });
-        });
-
-        // add mixed rising elapse time
-        _.each(this.orderList, function (orders) {
-            _.each(self.aggregatorList, function (aggregation) {
-                var config, options, i, j;
-
-                for (i = 5; i <= 20; i++) {
-                    for (j = 15; j <= 25; j++) {
-                        config = {
-                            elapseTimeTrend: {
-                                drawsPerPeriod: j * 10,
+                                hitAggregation: aggregation,
                                 gapDistanceOrder: orders[0]
                             },
                             hotColdTrend: {
