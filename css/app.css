@@ -17,6 +17,22 @@ a {
     margin-right: 15px;
 }
 
+.panel-progress {
+    position: fixed;
+    top: 60px;
+    right: 10px;
+    width: 180px;
+}
+
+.panel-progress .panel-body {
+    padding: 5px 5px 10px 5px;
+}
+
+.panel-progress .progress {
+    height: 6px;
+    margin: 0 0 5px 0;
+}
+
 .btn-list {
     margin-right: 10px;
     margin-bottom: 10px;
