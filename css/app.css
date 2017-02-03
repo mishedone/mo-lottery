@@ -17,6 +17,10 @@ a {
     margin-right: 15px;
 }
 
+.progress-panel-slot {
+    visibility: hidden;
+}
+
 .panel-progress {
     position: fixed;
     top: 60px;

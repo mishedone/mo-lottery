@@ -46,24 +46,41 @@ App.prototype = _.extend({}, Backbone.Events, {
     },
 
     renderProgress: function () {
-        var self = this;
+        var self = this, i, delay, progress;
 
         this.progress = new ProgressPanelView({
-            el: '#progress-panel-slot'
+            el: '#progress-panel-slot',
+            icon: '#progress-icon .glyphicon'
         });
         this.progress.render();
         this.progress.addBar('audit-bst535', '5/35', 100);
         this.progress.addBar('audit-bst642', '6/42', 300);
-        this.progress.addBar('audit-bst649', '6/49', 150);
+
+
+        for (i = 1; i <= 5; i++) {
+            setTimeout(function () {
+                self.progress.updateBarProgress('audit-bst535', 20);
+            }, i * 1000);
+        }
+        for (i = 1; i <= 30; i++) {
+            setTimeout(function () {
+                self.progress.updateBarProgress('audit-bst642', 10);
+            }, i * 100);
+        }
+
         setTimeout(function () {
-            self.progress.updateBarProgress('audit-bst535', 20);
-        }, 3000);
-        setTimeout(function () {
-            self.progress.updateBarProgress('audit-bst535', 30);
-        }, 4000);
-        setTimeout(function () {
-            self.progress.updateBarProgress('audit-bst649', 48);
-        }, 2000);
+            self.progress.addBar('audit-bst649', '6/49', 3);
+
+            setTimeout(function () {
+                self.progress.updateBarProgress('audit-bst649', 1);
+            }, 2000);
+            setTimeout(function () {
+                self.progress.updateBarProgress('audit-bst649', 1);
+            }, 3000);
+            setTimeout(function () {
+                self.progress.updateBarProgress('audit-bst649', 1);
+            }, 4000);
+        }, 15000);
     },
 
     initRouting: function () {
