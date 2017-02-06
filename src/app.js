@@ -3,6 +3,7 @@ function App() {
     this.games = {};
     this.navigation = {};
     this.progress = {};
+    this.lastAuditStorage = new LastAuditStorage();
     this.lastGameStorage = new LastGameStorage();
 }
 
@@ -57,6 +58,10 @@ App.prototype = _.extend({}, Backbone.Events, {
         this.games.each(function (game) {
             var worker, barId = 'audit-' + game.get('id');
 
+            if (self.lastAuditStorage.has(game)) {
+                return;
+            }
+
             worker = new Worker('audit-worker.js');
 
             worker.addEventListener('message', function(event) {
@@ -69,7 +74,10 @@ App.prototype = _.extend({}, Backbone.Events, {
                 }
 
                 if (event.data.hasOwnProperty('done')) {
-                    console.log(event.data.done);
+                    self.lastAuditStorage.set(game, event.data.done);
+
+                    // TODO: build table and save audit winner
+                    //self.auditWinnersStorage.add(game, table.getWinner());
                 }
             });
 
