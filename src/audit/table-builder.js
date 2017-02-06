@@ -100,16 +100,6 @@ AuditTableBuilder.prototype = _.extend({}, Backbone.Events, {
         return table;
     },
     
-    restore: function (drawSize, rows) {
-        var table = new AuditTable('Audit Winners', drawSize);
-        
-        _.each(rows, function (row) {
-            table.addRow(row);
-        });
-        
-        return table;
-    },
-    
     getAuditData: function (algorithm, periodCount, drawsPerPeriod, options, suggestionsConfig) {
         var currentIteration = 1, lastDraw, suggestion, auditData;
         

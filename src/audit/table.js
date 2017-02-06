@@ -43,7 +43,7 @@ AuditTable.prototype = {
         var data = [];
         
         _.each(this.rows, function (auditData) {
-            var rowData = [], date;
+            var rowData = [];
             
             rowData.push(auditData.getDate().toISOString().slice(0,10));
             rowData.push(auditData.getAlgorithm());
@@ -85,6 +85,14 @@ AuditTable.prototype = {
     
     addRow: function (auditData) {
         this.rows.push(auditData);
+    },
+
+    addRows: function (rows) {
+        var self = this;
+
+        _.each(rows, function (auditData) {
+            self.addRow(auditData);
+        });
     },
     
     sort: function () {

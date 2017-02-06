@@ -13,7 +13,6 @@ var Router = Backbone.Router.extend({
     initialize: function (options) {
         this.games = options.games;
         this.lastGame = options.lastGame;
-        this.auditTableBuilder = new AuditTableBuilder();
         this.auditWinnersStorage = new AuditWinnersStorage();
     },
 
@@ -35,7 +34,8 @@ var Router = Backbone.Router.extend({
         
         auditWinners = this.auditWinnersStorage.get(game);
         lastAuditWinner = this.auditWinnersStorage.getLast(game);
-        auditTable = this.auditTableBuilder.restore(game.get('drawSize'), auditWinners);
+        auditTable = new AuditTable('Audit Winners', game.get('drawSize'));
+        auditTable.addRows(auditWinners);
         
         hasLastAuditWinner = (typeof lastAuditWinner != 'undefined');
         winningAlgorithm = (hasLastAuditWinner) ? lastAuditWinner.getAlgorithm() : 'getHotColdTrend';
@@ -70,7 +70,8 @@ var Router = Backbone.Router.extend({
         view.render();
         
         game.load(function () {
-            var table = self.auditTableBuilder.get(
+            // TODO: move this logic in app on audit run
+            /*var table = .get(
                 game.get('numbers'),
                 game.get('drawSize'),
                 game.get('drawsPerWeek'),
@@ -79,7 +80,7 @@ var Router = Backbone.Router.extend({
 
             self.auditWinnersStorage.set(game, table.getWinner());
 
-            view.renderTable(table);
+            view.renderTable(table);*/
         });
     },
 
