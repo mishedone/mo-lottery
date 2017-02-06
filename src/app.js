@@ -57,20 +57,25 @@ App.prototype = _.extend({}, Backbone.Events, {
         this.games.each(function (game) {
             var worker, barId = 'audit-' + game.get('id');
 
-            worker = new Worker('src/audit/worker.js');
+            worker = new Worker('audit-worker.js');
 
             worker.addEventListener('message', function(event) {
-                if (event.data.hasOwnProperty('steps')) {
-                    self.progress.addBar(barId, game.get('name'), event.data.steps);
+                if (event.data.hasOwnProperty('audits')) {
+                    self.progress.addBar(barId, game.get('name'), event.data.audits);
                 }
 
-                if (event.data.hasOwnProperty('progress')) {
-                    self.progress.updateBarProgress(barId, event.data.progress);
+                if (event.data.hasOwnProperty('processed')) {
+                    self.progress.updateBarProgress(barId, event.data.processed);
                 }
             });
 
             worker.postMessage({
-                id: barId
+                start: {
+                    numbers: game.get('numbers'),
+                    drawSize: game.get('drawSize'),
+                    drawsPerWeek: game.get('drawsPerWeek'),
+                    draws: game.getAllDraws()
+                }
             });
 
             // store the worker for later reference
