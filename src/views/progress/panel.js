@@ -2,10 +2,13 @@ var ProgressPanelView = Backbone.View.extend({
     template: _.template($('#progress-panel').html()),
     icon: {},
     bars: {},
-    barCount: 0,
 
     initialize: function (options) {
         this.icon = $(options.icon);
+    },
+
+    getBarCount: function () {
+        return Object.keys(this.bars).length;
     },
 
     render: function () {
@@ -37,24 +40,21 @@ var ProgressPanelView = Backbone.View.extend({
             steps: steps
         });
         this.bars[id].render();
-        this.barCount++;
 
         // show the panel if this is the first bar added
-        if (this.barCount == 1) {
+        if (this.getBarCount() == 1) {
             this.show();
         }
 
         // bind done event handling
         this.bars[id].on('done', function () {
-            setTimeout(function () {
-                self.bars[id].remove();
-                self.barCount--;
+            self.bars[id].remove();
+            delete self.bars[id];
 
-                // hide the panel if there are no bars left
-                if (self.barCount <= 0) {
-                    self.hide();
-                }
-            }, 1500);
+            // hide the panel if there are no bars left
+            if (self.getBarCount() <= 0) {
+                self.hide();
+            }
         });
     },
 

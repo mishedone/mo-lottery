@@ -22,6 +22,11 @@ var ProgressBarView = Backbone.View.extend({
     addProgress: function (add) {
         var progressPercent;
 
+        // check if bar is already full
+        if (this.progress >= this.steps) {
+            return;
+        }
+
         // update progress
         this.progress += add;
         progressPercent = Math.round((100 * this.progress) / this.steps);
