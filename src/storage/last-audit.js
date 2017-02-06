@@ -18,7 +18,6 @@ LastAuditStorage.prototype = _.extend({}, BaseStorage.prototype, {
             return null;
         }
 
-
         // transform raw data into real objects
         _.each(data.audit, function (json) {
             audit.push(new AuditData().createFromJson(json));
