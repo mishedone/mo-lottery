@@ -8,18 +8,23 @@ LastAuditStorage.prototype = _.extend({}, BaseStorage.prototype, {
     get: function (game) {
         var data = this.loadData(this.key(game)), audit = [];
 
-        // return audit data for today only
-        // old data is not interesting
-        if (data.date == this.date) {
-            // transform raw data into real objects
-            _.each(data.audit, function (json) {
-                audit.push(new AuditData().createFromJson(json));
-            });
-
-            return audit;
+        // no data yet
+        if (data == null) {
+            return null;
         }
 
-        return null;
+        // there is audit data but it is old
+        if (data.date != this.date) {
+            return null;
+        }
+
+
+        // transform raw data into real objects
+        _.each(data.audit, function (json) {
+            audit.push(new AuditData().createFromJson(json));
+        });
+
+        return audit;
     },
 
     has: function (game) {
