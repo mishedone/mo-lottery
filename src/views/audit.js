@@ -1,8 +1,8 @@
 var AuditView = Backbone.View.extend({
     template: _.template($('#audit-table').html()),
 
-    render: function () {
-        this.$el.html('<h3>Auditing...</h3><hr/>');
+    renderEmpty: function () {
+        this.$el.html('<h3>No audit data available yet...</h3><hr/>');
 
         return this;
     },

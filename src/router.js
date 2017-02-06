@@ -13,6 +13,7 @@ var Router = Backbone.Router.extend({
     initialize: function (options) {
         this.games = options.games;
         this.lastGame = options.lastGame;
+        this.lastAuditStorage = new LastAuditStorage();
         this.auditWinnersStorage = new AuditWinnersStorage();
     },
 
@@ -62,26 +63,22 @@ var Router = Backbone.Router.extend({
     },
     
     audit: function (id) {
-        var game = this.findGame(id), view, self = this;
+        var game = this.findGame(id), view, audit, table;
         
         view = new AuditView({
             el: '#content-slot'
         });
-        view.render();
-        
-        game.load(function () {
-            // TODO: move this logic in app on audit run
-            /*var table = .get(
-                game.get('numbers'),
-                game.get('drawSize'),
-                game.get('drawsPerWeek'),
-                game.getAllDraws()
-            );
 
-            self.auditWinnersStorage.add(game, table.getWinner());
+        // load last audit data if there is any
+        audit = this.lastAuditStorage.get(game);
+        table = new AuditTable('Audit', game.get('drawSize'));
 
-            view.renderTable(table);*/
-        });
+        if (this.lastAuditStorage.has(game)) {
+            table.addRows(audit);
+            view.renderTable(table);
+        } else {
+            view.renderEmpty();
+        }
     },
 
     browse: function (id, year) {
