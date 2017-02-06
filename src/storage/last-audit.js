@@ -6,12 +6,17 @@ LastAuditStorage.prototype = _.extend({}, BaseStorage.prototype, {
     constructor: LastAuditStorage,
 
     get: function (game) {
-        var data = this.loadData(this.key(game));
+        var data = this.loadData(this.key(game)), audit = [];
 
         // return audit data for today only
         // old data is not interesting
         if (data.date == this.date) {
-            return data.audit;
+            // transform raw data into real objects
+            _.each(data.audit, function (json) {
+                audit.push(new AuditData().createFromJson(json));
+            });
+
+            return audit;
         }
 
         return null;
