@@ -52,4 +52,9 @@ addEventListener('message', function(event) {
         start.drawsPerWeek,
         start.draws
     );
+
+    // send result
+    postMessage({
+       done: table
+    });
 });

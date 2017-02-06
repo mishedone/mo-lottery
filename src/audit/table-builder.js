@@ -15,7 +15,7 @@ AuditTableBuilder.prototype = _.extend({}, Backbone.Events, {
         var self = this, table, weeksPerYear = 52;
 
         this.trigger('started', {
-            count: 2280
+            count: 64
         });
 
         // expose parameters to protected methods
@@ -30,7 +30,7 @@ AuditTableBuilder.prototype = _.extend({}, Backbone.Events, {
         this.iterations = (weeksPerYear * this.drawsPerWeek) / 2;
         
         // add elapse time trend data
-        _.each(this.orderList, function (orders) {
+        /*_.each(this.orderList, function (orders) {
             _.each(self.aggregatorList, function (aggregation) {
                 var config, options, i;
 
@@ -47,7 +47,7 @@ AuditTableBuilder.prototype = _.extend({}, Backbone.Events, {
                     table.addRow(self.getAuditData('getElapseTimeTrendGaps', 1, i, options, config));
                 }
             });
-        });
+        });*/
     
         // add hot-cold trend data
         _.each(this.orderList, function (orders) {
@@ -67,7 +67,7 @@ AuditTableBuilder.prototype = _.extend({}, Backbone.Events, {
         });
 
         // add mixed rising elapse time gaps
-        _.each(this.orderList, function (orders) {
+        /*_.each(this.orderList, function (orders) {
             _.each(self.aggregatorList, function (aggregation) {
                 var config, options, i, j;
 
@@ -92,7 +92,7 @@ AuditTableBuilder.prototype = _.extend({}, Backbone.Events, {
                     }
                 }
             });
-        });
+        });*/
         
         // sort data by score
         table.sort(5 + this.drawSize);

@@ -67,6 +67,10 @@ App.prototype = _.extend({}, Backbone.Events, {
                 if (event.data.hasOwnProperty('processed')) {
                     self.progress.updateBarProgress(barId, event.data.processed);
                 }
+
+                if (event.data.hasOwnProperty('done')) {
+                    console.log(event.data.done);
+                }
             });
 
             worker.postMessage({
