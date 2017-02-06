@@ -21,32 +21,32 @@ importScripts(
     'src/analysers/suggestions.js',
     'src/audit/data.js',
     'src/audit/table.js',
-    'src/audit/table-builder.js',
+    'src/audit/factory/data.js',
     'src/collections/number.js'
 );
 
 addEventListener('message', function(event) {
-    var self = this, start, table, builder;
+    var self = this, start, data, factory;
 
     if (!event.data.hasOwnProperty('start')) {
         return;
     }
 
     // ok, this is the start message - run the audit
-    builder = new AuditTableBuilder();
-    builder.on('started', function (event) {
+    factory = new AuditDataFactory();
+    factory.on('started', function (event) {
         self.postMessage({
             audits: event.count
         });
     });
-    builder.on('processed', function () {
+    factory.on('processed', function () {
         self.postMessage({
             processed: 1
         });
     });
 
     start = event.data.start;
-    table = builder.get(
+    data = factory.get(
         start.numbers,
         start.drawSize,
         start.drawsPerWeek,
@@ -55,6 +55,6 @@ addEventListener('message', function(event) {
 
     // send result
     postMessage({
-       done: table
+       done: data
     });
 });
