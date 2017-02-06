@@ -78,7 +78,7 @@ var Router = Backbone.Router.extend({
                 game.getAllDraws()
             );
 
-            self.auditWinnersStorage.set(game, table.getWinner());
+            self.auditWinnersStorage.add(game, table.getWinner());
 
             view.renderTable(table);*/
         });

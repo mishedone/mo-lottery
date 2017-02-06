@@ -23,7 +23,7 @@ AuditWinnersStorage.prototype = _.extend({}, BaseStorage.prototype, {
         return _.last(this.get(game));
     },
 
-    set: function (game, auditData) {
+    add: function (game, auditData) {
         var data = this.get(game);
         
         // check if we're receiving audit data
