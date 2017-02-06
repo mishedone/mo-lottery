@@ -66,7 +66,7 @@ App.prototype = _.extend({}, Backbone.Events, {
     },
 
     initLastAudit: function () {
-        var self = this, gamesToAudit = [], delay = 30000;
+        var self = this, gamesToAudit = [], delay = 60000;
 
         // collect games that need auditing
         this.games.each(function (game) {
@@ -97,6 +97,10 @@ App.prototype = _.extend({}, Backbone.Events, {
                     // build audit table
                     table = new AuditTable('', game.get('drawSize'));
                     table.addRows(self.lastAuditStorage.get(game));
+                    table.sort();
+
+                    // save last audit again but with proper ordering
+                    self.lastAuditStorage.set(game, table.getRows());
 
                     // save the winner
                     self.auditWinnersStorage.add(game, table.getWinner());

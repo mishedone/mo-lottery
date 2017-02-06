@@ -74,8 +74,7 @@ var Router = Backbone.Router.extend({
         table = new AuditTable('Audit', game.get('drawSize'));
 
         if (this.lastAuditStorage.has(game)) {
-            table.addRows(audit);
-            table.sort();
+            table.addRows(audit.slice(0, 200));
             view.renderTable(table);
         } else {
             view.renderEmpty();
