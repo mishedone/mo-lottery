@@ -26,27 +26,27 @@ importScripts(
 );
 
 addEventListener('message', function(event) {
-    var self = this, start, auditTableBuilder;
+    var self = this, start, table, builder;
 
     if (!event.data.hasOwnProperty('start')) {
         return;
     }
 
     // ok, this is the start message - run the audit
-    auditTableBuilder = new AuditTableBuilder();
-    auditTableBuilder.on('started', function (event) {
+    builder = new AuditTableBuilder();
+    builder.on('started', function (event) {
         self.postMessage({
             audits: event.count
         });
     });
-    auditTableBuilder.on('processed', function (event) {
+    builder.on('processed', function () {
         self.postMessage({
             processed: 1
         });
     });
 
     start = event.data.start;
-    auditTableBuilder.get(
+    table = builder.get(
         start.numbers,
         start.drawSize,
         start.drawsPerWeek,

@@ -46,7 +46,7 @@ App.prototype = _.extend({}, Backbone.Events, {
     },
 
     renderProgress: function () {
-        var self = this, workers = {};
+        var self = this;
 
         this.progress = new ProgressPanelView({
             el: '#progress-panel-slot',
@@ -77,9 +77,6 @@ App.prototype = _.extend({}, Backbone.Events, {
                     draws: game.getAllDraws()
                 }
             });
-
-            // store the worker for later reference
-            workers[game.get('id')] = worker;
         });
     },
 
