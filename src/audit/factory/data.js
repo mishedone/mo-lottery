@@ -16,7 +16,7 @@ AuditDataFactory.prototype = _.extend({}, Backbone.Events, {
 
         // notify subscribers that audit data building has started
         this.trigger('started', {
-            count: 64
+            count: 2280
         });
 
         // expose parameters to protected methods
@@ -29,24 +29,24 @@ AuditDataFactory.prototype = _.extend({}, Backbone.Events, {
         this.iterations = (weeksPerYear * this.drawsPerWeek) / 2;
 
         // add elapse time trend data
-        /*_.each(this.orderList, function (orders) {
-         _.each(self.aggregatorList, function (aggregation) {
-         var config, options, i;
+        _.each(this.orderList, function (orders) {
+            _.each(self.aggregatorList, function (aggregation) {
+                var config, options, i;
 
-         for (i = 150; i <= 250; i++) {
-         config = {
-         elapseTimeTrend: {
-         drawsPerPeriod: i,
-         hitAggregation: aggregation,
-         elapseTimeOrder: orders[0],
-         gapDistanceOrder: orders[1]
-         }
-         };
-         options = [orders[0], orders[1], aggregation];
-         table.addRow(self.getAuditData('getElapseTimeTrendGaps', 1, i, options, config));
-         }
-         });
-         });*/
+                for (i = 150; i <= 250; i++) {
+                    config = {
+                        elapseTimeTrend: {
+                            drawsPerPeriod: i,
+                            hitAggregation: aggregation,
+                            elapseTimeOrder: orders[0],
+                            gapDistanceOrder: orders[1]
+                        }
+                    };
+                    options = [orders[0], orders[1], aggregation];
+                    data.push(self.getAuditData('getElapseTimeTrendGaps', 1, i, options, config));
+                }
+            });
+        });
 
         // add hot-cold trend data
         _.each(this.orderList, function (orders) {
@@ -66,32 +66,32 @@ AuditDataFactory.prototype = _.extend({}, Backbone.Events, {
         });
 
         // add mixed rising elapse time gaps
-        /*_.each(this.orderList, function (orders) {
-         _.each(self.aggregatorList, function (aggregation) {
-         var config, options, i, j;
+        _.each(this.orderList, function (orders) {
+            _.each(self.aggregatorList, function (aggregation) {
+                var config, options, i, j;
 
-         for (i = 5; i <= 20; i++) {
-         for (j = 15; j <= 25; j++) {
-         config = {
-         elapseTimeTrend: {
-         drawsPerPeriod: j * 10,
-         hitAggregation: aggregation,
-         gapDistanceOrder: orders[0]
-         },
-         hotColdTrend: {
-         periodCount: 12,
-         drawsPerPeriod: i,
-         risingOrder: orders[1]
-         }
-         };
-         options = [orders[0], orders[1], aggregation];
-         table.addRow(self.getAuditData(
-         'getMixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10), options, config
-         ));
-         }
-         }
-         });
-         });*/
+                for (i = 5; i <= 20; i++) {
+                    for (j = 15; j <= 25; j++) {
+                        config = {
+                            elapseTimeTrend: {
+                                drawsPerPeriod: j * 10,
+                                hitAggregation: aggregation,
+                                gapDistanceOrder: orders[0]
+                            },
+                            hotColdTrend: {
+                                periodCount: 12,
+                                drawsPerPeriod: i,
+                                risingOrder: orders[1]
+                            }
+                        };
+                        options = [orders[0], orders[1], aggregation];
+                        data.push(self.getAuditData(
+                            'getMixedRisingElapseTimeGaps', '12/1', i + '/' + (j * 10), options, config
+                        ));
+                    }
+                }
+            });
+        });
 
         return data;
     },
