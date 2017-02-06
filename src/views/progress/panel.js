@@ -51,7 +51,7 @@ var ProgressPanelView = Backbone.View.extend({
                 self.barCount--;
 
                 // hide the panel if there are no bars left
-                if (!self.barCount) {
+                if (self.barCount <= 0) {
                     self.hide();
                 }
             }, 1500);
@@ -59,6 +59,8 @@ var ProgressPanelView = Backbone.View.extend({
     },
 
     updateBarProgress: function (id, add) {
-        this.bars[id].addProgress(add);
+        if (this.bars.hasOwnProperty(id)) {
+            this.bars[id].addProgress(add);
+        }
     }
 });
