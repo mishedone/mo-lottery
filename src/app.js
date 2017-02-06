@@ -21,6 +21,7 @@ App.prototype = _.extend({}, Backbone.Events, {
                 app.renderNavigation();
                 app.renderProgress();
                 app.initRouting();
+                app.initLastAudit();
             }
         });
     },
@@ -48,30 +49,46 @@ App.prototype = _.extend({}, Backbone.Events, {
     },
 
     renderProgress: function () {
-        var self = this;
-
         this.progress = new ProgressPanelView({
             el: '#progress-panel-slot',
             icon: '#progress-icon .glyphicon'
         });
         this.progress.render();
+    },
 
+    initRouting: function () {
+        this.router = new Router({
+            games: this.games,
+            lastGame: this.lastGameStorage.get()
+        });
+        this.listenTo(this.router, 'game:changed', this.changeGame);
+        Backbone.history.start();
+    },
+
+    initLastAudit: function () {
+        var self = this, gamesToAudit = [], delay = 10000;
+
+        // collect games that need auditing
         this.games.each(function (game) {
-            var worker, table, barId = 'audit-' + game.get('id');
-
-            if (self.lastAuditStorage.has(game)) {
-                return;
+            if (!self.lastAuditStorage.has(game)) {
+                gamesToAudit.push(game);
             }
+        });
 
-            worker = new Worker('audit-worker.js');
+        // run the audit
+        _.each(gamesToAudit, function (game, index) {
+            var worker = new Worker('audit-worker.js');
 
+            // handle audit data building events
             worker.addEventListener('message', function(event) {
+                var bar = 'audit-' + game.get('id'), table;
+
                 if (event.data.hasOwnProperty('audits')) {
-                    self.progress.addBar(barId, game.get('name'), event.data.audits);
+                    self.progress.addBar(bar, game.get('name'), event.data.audits);
                 }
 
                 if (event.data.hasOwnProperty('processed')) {
-                    self.progress.updateBarProgress(barId, event.data.processed);
+                    self.progress.updateBarProgress(bar, event.data.processed);
                 }
 
                 if (event.data.hasOwnProperty('done')) {
@@ -83,27 +100,24 @@ App.prototype = _.extend({}, Backbone.Events, {
 
                     // save the winner
                     self.auditWinnersStorage.add(game, table.getWinner());
+
+                    // kill the worker
+                    worker.terminate();
                 }
             });
 
-            worker.postMessage({
-                start: {
-                    numbers: game.get('numbers'),
-                    drawSize: game.get('drawSize'),
-                    drawsPerWeek: game.get('drawsPerWeek'),
-                    draws: game.getAllDraws()
-                }
-            });
+            // start the worker with some delay to save some resources
+            setTimeout(function () {
+                worker.postMessage({
+                    start: {
+                        numbers: game.get('numbers'),
+                        drawSize: game.get('drawSize'),
+                        drawsPerWeek: game.get('drawsPerWeek'),
+                        draws: game.getAllDraws()
+                    }
+                });
+            }, index * delay);
         });
-    },
-
-    initRouting: function () {
-        this.router = new Router({
-            games: this.games,
-            lastGame: this.lastGameStorage.get()
-        });
-        this.listenTo(this.router, 'game:changed', this.changeGame);
-        Backbone.history.start();
     },
 
     changeGame: function (game) {
