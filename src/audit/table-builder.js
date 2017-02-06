@@ -8,13 +8,22 @@ function AuditTableBuilder() {
     this.aggregatorList = ['average', 'median'];
 }
 
-AuditTableBuilder.prototype = {
+AuditTableBuilder.prototype = _.extend({}, Backbone.Events, {
     constructor: AuditTableBuilder,
     
-    get: function (game) {
+    get: function (numbers, drawSize, drawsPerWeek, draws) {
         var self = this, table, weeksPerYear = 52;
-        
-        this.setGame(game);
+
+        this.trigger('started', {
+            count: 2280
+        });
+
+        // expose parameters to protected methods
+        this.numbers = numbers;
+        this.drawSize = drawSize;
+        this.drawsPerWeek = drawsPerWeek;
+        this.draws = draws;
+
         table = new AuditTable('Audit', this.drawSize);
         
         // use 6 months for now
@@ -91,25 +100,14 @@ AuditTableBuilder.prototype = {
         return table;
     },
     
-    restore: function (game, rows) {
-        var table;
-        
-        this.setGame(game);
-        table = new AuditTable('Audit Winners', this.drawSize);
+    restore: function (drawSize, rows) {
+        var table = new AuditTable('Audit Winners', drawSize);
         
         _.each(rows, function (row) {
             table.addRow(row);
         });
         
         return table;
-    },
-    
-    setGame: function (game) {
-        this.game = game;
-        this.numbers = game.get('numbers');
-        this.drawSize = game.get('drawSize');
-        this.drawsPerWeek = game.get('drawsPerWeek');
-        this.draws = game.getAllDraws();
     },
     
     getAuditData: function (algorithm, periodCount, drawsPerPeriod, options, suggestionsConfig) {
@@ -141,6 +139,9 @@ AuditTableBuilder.prototype = {
         }
         auditData.calculateScore();
 
+        // throw an event saying that a single audit was finished
+        this.trigger('processed');
+
         return auditData;
     }
-};
+});
