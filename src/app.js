@@ -66,7 +66,7 @@ App.prototype = _.extend({}, Backbone.Events, {
     },
 
     initLastAudit: function () {
-        var self = this, gamesToAudit = [], delay = 10000;
+        var self = this, gamesToAudit = [], delay = 30000;
 
         // collect games that need auditing
         this.games.each(function (game) {
