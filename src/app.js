@@ -46,41 +46,36 @@ App.prototype = _.extend({}, Backbone.Events, {
     },
 
     renderProgress: function () {
-        var self = this, i, delay, progress;
+        var self = this, workers = {};
 
         this.progress = new ProgressPanelView({
             el: '#progress-panel-slot',
             icon: '#progress-icon .glyphicon'
         });
         this.progress.render();
-        this.progress.addBar('audit-bst535', '5/35', 100);
-        this.progress.addBar('audit-bst642', '6/42', 300);
 
+        this.games.each(function (game) {
+            var worker, barId = 'audit-' + game.get('id');
 
-        for (i = 1; i <= 5; i++) {
-            setTimeout(function () {
-                self.progress.updateBarProgress('audit-bst535', 20);
-            }, i * 1000);
-        }
-        for (i = 1; i <= 30; i++) {
-            setTimeout(function () {
-                self.progress.updateBarProgress('audit-bst642', 10);
-            }, i * 100);
-        }
+            worker = new Worker('src/audit/worker.js');
 
-        setTimeout(function () {
-            self.progress.addBar('audit-bst649', '6/49', 3);
+            worker.addEventListener('message', function(event) {
+                if (event.data.hasOwnProperty('steps')) {
+                    self.progress.addBar(barId, game.get('name'), event.data.steps);
+                }
 
-            setTimeout(function () {
-                self.progress.updateBarProgress('audit-bst649', 1);
-            }, 2000);
-            setTimeout(function () {
-                self.progress.updateBarProgress('audit-bst649', 1);
-            }, 3000);
-            setTimeout(function () {
-                self.progress.updateBarProgress('audit-bst649', 1);
-            }, 4000);
-        }, 15000);
+                if (event.data.hasOwnProperty('progress')) {
+                    self.progress.updateBarProgress(barId, event.data.progress);
+                }
+            });
+
+            worker.postMessage({
+                id: barId
+            });
+
+            // store the worker for later reference
+            workers[game.get('id')] = worker;
+        });
     },
 
     initRouting: function () {
