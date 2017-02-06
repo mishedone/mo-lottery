@@ -17,7 +17,7 @@ a {
     margin-right: 15px;
 }
 
-.progress-panel-slot {
+#progress-panel-slot {
     visibility: hidden;
 }
 
