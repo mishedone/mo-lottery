@@ -75,6 +75,7 @@ var Router = Backbone.Router.extend({
 
         if (this.lastAuditStorage.has(game)) {
             table.addRows(audit);
+            table.sort();
             view.renderTable(table);
         } else {
             view.renderEmpty();
