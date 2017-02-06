@@ -54,7 +54,7 @@ addEventListener('message', function(event) {
     );
 
     // send result
-    postMessage({
+    self.postMessage({
        done: data
     });
 });
