@@ -105,7 +105,7 @@ AuditDataFactory.prototype = _.extend({}, Backbone.Events, {
             algorithm,
             periodCount,
             drawsPerPeriod,
-            options.join('/'),
+            options,
             suggestionsConfig
         );
         while (currentIteration <= this.iterations) {

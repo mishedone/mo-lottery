@@ -63,6 +63,10 @@ AuditData.prototype = {
     getAlgorithm: function () {
         return this.algorithm;
     },
+
+    getCleanAlgorithm: function (auditData) {
+        return this.algorithm.replace('get', '').split(/(?=[A-Z])/).join(' ');
+    },
     
     getPeriodCount: function () {
         return this.periodCount;
@@ -74,6 +78,37 @@ AuditData.prototype = {
     
     getOptions: function () {
         return this.options;
+    },
+
+    getShortOptions: function (auditData) {
+        var short = [];
+
+        // old options were a string, just return them as they are
+        if (!(this.options instanceof Array)) {
+            return this.options;
+        }
+
+        // collect options
+        _.each(this.options, function (option) {
+            switch (option) {
+                case 'asc':
+                    short.push('A');
+                    break;
+                case 'desc':
+                    short.push('D');
+                    break;
+                case 'average':
+                    short.push('AVG');
+                    break;
+                case 'median':
+                    short.push('MD');
+                    break;
+                default:
+                    short.push(option);
+            }
+        });
+
+        return short.join(' ');
     },
 
     getNumbersHit: function () {

@@ -11,17 +11,17 @@ function AuditTable(name, drawSize) {
     
     this.addLabel('Date');
     this.addLabel('Algorithm');
-    this.addLabel('Period count');
-    this.addLabel('Draws per period');
+    this.addLabel('Periods');
+    this.addLabel('Draws / period');
     this.addLabel('Options');
     
     while (numberCount <= this.drawSize) {
         this.addLabel('Hit ' + numberCount);
         numberCount++;
     }
-    
+
+    this.addLabel('Hit %');
     this.addLabel('Score');
-    this.addLabel('Total hit %');
 }
 
 AuditTable.prototype = {
@@ -46,17 +46,18 @@ AuditTable.prototype = {
             var rowData = [];
             
             rowData.push(auditData.getDate().toISOString().slice(0,10));
-            rowData.push(auditData.getAlgorithm());
+            rowData.push(auditData.getCleanAlgorithm());
             rowData.push(auditData.getPeriodCount());
             rowData.push(auditData.getDrawsPerPeriod());
-            rowData.push(auditData.getOptions());
-            
+            rowData.push(auditData.getShortOptions());
+
+            // add hits
             _.each(auditData.getNumbersHit(), function (hits) {
                 rowData.push(hits);
             });
-            
-            rowData.push(auditData.getScore());
+
             rowData.push(auditData.getTotalHitPercentage());
+            rowData.push(auditData.getScore());
             
             data.push(rowData);
         });

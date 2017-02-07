@@ -40,10 +40,11 @@ var Router = Backbone.Router.extend({
         
         hasLastAuditWinner = (typeof lastAuditWinner != 'undefined');
         winningAlgorithm = (hasLastAuditWinner) ? lastAuditWinner.getAlgorithm() : 'getHotColdTrend';
-        
+        cleanWinningAlgorithm = (hasLastAuditWinner) ? lastAuditWinner.getCleanAlgorithm() : 'Hot Cold Trend';
+
         view = new SuggestionsView({
             el: '#content-slot',
-            algorithm: winningAlgorithm,
+            algorithm: cleanWinningAlgorithm,
             auditTable: auditTable
         });
         view.render();
