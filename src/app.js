@@ -112,13 +112,15 @@ App.prototype = _.extend({}, Backbone.Events, {
 
             // start the worker with some delay to save some resources
             setTimeout(function () {
-                worker.postMessage({
-                    start: {
-                        numbers: game.get('numbers'),
-                        drawSize: game.get('drawSize'),
-                        drawsPerWeek: game.get('drawsPerWeek'),
-                        draws: game.getAllDraws()
-                    }
+                game.load(function () {
+                    worker.postMessage({
+                        start: {
+                            numbers: game.get('numbers'),
+                            drawSize: game.get('drawSize'),
+                            drawsPerWeek: game.get('drawsPerWeek'),
+                            draws: game.getAllDraws()
+                        }
+                    });
                 });
             }, index * delay);
         });
