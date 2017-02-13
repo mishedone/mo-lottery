@@ -29,3 +29,7 @@ service apache2 restart
 
 # clean up
 apt-get --purge -y autoremove
+
+# unpack initial database
+cd /vagrant/api/data
+tar -xzf draws.tar.gz
