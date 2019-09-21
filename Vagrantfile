@@ -3,7 +3,7 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure(2) do |config|
-    config.vm.box = "ubuntu/trusty64"
+    config.vm.box = "ubuntu/bionic64"
     config.vm.network :forwarded_port, guest: 80, host: 9100
     config.vm.provision :shell, path: "build/bootstrap.sh"
     config.vm.provision :shell, path: "build/prepare.sh", run: "always"
