@@ -1,12 +1,3 @@
-# The cool guys from Vagrant did not handle mounting automatically so
-# we have to detect OS by ourselves and act appropriately...
-# Look in here for extra detection logic: http://goo.gl/tsCgNK
-module OS
-    def OS.windows?
-        (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
-    end
-end
-
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -17,10 +8,11 @@ Vagrant.configure(2) do |config|
     config.vm.provision :shell, path: "build/bootstrap.sh"
     config.vm.provision :shell, path: "build/prepare.sh", run: "always"
 
-    # fix shared folders on windows
-    if OS.windows?
-        config.vm.synced_folder ".", "/vagrant", type: "smb"
-    end
+    # a private dhcp network is required for nfs to work (on windows hosts, at least)
+    config.vm.network "private_network", type: "dhcp"
+
+    # windows hosts - read here https://github.com/winnfsd/vagrant-winnfsd
+    config.vm.synced_folder ".", "/vagrant", type: "nfs"
 
     config.vm.provider "virtualbox" do |vb|
         vb.memory = "256"
