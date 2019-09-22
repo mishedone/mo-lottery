@@ -16,7 +16,19 @@ class ParserConfig extends AbstractParserConfig
     {
         return '642';
     }
-    
+
+    /**
+     * @param int $year
+     * @return string
+     */
+    public function getArchiveUrl($year)
+    {
+        if ($year == 2017) {
+            return 'http://toto.bg/content/files/2018/01/26/fe9f0df91ce6c82978baf6a29ea003d8.txt';
+        }
+        return parent::getArchiveUrl($year);
+    }
+
     /**
      * @return string
      */

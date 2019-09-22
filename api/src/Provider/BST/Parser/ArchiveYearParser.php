@@ -35,7 +35,7 @@ class ArchiveYearParser
         $this->game = $game;
         $this->config = $game->getParserConfig();
     }
-    
+
     /**
      * @param int $year
      * @return array
@@ -43,12 +43,8 @@ class ArchiveYearParser
      */
     public function parse($year)
     {
-        $archiveDraws = file_get_contents(sprintf(
-            'http://toto.bg/content/files/stats-tiraji/%s_%s.txt',
-            $this->config->getArchiveId(),
-            ($year < 2005) ? substr($year, 2) : $year
-        ));
-
+        $archiveDraws = file_get_contents($this->config->getArchiveUrl($year));
+        
         $draws = array();
         foreach (explode("\n", $archiveDraws) as $rawDraw) {
             $rawDraw = trim($rawDraw);
