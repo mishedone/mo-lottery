@@ -97,6 +97,11 @@ class ArchiveYearParser
     private function parseDrawsSince2018($archiveDraws)
     {
         $draws = array();
+        $matches = array();
+        //$pattern = '/Тираж\s*\d*\/\d*, Теглене \d: (.*)/';
+        $pattern = '/(.{1,3})/';
+        preg_match_all($pattern, $archiveDraws, $matches);
+        var_dump($matches);
         return $draws;
     }
 
