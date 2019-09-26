@@ -39,12 +39,23 @@ class ArchiveYearParser
     /**
      * @param int $year
      * @return array
-     * @throws ParseException
      */
     public function parse($year)
     {
         $archiveDraws = file_get_contents($this->config->getArchiveUrl($year));
-        
+        if ($year >= 2018) {
+            return $this->parseDrawsSince2018($archiveDraws);
+        }
+        return $this->parseDrawsTill2018($archiveDraws);
+    }
+
+    /**
+     * @param string $archiveDraws
+     * @return array
+     * @throws ParseException
+     */
+    private function parseDrawsTill2018($archiveDraws)
+    {
         $draws = array();
         foreach (explode("\n", $archiveDraws) as $rawDraw) {
             $rawDraw = trim($rawDraw);
@@ -75,6 +86,17 @@ class ArchiveYearParser
             }
         }
 
+        return $draws;
+    }
+
+    /**
+     * @param string $archiveDraws
+     * @return array
+     * @throws ParseException
+     */
+    private function parseDrawsSince2018($archiveDraws)
+    {
+        $draws = array();
         return $draws;
     }
 
