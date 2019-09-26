@@ -1,6 +1,7 @@
 .idea
 .vagrant
 *.komodoproject
+*-cloudimg-console.log
 Thumbs.db
 
 api/data/*.json
