@@ -2,9 +2,6 @@
 
 namespace MoLottery\Provider\BST\Parser;
 
-use MoLottery\Exception\ParseException;
-use MoLottery\Provider\BST\AbstractBSTGame;
-use MoLottery\Provider\BST\AbstractParserConfig;
 use MoLottery\Tool\Clean;
 
 /**
@@ -13,28 +10,9 @@ use MoLottery\Tool\Clean;
  * Those draws are stored on the BST website as text files with varying formats from year to year. This class is
  * trying to unify the differences by producing consistent output.
  */
-class ArchiveYearParser
+class ArchiveYearParser extends AbstractParser
 {
     use Clean;
-
-    /**
-     * @var AbstractBSTGame
-     */
-    private $game;
-
-    /**
-     * @var AbstractParserConfig
-     */
-    private $config;
-
-    /**
-     * @param AbstractBSTGame $game
-     */
-    public function __construct(AbstractBSTGame $game)
-    {
-        $this->game = $game;
-        $this->config = $game->getParserConfig();
-    }
 
     /**
      * @param int $year
@@ -52,7 +30,6 @@ class ArchiveYearParser
     /**
      * @param string $archiveDraws
      * @return array
-     * @throws ParseException
      */
     private function parseDrawsTill2018($archiveDraws)
     {
@@ -88,7 +65,6 @@ class ArchiveYearParser
     /**
      * @param string $archiveDraws
      * @return array
-     * @throws ParseException
      */
     private function parseDrawsSince2018($archiveDraws)
     {
@@ -103,21 +79,6 @@ class ArchiveYearParser
         }
 
         return $draws;
-    }
-
-    /**
-     * Validates the eligibility of a sequence of numbers for the current game.
-     *
-     * @param array $numbers
-     * @param string $context
-     * @throws ParseException
-     */
-    private function validateNumbers($numbers, $context)
-    {
-        $drawSize = $this->game->getDrawSize();
-        if (count($numbers) != $drawSize) {
-            throw ParseException::wrongNumberCount(count($numbers), $drawSize, $context);
-        }
     }
 
     /**
