@@ -77,11 +77,7 @@ class ArchiveYearParser
             $sections = preg_split('/\s{1,}/', $rawDraw);
             foreach ($sections as $section) {
                 $numbers = explode(',', $section);
-                $drawSize = $this->game->getDrawSize();
-                if (count($numbers) != $drawSize) {
-                    throw ParseException::wrongNumberCount(count($numbers), $drawSize, $section);
-                }
-
+                $this->validateNumbers($numbers, $section);
                 $draws[] = $this->cleanNumbers($numbers);
             }
         }
@@ -98,11 +94,30 @@ class ArchiveYearParser
     {
         $draws = array();
         $matches = array();
-        //$pattern = '/Тираж\s*\d*\/\d*, Теглене \d: (.*)/';
-        $pattern = '/(.{1,3})/';
-        preg_match_all($pattern, $archiveDraws, $matches);
-        var_dump($matches);
+        preg_match_all('/^.*:(.*)$/m', $archiveDraws, $matches);
+        foreach ($matches[1] as $rawDraw) {
+            $rawDraw = trim($rawDraw);
+            $numbers = explode(' ', $rawDraw);
+            $this->validateNumbers($numbers, $rawDraw);
+            $draws[] = $this->cleanNumbers($numbers);
+        }
+
         return $draws;
+    }
+
+    /**
+     * Validates the eligibility of a sequence of numbers for the current game.
+     *
+     * @param array $numbers
+     * @param string $context
+     * @throws ParseException
+     */
+    private function validateNumbers($numbers, $context)
+    {
+        $drawSize = $this->game->getDrawSize();
+        if (count($numbers) != $drawSize) {
+            throw ParseException::wrongNumberCount(count($numbers), $drawSize, $context);
+        }
     }
 
     /**
