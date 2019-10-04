@@ -21,6 +21,7 @@ require_once 'src/Provider/BST/AbstractParserConfig.php';
 require_once 'src/Provider/BST/Game535/ParserConfig.php';
 require_once 'src/Provider/BST/Game642/ParserConfig.php';
 require_once 'src/Provider/BST/Game649/ParserConfig.php';
+require_once 'src/Provider/BST/Parser/AbstractParser.php';
 require_once 'src/Provider/BST/Parser/ArchiveYearParser.php';
 require_once 'src/Provider/BST/Parser/CurrentYearParser.php';
 require_once 'src/Provider/BST/Game535/Game535.php';
