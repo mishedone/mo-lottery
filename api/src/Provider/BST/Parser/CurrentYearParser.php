@@ -53,11 +53,11 @@ class CurrentYearParser
         
         // parse
         $draws = [];
-        foreach ($this->parseDrawNames($year) as $name) {
-            if (!isset($parses[$name])) {
-                $parses[$name] = $this->parseDraws($name);
+        foreach ($this->parseDrawUrls($year) as $url) {
+            if (!isset($parses[$url])) {
+                $parses[$url] = $this->parseDraws($url);
             }
-            foreach ($parses[$name] as $draw) {
+            foreach ($parses[$url] as $draw) {
                 $draws[] = $draw;
             }
         }
@@ -69,43 +69,43 @@ class CurrentYearParser
     }
 
     /**
-     * Extracts all available draw names for the current year.
+     * Extracts all available draw URLs for the current year.
      *
      * @param int $year
      * @return array
      */
-    private function parseDrawNames($year)
+    private function parseDrawUrls($year)
     {
         $html = file_get_contents($this->config->getDrawPageUrl());
 
-        $selectOptions = [];
-        preg_match('/<select name="drawing".*?>(?<options>.*)<\/select>/s', $html, $selectOptions);
+        $listItems = [];
+        preg_match('/<ul[^>]*aria-labelledby="tiraj_list">(?<items>.*?)<\/ul>/s', $html, $listItems);
 
-        $drawNames = [];
-        preg_match_all('/value="(?<names>.*?)"/s', $selectOptions['options'], $drawNames);
+        $drawUrls = [];
+        preg_match_all('/href="(?<urls>.*?)"/s', $listItems['items'], $drawUrls);
 
-        // reorder matched draw names in ascending order
-        $drawNames = array_slice($drawNames['names'], 2);
-        krsort($drawNames);
-        $drawNames = array_values($drawNames);
+        // reorder matched draw URLs in ascending order
+        $drawUrls = $drawUrls['urls'];
+        sort($drawUrls);
 
-        return array_filter($drawNames, function ($name) use ($year) {
-            return (substr($name, 0, 4) == $year);
+        // make sure the draw URL is for the year in question
+        return array_filter($drawUrls, function ($name) use ($year) {
+            return (strpos($name, $year) !== false);
         });
     }
 
     /**
      * Extracts the numbers in a certain draw from it's dedicated web page.
      *
-     * @param string $name
+     * @param string $drawUrl
      * @return array
      * @throws ParseException
      */
-    private function parseDraws($name)
+    private function parseDraws($drawUrl)
     {
-        $html = $this->curlPost($this->config->getDrawPageUrl(), array(
-            'drawing' => $name
-        ));
+        $html = file_get_contents($drawUrl);
+        print($html);
+        exit();
         
         $form = [];
         preg_match('/<form(.*)<\/form>/s', $html, $form);
