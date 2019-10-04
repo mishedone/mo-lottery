@@ -37,7 +37,7 @@ class ParserConfig extends AbstractParserConfig
      */
     public function getDrawPageUrl()
     {
-        return 'https://toto.bg/index.php?lang=1&pid=drawing649';
+        return 'http://toto.bg/results/6x49';
     }
 
     /**
