@@ -2,10 +2,9 @@
 
 namespace MoLottery\Provider\BST\Parser;
 
-use MoLottery\Exception\ParseException;
+use DOMDocument;
+use DOMXPath;
 use MoLottery\Manager\ManagerRepository;
-use MoLottery\Provider\BST\AbstractBSTGame;
-use MoLottery\Provider\BST\AbstractParserConfig;
 use MoLottery\Tool\Clean;
 use MoLottery\Tool\Curl;
 
@@ -15,28 +14,9 @@ use MoLottery\Tool\Curl;
  * Those draws are stored on the BST website pages - scattered through the html. This class makes some ajax requests
  * to extract all necessary data and return it in a unified format.
  */
-class CurrentYearParser
+class CurrentYearParser extends AbstractParser
 {
     use Clean, Curl;
-
-    /**
-     * @var AbstractBSTGame
-     */
-    private $game;
-
-    /**
-     * @var AbstractParserConfig
-     */
-    private $config;
-
-    /**
-     * @param AbstractBSTGame $game
-     */
-    public function __construct(AbstractBSTGame $game)
-    {
-        $this->game = $game;
-        $this->config = $game->getParserConfig();
-    }
 
     /**
      * @param int $year
@@ -99,27 +79,27 @@ class CurrentYearParser
      *
      * @param string $drawUrl
      * @return array
-     * @throws ParseException
      */
     private function parseDraws($drawUrl)
     {
-        $html = file_get_contents($drawUrl);
-        print($html);
-        exit();
-        
-        $form = [];
-        preg_match('/<form(.*)<\/form>/s', $html, $form);
+        $draws = [];
+        $dom = new DOMDocument();
+        @$dom->loadHTMLFile($drawUrl);
+        $finder = new DOMXPath($dom);
 
-        $numbers = [];
-        preg_match_all('/images\/classic\/balls\/(?<numbers>\d*)\./s', $form[0], $numbers);
-
-        $numbers = $this->cleanNumbers($numbers['numbers']);
-        $drawSize = $this->game->getDrawSize();
-        $draws = array_chunk($numbers, $drawSize);
-        foreach ($draws as $numbersInDraw) {
-            if (count($numbersInDraw) != $drawSize) {
-                throw ParseException::wrongNumberCount(count($numbersInDraw), $drawSize, implode(',', $numbersInDraw));
+        // find number containers and extract numbers from the balls inside
+        $containers = $finder->query("//div[contains(@class, 'tir_numbers')]");
+        foreach ($containers as $container) {
+            $numbers = [];
+            foreach ($container->getElementsByTagName('span') as $span) {
+                $numbers[] = $span->textContent;
             }
+
+            // clean up and validation
+            $numbers = $this->cleanNumbers($numbers);
+            $this->validateNumbers($numbers, $container->textContent);
+
+            $draws[] = $numbers;
         }
 
         return $draws;
