@@ -5,7 +5,6 @@ namespace MoLottery\Provider\BST;
 use MoLottery\Exception\NotFoundException;
 use MoLottery\Manager\ManagerRepository;
 use MoLottery\Provider\AbstractGame;
-use MoLottery\Provider\BST\AbstractParserConfig;
 use MoLottery\Provider\BST\Parser\ArchiveYearParser;
 use MoLottery\Provider\BST\Parser\CurrentYearParser;
 
