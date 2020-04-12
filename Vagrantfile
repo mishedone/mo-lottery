@@ -15,6 +15,6 @@ Vagrant.configure(2) do |config|
     config.vm.synced_folder ".", "/vagrant", type: "nfs"
 
     config.vm.provider "virtualbox" do |vb|
-        vb.memory = "256"
+        vb.memory = "512"
     end
 end
