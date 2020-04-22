@@ -31,13 +31,18 @@ class CurrentYearParser extends AbstractParser
         );
         $parses = $parseManager->get();
         
-        // parse
-        $draws = [];
+        // parse missing draws
         foreach ($this->parseDrawUrls($year) as $url) {
             if (!isset($parses[$url])) {
                 $parses[$url] = $this->parseDraws($url);
             }
-            foreach ($parses[$url] as $draw) {
+        }
+        uksort($parses, 'strnatcmp');
+
+        // collect all draws (including old ones that are not available on the web anymore)
+        $draws = [];
+        foreach ($parses as $url => $parseDraws) {
+            foreach ($parseDraws as $draw) {
                 $draws[] = $draw;
             }
         }
@@ -66,7 +71,7 @@ class CurrentYearParser extends AbstractParser
 
         // reorder matched draw URLs in ascending order
         $drawUrls = $drawUrls['urls'];
-        sort($drawUrls);
+        natsort($drawUrls);
 
         // make sure the draw URL is for the year in question
         return array_filter($drawUrls, function ($name) use ($year) {
