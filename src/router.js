@@ -31,14 +31,14 @@ var Router = Backbone.Router.extend({
     suggestions: function (id) {
         var game = this.findGame(id), view, 
             auditWinners, lastAuditWinner, hasLastAuditWinner,
-            winningAlgorithm, auditTable;
+            winningAlgorithm, auditTable, cleanWinningAlgorithm;
         
         auditWinners = this.auditWinnersStorage.get(game);
         lastAuditWinner = this.auditWinnersStorage.getLast(game);
         auditTable = new AuditTable('Audit Winners', game.get('drawSize'));
         auditTable.addRows(auditWinners);
         
-        hasLastAuditWinner = (typeof lastAuditWinner != 'undefined');
+        hasLastAuditWinner = (typeof lastAuditWinner !== 'undefined');
         winningAlgorithm = (hasLastAuditWinner) ? lastAuditWinner.getAlgorithm() : 'getHotColdTrend';
         cleanWinningAlgorithm = (hasLastAuditWinner) ? lastAuditWinner.getCleanAlgorithm() : 'Hot Cold Trend';
 
@@ -85,7 +85,7 @@ var Router = Backbone.Router.extend({
     browse: function (id, year) {
         var game = this.findGame(id), view;
 
-        if (year == undefined) {
+        if (year === undefined) {
             year = _.last(game.get('years'));
         }
 
