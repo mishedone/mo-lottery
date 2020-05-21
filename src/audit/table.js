@@ -14,6 +14,7 @@ function AuditTable(name, drawSize) {
     this.addLabel('Periods');
     this.addLabel('Draws / period');
     this.addLabel('Options');
+    this.addLabel('Suggestion');
     
     while (numberCount <= this.drawSize) {
         this.addLabel('Hit ' + numberCount);
@@ -50,6 +51,7 @@ AuditTable.prototype = {
             rowData.push(auditData.getPeriodCount());
             rowData.push(auditData.getDrawsPerPeriod());
             rowData.push(auditData.getShortOptions());
+            rowData.push(auditData.getLastSuggestion());
 
             // add hits
             _.each(auditData.getNumbersHit(), function (hits) {
@@ -69,7 +71,7 @@ AuditTable.prototype = {
         var winner = undefined, self = this;
         
         _.each(this.rows, function (auditData) {
-            if (typeof winner == 'undefined') {
+            if (typeof winner === 'undefined') {
                 winner = auditData;
             }
             if (auditData[self.sortBy]() >= winner[self.sortBy]()) {

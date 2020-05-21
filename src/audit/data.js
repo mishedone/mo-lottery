@@ -2,6 +2,7 @@ function AuditData(date, drawSize, algorithm, periodCount, drawsPerPeriod, optio
     var numberCount;
     
     this.date = date;
+    this.lastSuggestion = null;
     
     // initialize audit characteristics
     this.algorithm = algorithm;
@@ -58,6 +59,10 @@ AuditData.prototype = {
     
     getDate: function () {
         return this.date;
+    },
+
+    getLastSuggestion: function () {
+        return this.lastSuggestion;
     },
     
     getAlgorithm: function () {
@@ -151,6 +156,11 @@ AuditData.prototype = {
             this.options = json.order;
         } else {
             this.options = json.options;
+        }
+
+        // last suggestion was introduced later
+        if (json.hasOwnProperty('lastSuggestion')) {
+            this.lastSuggestion = json.lastSuggestion;
         }
         
         return this;

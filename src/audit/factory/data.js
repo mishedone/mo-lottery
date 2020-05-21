@@ -125,6 +125,14 @@ AuditDataFactory.prototype = _.extend({}, Backbone.Events, {
         }
         auditData.calculateScore();
 
+        // calculate last suggestion
+        auditData.lastSuggestion = new AnalyserSuggestions(
+            this.numbers,
+            this.draws.slice(),
+            this.drawSize,
+            suggestionsConfig
+        )[algorithm]();
+
         // throw an event saying that a single audit was finished
         this.trigger('processed');
 
