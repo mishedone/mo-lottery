@@ -19,7 +19,7 @@ function AnalyserSuggestions(numbers, draws, drawSize, config) {
     // create results
     this.elapseTimeTrendResult = new ElapseTimeTrendAnalyser().getResult(
         this.numbers,
-        this.draws,
+        this.draws.slice(),
         this.config.elapseTimeTrend.drawsPerPeriod,
         aggregatorList[this.config.elapseTimeTrend.hitAggregation],
         sorterList[this.config.elapseTimeTrend.elapseTimeOrder],
@@ -27,7 +27,7 @@ function AnalyserSuggestions(numbers, draws, drawSize, config) {
     );
     this.hotColdTrendResult = new HotColdTrendAnalyser().getResult(
         this.numbers,
-        this.draws,
+        this.draws.slice(),
         this.config.hotColdTrend.drawsPerPeriod,
         this.config.hotColdTrend.periodCount,
         sorterList[this.config.hotColdTrend.risingOrder],
