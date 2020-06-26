@@ -35,7 +35,7 @@ HotColdTrendResultFactory.prototype = {
     },
     
     getHotNumbers: function (lastPeriod) {
-        hits = lastPeriod.getHits();
+        var hits = lastPeriod.getHits();
         
         // sort hits by count
         this.hotSorter.sort(hits, 'getCount', 'getNumber');
