@@ -9,8 +9,8 @@ AnalyserNumberSorter.prototype = {
         var self = this;
         
         objects.sort(function (a, b) {
-            if (a[primary]() == b[primary]()) {
-                if (self.order == 'desc') {
+            if (a[primary]() === b[primary]()) {
+                if (self.order === 'desc') {
                     return b[secondary]() - a[secondary]();
                 }
                 
