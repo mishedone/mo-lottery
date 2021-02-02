@@ -32,6 +32,9 @@ class ParserConfig extends AbstractParserConfig
         if ($year == 2019) {
             return 'http://toto.bg/content/files/2020/01/04/f825c7c15a3a84911efed4776b45d10f.txt';
         }
+        if ($year == 2020) {
+            return 'http://toto.bg/content/files/2021/01/09/9077a2e0a550feb53bda2d420004957d.txt';
+        }
         return parent::getArchiveUrl($year);
     }
 
