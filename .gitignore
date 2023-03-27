@@ -3,6 +3,3 @@
 *.komodoproject
 *-cloudimg-console.log
 Thumbs.db
-
-api/data/*.json
-api/data/*/*.json
