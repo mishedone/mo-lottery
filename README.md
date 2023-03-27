@@ -49,9 +49,13 @@ The currently supported games / providers are:
 
 ### Installation
 
-The project includes a Vagrant file that installs all necessary software and deploys an initial version of the
-backend database (so you can get going faster). You just need to install Vagrant, run git clone and boot the VM
-via vagrant up. Afterwards the frontend will be accessible at http://127.0.0.1:9100 and you can start playing.
+The project includes a `Dockerfile` to build the `mo-lottery` image and `docker-compose.yml` file to manage a container and map the proper ports and volumes. Just run:
+
+1. `docker build -t mo-lotter:latest .`
+
+2. `docker compose up`
+
+Afterwards the frontend will be accessible at http://127.0.0.1:9100 and you can start playing.
 
 ### User interface
 
