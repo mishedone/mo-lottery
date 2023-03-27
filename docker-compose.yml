@@ -1,0 +1,7 @@
+services:
+  web:
+    image: "mo-lottery:latest"
+    ports:
+      - 9100:80
+    volumes:
+      - .:/var/www/html
