@@ -1,7 +1,7 @@
-version: "3.9"
 services:
   web:
     image: "mo-lottery:latest"
+    build: .
     ports:
       - 9100:80
     volumes:
