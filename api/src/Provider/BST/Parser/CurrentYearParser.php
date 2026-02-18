@@ -6,7 +6,6 @@ use DOMDocument;
 use DOMXPath;
 use MoLottery\Manager\ManagerRepository;
 use MoLottery\Tool\Clean;
-use MoLottery\Tool\Curl;
 
 /**
  * Bulgarian Sport Totalizator current year draws parser.
@@ -16,7 +15,7 @@ use MoLottery\Tool\Curl;
  */
 class CurrentYearParser extends AbstractParser
 {
-    use Clean, Curl;
+    use Clean;
 
     /**
      * @param int $year
@@ -35,6 +34,7 @@ class CurrentYearParser extends AbstractParser
         foreach ($this->parseDrawUrls($year) as $url) {
             if (!isset($parses[$url])) {
                 $parses[$url] = $this->parseDraws($url);
+                sleep(3);
             }
         }
         uksort($parses, 'strnatcmp');
@@ -54,6 +54,36 @@ class CurrentYearParser extends AbstractParser
     }
 
     /**
+     * Makes an HTTP request to a given URL and returns the response body.
+     *
+     * @param string $url
+     * @return string
+     */
+    private function scrapeHtmlPage($url)
+    {
+        $headers = [
+            'User-Agent: MyBot/1.0',
+            'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language: en-US,en;q=0.9',
+            'Accept-Encoding: gzip, deflate',
+            'Connection: keep-alive',
+            'Referer: https://info.toto.bg/',
+            'Upgrade-Insecure-Requests: 1',
+        ];
+        $opts = [
+            'http' => [
+                'method'  => 'GET',
+                'header'  => implode("\r\n", $headers),
+                'timeout' => 10,
+            ]
+        ];
+        $context = stream_context_create($opts);
+        $content = file_get_contents($url, false, $context);
+
+        return gzdecode($content);
+    }
+
+    /**
      * Extracts all available draw URLs for the current year.
      *
      * @param int $year
@@ -61,7 +91,7 @@ class CurrentYearParser extends AbstractParser
      */
     private function parseDrawUrls($year)
     {
-        $html = file_get_contents($this->config->getDrawPageUrl());
+        $html = $this->scrapeHtmlPage($this->config->getDrawPageUrl());
 
         $listItems = [];
         preg_match('/<ul[^>]*aria-labelledby="tiraj_list">(?<items>.*?)<\/ul>/s', $html, $listItems);
@@ -88,8 +118,9 @@ class CurrentYearParser extends AbstractParser
     private function parseDraws($drawUrl)
     {
         $draws = [];
+        $html = $this->scrapeHtmlPage($drawUrl);
         $dom = new DOMDocument();
-        @$dom->loadHTMLFile($drawUrl);
+        @$dom->loadHTML($html);
         $finder = new DOMXPath($dom);
 
         // find number containers and extract numbers from the balls inside
