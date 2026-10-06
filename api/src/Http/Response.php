@@ -17,10 +17,19 @@ class Response
     }
 
     /**
+     * @return void
+     */
+    private function setDefaultHeaders()
+    {
+        header('Access-Control-Allow-Origin: *');
+    }
+
+    /**
      * @param array $data
      */
     public function renderJson(array $data)
     {
+        $this->setDefaultHeaders();
         header('Content-Type: application/json');
         echo json_encode($data);
         exit;
@@ -40,6 +49,7 @@ class Response
      */
     public function render404()
     {
+        $this->setDefaultHeaders();
         header($this->getStatusString('404 Not Found'), true, 404);
         exit;
     }
