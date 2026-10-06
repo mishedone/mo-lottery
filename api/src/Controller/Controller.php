@@ -65,4 +65,17 @@ class Controller
         
         return $game->getDraws($year);
     }
+
+    /**
+     * @param string $gameId
+     * @param int $year
+     * @return array
+     * @throws NotFoundException
+     */
+    public function getParses($gameId, $year)
+    {
+        $game = $this->gameRepository->getGame($gameId);
+        
+        return $game->getParses($year);
+    }
 }

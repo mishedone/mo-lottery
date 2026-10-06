@@ -4,4 +4,5 @@
     # define available endpoints
     RewriteRule ^api/games$ api/index.php?action=games [L]
     RewriteRule ^api/draws/([a-z0-9\-]+)/(\d+)$ api/index.php?action=draws&game=$1&year=$2 [L]
+    RewriteRule ^api/parses/([a-z0-9\-]+)/(\d+)$ api/index.php?action=parses&game=$1&year=$2 [L]
 </IfModule>

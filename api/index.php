@@ -29,6 +29,10 @@ try {
             $response->renderJson($controller->getDraws($_GET['game'], $_GET['year']));
     
             break;
+        case 'parses':
+            $response->renderJson($controller->getParses($_GET['game'], $_GET['year']));
+    
+            break;
         default:
             $response->render404();
     }

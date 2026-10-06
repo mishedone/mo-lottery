@@ -31,6 +31,12 @@ abstract class AbstractGame
     abstract public function getDraws($year);
 
     /**
+     * @param int $year
+     * @return array
+     */
+    abstract public function getParses($year);
+
+    /**
      * @return int
      */
     abstract public function getPossibleDraws();

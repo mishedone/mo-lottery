@@ -60,6 +60,22 @@ abstract class AbstractBSTGame extends AbstractGame
     }
 
     /**
+     * @param int $year
+     * @return array
+     * @throws NotFoundException
+     */
+    public function getParses($year)
+    {
+        $this->validateYear($year);
+
+        $parseManager = ManagerRepository::get()->getParseManager(
+            $this->getId(), $year
+        );
+
+        return $parseManager->get();
+    }
+
+    /**
      * Builds parsers.
      */
     public function __construct()
