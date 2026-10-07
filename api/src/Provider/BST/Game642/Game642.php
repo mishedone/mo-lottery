@@ -48,6 +48,14 @@ class Game642 extends AbstractBSTGame
     {
         return 16;
     }
+
+    /**
+     * @return int
+     */
+    public function getDrawsPerRound()
+    {
+        return 1;
+    }
     
     /**
      * @return int
