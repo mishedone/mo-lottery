@@ -37,7 +37,6 @@ class CurrentYearParser extends AbstractParser
                 sleep(3);
             }
         }
-        uksort($parses, 'strnatcmp');
 
         // collect all draws (including old ones that are not available on the web anymore)
         $draws = [];

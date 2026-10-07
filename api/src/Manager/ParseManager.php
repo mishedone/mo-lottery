@@ -53,6 +53,7 @@ class ParseManager extends AbstractManager
      */
     public function set(array $parses)
     {
+        uksort($parses, 'strnatcmp');
         $this->parses = $parses;
         $this->saveData($this->parses);
     }
