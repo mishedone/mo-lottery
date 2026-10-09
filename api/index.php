@@ -4,7 +4,6 @@ require_once 'autoload.php';
 
 use MoLottery\Controller\Controller;
 use MoLottery\Exception\NotFoundException;
-use MoLottery\Exception\ParseException;
 use MoLottery\Http\Response;
 use MoLottery\Manager\ManagerRepository;
 use MoLottery\Provider\GameRepository;
@@ -18,26 +17,53 @@ $response = new Response();
 $gameRepository = new GameRepository();
 $controller = new Controller($gameRepository);
 
+// handle CORS
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
 // routing / controller
 try {
+    $method = $_SERVER['REQUEST_METHOD'];
     switch ($_GET['action']) {
         case 'games':
-            $response->renderJson($controller->getGames());
-    
+            if ($method === 'GET') {
+                $response = new Response(200, $controller->getGames());
+            }
+            if ($method === 'POST') {
+                $response = new Response(405);
+            }
             break;
         case 'draws':
-            $response->renderJson($controller->getDraws($_GET['game'], $_GET['year']));
-    
+            if ($method === 'GET') {
+                $response = new Response(200, $controller->getDraws($_GET['game'], $_GET['year']));
+            }
+            if ($method === 'POST') {
+                $response = new Response(405);
+            }
             break;
         case 'parses':
-            $response->renderJson($controller->getParses($_GET['game'], $_GET['year']));
-    
+            if ($method === 'GET') {
+                $response = new Response(200, $controller->getParses($_GET['game'], $_GET['year']));
+            }
+            if ($method === 'POST') {
+                $data = json_decode(file_get_contents('php://input'), true);
+                $controller->createParse(
+                    $_GET['game'],
+                    $_GET['year'],
+                    $data['url'],
+                    $data['draws']
+                );
+                $response = new Response(201, []);
+            }
             break;
         default:
-            $response->render404();
+            $response = new Response(404);
     }
 } catch (NotFoundException $exception) {
-    $response->render404();
-} catch (ParseException $exception) {
-    $response->renderJsonServerError($exception->getMessage());
+    $response = new Response(404);
+} catch (Exception $exception) {
+    $response = new Response(500, array('error' => $exception->getMessage()));
 }
+
+$response->render();

@@ -8,49 +8,35 @@ namespace MoLottery\Http;
 class Response
 {
     /**
-     * @param string $suffix
-     * @return string
+     * @var int
      */
-    private function getStatusString($suffix)
+    protected $status;
+
+    /**
+     * @var array|null
+     */
+    protected $body;
+
+    /**
+     * @param int $status
+     * @param array|null $body
+     */
+    public function __construct($status = 204, $body = NULL)
     {
-        return $_SERVER['SERVER_PROTOCOL'] . ' ' . $suffix;
+        $this->status = $status;
+        $this->body = $body;
     }
 
     /**
      * @return void
      */
-    private function setDefaultHeaders()
+    public function render()
     {
-        header('Access-Control-Allow-Origin: *');
-    }
-
-    /**
-     * @param array $data
-     */
-    public function renderJson(array $data)
-    {
-        $this->setDefaultHeaders();
-        header('Content-Type: application/json');
-        echo json_encode($data);
-        exit;
-    }
-
-    /**
-     * @param string $errorMessage
-     */
-    public function renderJsonServerError($errorMessage)
-    {
-        header($this->getStatusString('500 Internal Server Error'), true, 500);
-        $this->renderJson(array('error' => $errorMessage));
-    }
-
-    /**
-     * Shows 404 page... That dumb...
-     */
-    public function render404()
-    {
-        $this->setDefaultHeaders();
-        header($this->getStatusString('404 Not Found'), true, 404);
+        http_response_code($this->status);
+        if (!is_null($this->body)) {
+            header('Content-Type: application/json');
+            echo json_encode($this->body);
+        }
         exit;
     }
 }
