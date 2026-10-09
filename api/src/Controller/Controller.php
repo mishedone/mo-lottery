@@ -2,6 +2,8 @@
 
 namespace MoLottery\Controller;
 
+use MoLottery\Exception\AlreadyExistsException;
+use MoLottery\Exception\DrawException;
 use MoLottery\Exception\NotFoundException;
 use MoLottery\Provider\GameRepository;
 
@@ -77,5 +79,21 @@ class Controller
         $game = $this->gameRepository->getGame($gameId);
         
         return $game->getParses($year);
+    }
+
+    /**
+     * @param string $gameId
+     * @param int $year
+     * @param string $url
+     * @param array @draws
+     * @throws AlreadyExistsException
+     * @throws DrawException
+     * @throws NotFoundException
+     */
+    public function createParse($gameId, $year, $url, $draws)
+    {
+        $game = $this->gameRepository->getGame($gameId);
+        
+        return $game->createParse($year, $url, $draws);
     }
 }
