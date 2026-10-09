@@ -34,12 +34,6 @@ abstract class AbstractGame
     abstract public function getDraws($year);
 
     /**
-     * @param int $year
-     * @return array
-     */
-    abstract public function getParses($year);
-
-    /**
      * @return int
      */
     abstract public function getPossibleDraws();
@@ -201,10 +195,40 @@ abstract class AbstractGame
 
         $parses[$url] = $draws;
 
+        $this->saveParses($year, $parses);
+        $this->updateDrawsFromParses($year, $parses);
+    }
+
+    /**
+     * @param int $year
+     * @param array $parses
+     */
+    protected function saveParses($year, $parses)
+    {
         $parseManager = ManagerRepository::get()->getParseManager(
             $this->getId(), $year
         );
-
         $parseManager->set($parses);
+    }
+
+    /**
+     * @param int $year
+     * @param array $parses
+     */
+    protected function updateDrawsFromParses($year, $parses)
+    {
+        $drawManager = ManagerRepository::get()->getDrawManager(
+            $this->getId(), $year
+        );
+
+        // convert parses to flat draws
+        $draws = [];
+        foreach ($parses as $url => $parseDraws) {
+            foreach ($parseDraws as $draw) {
+                $draws[] = $draw;
+            }
+        }
+
+        $drawManager->set($draws);
     }
 }
