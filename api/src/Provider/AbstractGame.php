@@ -194,6 +194,7 @@ abstract class AbstractGame
         }
 
         $parses[$url] = $draws;
+        uksort($parses, 'strnatcmp');
 
         $this->saveParses($year, $parses);
         $this->updateDrawsFromParses($year, $parses);
