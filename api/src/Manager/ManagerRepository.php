@@ -23,11 +23,6 @@ class ManagerRepository
     private $drawManagers = [];
     
     /**
-     * @var LastParseManager
-     */
-    private $lastParseManager;
-    
-    /**
      * @var array
      */
     private $parseManagers = [];
@@ -65,18 +60,6 @@ class ManagerRepository
         }
 
         return $this->drawManagers[$key];
-    }
-    
-    /**
-     * @return LastParseManager
-     */
-    public function getLastParseManager()
-    {
-        if (!$this->lastParseManager) {
-            $this->lastParseManager = new LastParseManager(static::$dataPath);
-        }
-        
-        return $this->lastParseManager;
     }
     
     /**
