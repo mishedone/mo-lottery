@@ -39,14 +39,6 @@ class ParserConfig extends AbstractParserConfig
     }
 
     /**
-     * @return string
-     */
-    public function getDrawPageUrl()
-    {
-        return 'https://info.toto.bg/results/6x49';
-    }
-
-    /**
      * @return array
      */
     public function getReplacements()
