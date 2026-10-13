@@ -26,12 +26,6 @@ abstract class AbstractGame
      * @return int
      */
     abstract public function getDrawSize();
-    
-    /**
-     * @param int $year
-     * @return array
-     */
-    abstract public function getDraws($year);
 
     /**
      * @return int
@@ -110,6 +104,22 @@ abstract class AbstractGame
     public function getYears()
     {
         return $this->years;
+    }
+
+    /**
+     * @param int $year
+     * @return array
+     * @throws NotFoundException
+     */
+    public function getDraws($year)
+    {
+        $this->validateYear($year);
+
+        $drawManager = ManagerRepository::get()->getDrawManager(
+            $this->getId(), $year
+        );
+
+        return $drawManager->get();
     }
 
     /**
