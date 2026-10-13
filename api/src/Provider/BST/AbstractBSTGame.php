@@ -35,28 +35,22 @@ abstract class AbstractBSTGame extends AbstractGame
      */
     public function getDraws($year)
     {
-        $this->validateYear($year);
+        $draws = parent::getDraws($year);
 
-        // load managers
-        $drawManager = ManagerRepository::get()->getDrawManager(
-            $this->getId(), $year
-        );
-        $lastParseManager = ManagerRepository::get()->getLastParseManager();
-
-        // handle current year vs archive year
+        // parse archive year if missing
         $currentYear = date('Y');
-        if ($year == $currentYear) {
-            if (!$lastParseManager->has($this->getId())) {
-                $drawManager->set($this->currentYearParser->parse($year));
-                $lastParseManager->set($this->getId(), new \DateTime());
-            }
-        } else {
+        if ($year != $currentYear) {
+            $drawManager = ManagerRepository::get()->getDrawManager(
+                $this->getId(), $year
+            );
+
             if (!$drawManager->has()) {
-                $drawManager->set($this->archiveYearParser->parse($year));
+                $draws = $this->archiveYearParser->parse($year);
+                $drawManager->set($draws);
             }
         }
 
-        return $drawManager->get();
+        return $draws;
     }
 
     /**
